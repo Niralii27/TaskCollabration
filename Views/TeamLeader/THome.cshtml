@@ -1,0 +1,218 @@
+﻿@model TaskCollabration.Models.UserModel
+@{
+    ViewData["Title"] = "Team";
+    Layout = "~/Views/Shared/_Navbar.cshtml";
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskHub - Responsive Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="d-flex flex-column flex-lg-row min-vh-100">
+
+        <!-- Main Content -->
+        <div class="main-content flex-grow-1 p-3 p-lg-4">
+            <!-- Top Header -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                <div class="mb-3 mb-lg-0">
+                    <h4 class="mb-1">Welcome back, John!</h4>
+                    <p class="text-muted mb-0">Here's your task overview</p>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="position-relative me-3">
+                        <i class="fas fa-bell fs-5"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                        </span>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown">
+                            <img src="/api/placeholder/40/40" class="rounded-circle" alt="Profile">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card quick-stats-card h-100">
+                        <div class="card-body">
+                            <h6 class="text-muted">Total Tasks</h6>
+                            <div class="d-flex align-items-center">
+                                <h3 class="mb-0">24</h3>
+                                <div class="ms-auto">
+                                    <i class="fas fa-tasks text-primary fs-4"></i>
+                                </div>
+                            </div>
+                            <div class="progress mt-3" style="height: 4px;">
+                                <div class="progress-bar" style="width: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card quick-stats-card h-100">
+                        <div class="card-body">
+                            <h6 class="text-muted">In Progress</h6>
+                            <div class="d-flex align-items-center">
+                                <h3 class="mb-0">8</h3>
+                                <div class="ms-auto">
+                                    <i class="fas fa-spinner text-warning fs-4"></i>
+                                </div>
+                            </div>
+                            <div class="progress mt-3" style="height: 4px;">
+                                <div class="progress-bar bg-warning" style="width: 45%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card quick-stats-card h-100">
+                        <div class="card-body">
+                            <h6 class="text-muted">Due Today</h6>
+                            <div class="d-flex align-items-center">
+                                <h3 class="mb-0">5</h3>
+                                <div class="ms-auto">
+                                    <i class="fas fa-clock text-danger fs-4"></i>
+                                </div>
+                            </div>
+                            <div class="progress mt-3" style="height: 4px;">
+                                <div class="progress-bar bg-danger" style="width: 25%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card quick-stats-card h-100">
+                        <div class="card-body">
+                            <h6 class="text-muted">Completed</h6>
+                            <div class="d-flex align-items-center">
+                                <h3 class="mb-0">16</h3>
+                                <div class="ms-auto">
+                                    <i class="fas fa-check-circle text-success fs-4"></i>
+                                </div>
+                            </div>
+                            <div class="progress mt-3" style="height: 4px;">
+                                <div class="progress-bar bg-success" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Section -->
+            <div class="row g-3">
+                <!-- Today's Tasks -->
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-transparent">
+                            <h5 class="card-title mb-0">Today's Tasks</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="task-card priority-high card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                        <h6 class="mb-2 mb-md-0">Client Meeting Presentation</h6>
+                                        <span class="status-badge bg-warning text-dark">In Progress</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <small class="text-muted me-3"><i class="far fa-clock me-1"></i>Due in 3 hours</small>
+                                        <small class="text-muted"><i class="far fa-user me-1"></i>John Doe</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="task-card priority-medium card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                        <h6 class="mb-2 mb-md-0">Update Project Timeline</h6>
+                                        <span class="status-badge bg-info text-white">In Review</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <small class="text-muted me-3"><i class="far fa-clock me-1"></i>Due in 5 hours</small>
+                                        <small class="text-muted"><i class="far fa-user me-1"></i>Jane Smith</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Tasks -->
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-transparent">
+                            <h5 class="card-title mb-0">Upcoming Tasks</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="task-card priority-low card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                        <h6 class="mb-2 mb-md-0">Weekly Team Meeting</h6>
+                                        <span class="status-badge bg-secondary text-white">Tomorrow</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <small class="text-muted me-3"><i class="far fa-calendar me-1"></i>9:00 AM - 10:00 AM</small>
+                                        <small class="text-muted"><i class="far fa-users me-1"></i>Team</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="task-card priority-medium card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                        <h6 class="mb-2 mb-md-0">Project Deliverables Review</h6>
+                                        <span class="status-badge bg-secondary text-white">In 2 days</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <small class="text-muted me-3"><i class="far fa-calendar me-1"></i>Feb 5, 2025</small>
+                                        <small class="text-muted"><i class="far fa-user me-1"></i>Project Team</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-transparent">
+                            <h5 class="card-title mb-0">Recent Activity</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="timeline">
+                                <div class="d-flex mb-3">
+                                    <div class="me-3">
+                                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Marketing Campaign Report completed</h6>
+                                        <small class="text-muted">2 hours ago</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

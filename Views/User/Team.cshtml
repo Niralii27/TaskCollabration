@@ -1,0 +1,169 @@
+﻿@model TaskCollabration.Models.UserModel
+@{
+    ViewData["Title"] = "Team";
+    Layout = "~/Views/Shared/_Navbar.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team - TaskCollab</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <style>
+
+        .social-links a {
+            color: #6c757d;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+            .social-links a:hover {
+                color: #0d6efd;
+            }
+
+        .member-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid #f8f9fa;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .team-filters button {
+            border-radius: 20px;
+            padding: 8px 20px;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: #0d6efd;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <!-- Header Section -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 section-title">Meet Our Team</h1>
+            <p class="lead text-muted">The talented people behind our success</p>
+        </div>
+
+        <!-- Team Filters -->
+        <div class="team-filters text-center mb-4">
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-primary active" data-filter="all">All</button>
+                <button class="btn btn-outline-primary" data-filter="development">Development</button>
+                <button class="btn btn-outline-primary" data-filter="design">Design</button>
+                <button class="btn btn-outline-primary" data-filter="management">Management</button>
+            </div>
+        </div>
+
+        <!-- Team Members Grid -->
+        <div class="row g-4">
+            <!-- Team Member 1 -->
+            <div class="col-lg-3 col-md-6" data-category="management">
+                <div class="team-member card text-center h-100">
+                    <div class="card-body">
+                        <img src="/api/placeholder/150/150" alt="Team Member" class="member-img mb-4">
+                        <h5 class="card-title mb-1">Sarah Johnson</h5>
+                        <p class="text-muted">Project Manager</p>
+                        <p class="small">Leading our project initiatives with 8+ years of experience</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="col-lg-3 col-md-6" data-category="development">
+                <div class="team-member card text-center h-100">
+                    <div class="card-body">
+                        <img src="/api/placeholder/150/150" alt="Team Member" class="member-img mb-4">
+                        <h5 class="card-title mb-1">Michael Chen</h5>
+                        <p class="text-muted">Lead Developer</p>
+                        <p class="small">Full-stack developer specializing in React and Node.js</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="col-lg-3 col-md-6" data-category="design">
+                <div class="team-member card text-center h-100">
+                    <div class="card-body">
+                        <img src="/api/placeholder/150/150" alt="Team Member" class="member-img mb-4">
+                        <h5 class="card-title mb-1">Emma Rodriguez</h5>
+                        <p class="text-muted">UI/UX Designer</p>
+                        <p class="small">Creating beautiful and intuitive user experiences</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-behance"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="col-lg-3 col-md-6" data-category="development">
+                <div class="team-member card text-center h-100">
+                    <div class="card-body">
+                        <img src="/api/placeholder/150/150" alt="Team Member" class="member-img mb-4">
+                        <h5 class="card-title mb-1">Alex Patel</h5>
+                        <p class="text-muted">Backend Developer</p>
+                        <p class="small">Database expert with focus on system architecture</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterButtons = document.querySelectorAll('.team-filters button');
+            const teamMembers = document.querySelectorAll('.col-lg-3');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const filter = this.getAttribute('data-filter');
+
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Filter team members
+                    teamMembers.forEach(member => {
+                        if (filter === 'all' || member.getAttribute('data-category') === filter) {
+                            member.style.display = 'block';
+                        } else {
+                            member.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

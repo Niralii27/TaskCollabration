@@ -1,0 +1,269 @@
+﻿@model TaskCollabration.Models.AuthModel
+@{
+    ViewData["Title"] = "Auth";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Blue Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            --secondary-gradient: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(30, 64, 175, 0.1) 100%);
+            --accent-blue: #3b82f6;
+            --light-blue: #60a5fa;
+            --dark-blue: #1e40af;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --input-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            min-height: 100vh;
+            background: 
+                radial-gradient(circle at 0% 0%, #3b82f6 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, #1e40af 0%, transparent 50%),
+                #f0f7ff;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .login-container {
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-card {
+            border: none;
+            border-radius: 30px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            box-shadow: 
+                0 20px 40px rgba(37, 99, 235, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--secondary-gradient);
+            transform: rotate(-12deg);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-title {
+            font-weight: 800;
+            font-size: 2.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+        }
+
+        .form-floating {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 1.2rem;
+            height: auto;
+            background: var(--input-bg);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            box-shadow: 
+                inset 0 2px 4px rgba(37, 99, 235, 0.05),
+                0 4px 8px rgba(37, 99, 235, 0.05);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-blue);
+            background: white;
+            box-shadow: 
+                0 0 0 4px rgba(37, 99, 235, 0.1),
+                0 8px 16px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-floating label {
+            padding: 1rem 1.2rem;
+            color: #64748b;
+        }
+
+        .form-check {
+            padding-left: 2em;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-check-input {
+            width: 1.3em;
+            height: 1.3em;
+            margin-left: -2em;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .form-check-input:checked {
+            background: var(--primary-gradient);
+            border-color: transparent;
+        }
+
+        .form-check-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .btn-login {
+            border: none;
+            border-radius: 16px;
+            padding: 1rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            background: var(--primary-gradient);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            animation: float 8s infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        }
+
+        .shape:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            bottom: -200px;
+            right: -200px;
+            animation-delay: -2s;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        }
+
+        @@keyframes float {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(20px, 20px);
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .card-title {
+                font-size: 2rem;
+            }
+            .login-card {
+                margin: 1rem;
+                border-radius: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <div class="login-container d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-10 col-md-8 col-lg-5">
+                    <div class="login-card p-4 p-md-5">
+                        <div class="card-content">
+                            <h1 class="card-title text-center">Login Page</h1>
+                            <form>
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                                    <label for="email">Email address</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" id="password" placeholder="Password">
+                                    <label for="password">Password</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="remember">
+                                    <label class="form-check-label" for="remember">Remember me</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-login w-100">
+                                    Sign In
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
