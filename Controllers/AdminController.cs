@@ -37,14 +37,14 @@ namespace TaskCollabration.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddUser(AdminModel adminModel)
+        public IActionResult AddUser(AdminModel admin)
         {
             bool result;
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 adminModel = new AdminModel();
-                result = adminModel.insert(adminModel);
-                if(result)
+                result = adminModel.insert(admin);
+                if (result)
                 {
                     TempData["msg"] = "Added Successfully";
                 }
@@ -65,9 +65,5 @@ namespace TaskCollabration.Controllers
         {
             return View();
         }
-
-
-
-
     }
 }

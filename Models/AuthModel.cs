@@ -6,7 +6,7 @@ namespace TaskCollabration.Models
 {
     public class AuthModel
     {
+       
 
-        
     }
 }

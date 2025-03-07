@@ -8,5 +8,9 @@ namespace TaskCollabration.Controllers
         {
             return View();
         }
+        public IActionResult Demo()
+        {
+            return View();
+        }
     }
 }
