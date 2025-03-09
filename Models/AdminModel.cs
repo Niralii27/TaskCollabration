@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
+
 using System.Data.SqlClient;
 
 
@@ -6,69 +8,98 @@ namespace TaskCollabration.Models
 {
     public class AdminModel
     {
-        SqlConnection con = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Task;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+      SqlConnection con = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Task;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please Enter a name")]
-
-        public string UserName { get; set; }
-        [Required(ErrorMessage = "Please enter an Email")]
-
-        public string Email { get; set; }
-        [Required(ErrorMessage = "Please enter a Password")]
-
-        public string Password { get; set; }
-        [Required(ErrorMessage = "Please enter a Type")]
-
-        public string Type { get; set; }
-        [Required(ErrorMessage = "Please enter a First Name")]
+       [Required(ErrorMessage = "Please Enter a FirstName")]
 
         public string FirstName { get; set; }
-        [Required(ErrorMessage = "Please enter a Last Name")]
+        [Required(ErrorMessage = "Please Enter a LastName")]
 
         public string LastName { get; set; }
-        [Required(ErrorMessage = "Please enter a Mobile Number")]
-        public string MobileNumber { get; set; }
-        [Required(ErrorMessage = "Please enter a Street Address1")]
+        [Required(ErrorMessage = "Please Enter a StreetAddress1")]
 
         public string StreetAddress1 { get; set; }
-        [Required(ErrorMessage = "Please enter a street Address2")]
+        [Required(ErrorMessage = "Please Enter a StreetAddress2")]
 
         public string StreetAddress2 { get; set; }
-        [Required(ErrorMessage = "Please enter a PinCode")]
+        [Required(ErrorMessage = "Please Enter a Type")]
 
+        public string Type { get;set; }
+        [Required(ErrorMessage = "Please Enter a MobileNumber")]
+
+        public string MobileNumber { get; set; }
+        [Required(ErrorMessage = "Please Enter a Email")]
+
+        public string Email { get; set; }
+        [Required(ErrorMessage = "Please Enter a PinCode")]
         public string Pincode { get; set; }
-        [Required(ErrorMessage = "Please enter a City")]
+        [Required(ErrorMessage = "Please Enter a City")]
 
         public string City { get; set; }
-        public string Image { get; set; }
-        [Required(ErrorMessage = "Enter a User role")]
+        [Required(ErrorMessage = "Please Enter a Password")]
+
+        public string Password { get; set; }
+        [Required(ErrorMessage = "Please Enter a UserRole")]
 
         public string UserRole { get; set; }
+        [Required(ErrorMessage = "Please Enter a Image")]
 
-
-        //Insert a User Record
+        public string Image { get; set; }
         
-        public bool insert(AdminModel admin)
+        //Retrieve all Records From a table
+        public List<AdminModel> getData()
         {
-            SqlCommand cmd = new SqlCommand("insert into user values(@username, @email, @password, @type, @first_name, @last_name, @mo_number, @street_Address1, @street_Address2, @pin_code, @city, @image, @user_role)", con);
+            List<AdminModel> lstadm = new List<AdminModel>();
+            SqlDataAdapter da = new SqlDataAdapter("select * from Users", con);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                lstadm.Add(new AdminModel
+                {
+                    Id = Convert.ToInt32(dr["Id"].ToString()),
+                    FirstName = dr["FirstName"].ToString(),
+                    LastName = dr["LastName"].ToString(),
+                    StreetAddress1 = dr["StreetAddress1"].ToString(),
+                    StreetAddress2 = dr["StreetAddress2"].ToString(),
+                    Type = dr["Type"].ToString(),
+                    MobileNumber = dr["MobileNumber"].ToString(),
+                    Email = dr["Email"].ToString(),
+                    Pincode = dr["Pincode"].ToString(),
+                    City = dr["City"].ToString(),
+                    Password = dr["Password"].ToString(),
+                    UserRole = dr["UserRole"].ToString(),
+                    Image = dr["Image"].ToString()
+                });
+            }
+            return lstadm;
+        }
 
-            cmd.Parameters.AddWithValue("@username", admin.UserName);
-            cmd.Parameters.AddWithValue("@email", admin.Email);
-            cmd.Parameters.AddWithValue("@password", admin.Password);
-            cmd.Parameters.AddWithValue("@type", admin.Type);
-            cmd.Parameters.AddWithValue("@first_name", admin.FirstName);
-            cmd.Parameters.AddWithValue("@last_name", admin.LastName);
-            cmd.Parameters.AddWithValue("@mo_number", admin.MobileNumber);
-            cmd.Parameters.AddWithValue("@street_Address1", admin.StreetAddress1);
-            cmd.Parameters.AddWithValue("@street_Address2", admin.StreetAddress2);
-            cmd.Parameters.AddWithValue("@pin_code", admin.Pincode);
-            cmd.Parameters.AddWithValue("@city", admin.City);
-            cmd.Parameters.AddWithValue("@image", admin.Image);
-            cmd.Parameters.AddWithValue("@user_role", admin.UserRole);
+        //Insert A record in table
+
+        public bool insert(AdminModel model)
+        {
+            SqlCommand cmd = new SqlCommand("insert into Users values(@firstname, @lastname, @streetaddress1, @streetaddress2, @type, @mobilenumber, @email, @pincode, @city, @password, @userrole, @image)", con);
+
+            cmd.Parameters.AddWithValue("@firstname", model.FirstName);
+            cmd.Parameters.AddWithValue("@lastname", model.LastName);
+            cmd.Parameters.AddWithValue("@streetaddress1", model.StreetAddress1);
+            cmd.Parameters.AddWithValue("@streetaddress2", model.StreetAddress2);
+            cmd.Parameters.AddWithValue("@type", model.Type);
+            cmd.Parameters.AddWithValue("@mobilenumber", model.MobileNumber);
+            cmd.Parameters.AddWithValue("@email", model.Email);
+            cmd.Parameters.AddWithValue("@pincode", model.Pincode);
+            cmd.Parameters.AddWithValue("@city", model.City);
+            cmd.Parameters.AddWithValue("@password", model.Password);
+            cmd.Parameters.AddWithValue("@userrole", model.UserRole);
+            cmd.Parameters.AddWithValue("@image", model.Image);
+
+
 
             con.Open();
             int i = cmd.ExecuteNonQuery();
-            if (i >= 1)
+            if(i>=1)
             {
                 return true;
             }

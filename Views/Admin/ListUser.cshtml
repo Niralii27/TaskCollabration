@@ -43,34 +43,47 @@
                   </div>
                   <table id="user-list-table" class="table table-striped dataTable mt-4" role="grid"
                      aria-describedby="user-list-page-info">
-                     <thead>
+                                <thead>
+
                         <tr class="ligth">
+                            <th>Id</th>
                            <th>Profile</th>
-                           <th>Name</th>
-                           <th>Contact</th>
+                           <th>First Name</th>
+                           <th>LastName</th>
+                           <th>Address</th>
+                           <th>Type</th>
+                           <th>Mobile Number</th>
                            <th>Email</th>
-                           <th>Country</th>
-                           <th>Status</th>
-                           <th>Company</th>
-                           <th>Join Date</th>
+                           <th>PinCode</th>
+                           <th>City</th>
+                           <th>Password</th>
+                           <th>UserRole</th>
+
                            <th style="min-width: 100px">Action</th>
                         </tr>
-                     </thead>
+                               </thead>
+
                      <tbody>
+                     @foreach (AdminModel item in Model)
+                      {
+
                         <tr>
+                            <td>@item.Id</td>
                            <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                 src="../assets/images/user/01.jpg" alt="profile"></td>
-                           <td>Anna Sthesia</td>
-                           <td>(760) 756 7568</td>
-                           <td>annasthesia@gmail.com</td>
-                           <td>USA</td>
-                           <td><span class="badge bg-primary">Active</span></td>
-                           <td>Acme Corporation</td>
-                           <td>2019/12/01</td>
+                                 src="~/Images/@item.Image" alt="profile"></td>
+                           <td>@item.FirstName</td>
+                           <td>@item.LastName</td>
+                           <td>@(item.StreetAddress1 + " " + item.StreetAddress2)</td>
+                           <td>@item.Type</td>
+                           <td>@item.MobileNumber</td>
+                           <td>@item.Email</td>
+                           <td>@item.Pincode</td>
+                           <td>@item.City</td>
+                           <td>@item.Password</td>
+                           <td>@item.UserRole</td>
                            <td>
                               <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Add" href="#"><i class="ri-user-add-line mr-0"></i></a>
+                                
                                  <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
                                     data-original-title="Edit" href="#"><i class="ri-pencil-line mr-0"></i></a>
                                  <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
@@ -78,175 +91,9 @@
                               </div>
                            </td>
                         </tr>
-                        <tr>
-                           <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                 src="../assets/images/user/02.jpg" alt="profile"></td>
-                           <td>Brock Lee</td>
-                           <td>+62 5689 458 658</td>
-                           <td>brocklee@gmail.com</td>
-                           <td>Indonesia</td>
-                           <td><span class="badge bg-primary">Active</span></td>
-                           <td>Soylent Corp</td>
-                           <td>2019/12/01</td>
-                           <td>
-                              <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Add" href="#"><i class="ri-user-add-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Edit" href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Delete" href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                 src="../assets/images/user/03.jpg" alt="profile"></td>
-                           <td>Dan Druff</td>
-                           <td>+55 6523 456 856</td>
-                           <td>dandruff@gmail.com</td>
-                           <td>Brazil</td>
-                           <td><span class="badge bg-warning-light">Pending</span></td>
-                           <td>Umbrella Corporation</td>
-                           <td>2019/12/01</td>
-                           <td>
-                              <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Add" href="#"><i class="ri-user-add-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Edit" href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Delete" href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                 src="../assets/images/user/04.jpg" alt="profile"></td>
-                           <td>Hans Olo</td>
-                           <td>+91 2586 253 125</td>
-                           <td>hansolo@gmail.com</td>
-                           <td>India</td>
-                           <td><span class="badge bg-danger-light">Inactive</span></td>
-                           <td>Vehement Capital</td>
-                           <td>2019/12/01</td>
-                           <td>
-                              <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Add" href="#"><i class="ri-user-add-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Edit" href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Delete" href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                 src="../assets/images/user/05.jpg" alt="profile"></td>
-                           <td>Lynn Guini</td>
-                           <td>+27 2563 456 589</td>
-                           <td>lynnguini@gmail.com</td>
-                           <td>Africa</td>
-                           <td><span class="badge bg-primary">Active</span></td>
-                           <td>Massive Dynamic</td>
-                           <td>2019/12/01</td>
-                           <td>
-                              <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Add" href="#"><i class="ri-user-add-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Edit" href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Delete" href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                 src="../assets/images/user/06.jpg" alt="profile"></td>
-                           <td>Eric Shun</td>
-                           <td>+55 25685 256 589</td>
-                           <td>ericshun@gmail.com</td>
-                           <td>Brazil</td>
-                           <td><span class="badge bg-warning-light">Pending</span></td>
-                           <td>Globex Corporation</td>
-                           <td>2019/12/01</td>
-                           <td>
-                              <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Add" href="#"><i class="ri-user-add-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Edit" href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Delete" href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                 src="../assets/images/user/07.jpg" alt="profile"></td>
-                           <td>aaronottix</td>
-                           <td>(760) 765 2658</td>
-                           <td>budwiser@ymail.com</td>
-                           <td>USA</td>
-                           <td><span class="badge bg-info-light">Hold</span></td>
-                           <td>Acme Corporation</td>
-                           <td>2019/12/01</td>
-                           <td>
-                              <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Add" href="#"><i class="ri-user-add-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Edit" href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Delete" href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                 src="../assets/images/user/08.jpg" alt="profile"></td>
-                           <td>Marge Arita</td>
-                           <td>+27 5625 456 589</td>
-                           <td>margearita@gmail.com</td>
-                           <td>Africa</td>
-                           <td><span class="badge bg-success-light">Complite</span></td>
-                           <td>Vehement Capital</td>
-                           <td>2019/12/01</td>
-                           <td>
-                              <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Add" href="#"><i class="ri-user-add-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Edit" href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Delete" href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                 src="../assets/images/user/09.jpg" alt="profile"></td>
-                           <td>Bill Dabear</td>
-                           <td>+55 2563 456 589</td>
-                           <td>billdabear@gmail.com</td>
-                           <td>Brazil</td>
-                           <td><span class="badge bg-primary">active</span></td>
-                           <td>Massive Dynamic</td>
-                           <td>2019/12/01</td>
-                           <td>
-                              <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Add" href="#"><i class="ri-user-add-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Edit" href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Delete" href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                              </div>
-                           </td>
-                        </tr>
+                       }
                      </tbody>
+                     
                   </table>
                </div>
                <div class="row justify-content-between mt-3">

@@ -6,6 +6,8 @@
 
 <div class="content-page">
     <div class="container-fluid">
+        <form asp-action="AddUser">
+
         <div class="row">
             <div class="col-xl-3 col-lg-4">
                 <div class="card">
@@ -15,40 +17,35 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form method="post">
-                            <div class="form-group">
-                                <div class="crm-profile-img-edit position-relative">
-                                    <img class="crm-profile-pic rounded avatar-100" alt="profile-pic" id="Image">
-                                    <div class="crm-p-image bg-primary">
-                                         <i class="las la-pen upload-button"></i>
-                                        <input class="file-upload" type="file" accept="image/*">
-                                        <span asp-validation-for="Image" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="img-extension mt-3">
-                                    <div class="d-inline-block align-items-center">
-                                        <span>Only</span>
-                                        <a href="javascript:void();">.jpg</a>
-                                        <a href="javascript:void();">.png</a>
-                                        <a href="javascript:void();">.jpeg</a>
-                                        <span>allowed</span>
-                                    </div>
+                        <div class="form-group">
+                            <div class="crm-profile-img-edit position-relative">
+                                <img class="crm-profile-pic rounded avatar-100" alt="profile-pic" id="Image">
+                                <div class="crm-p-image bg-primary">
+                                    <i class="las la-pen upload-button"></i>
+                                    <input class="file-upload" type="file" accept="image/*" name="Image" asp-for="Image">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label>User Role:</label>
-                                <select name="type" class="selectpicker form-control" data-style="py-0" id="UserRole">
-                                    <option>Select</option>
-                                    <option>Web Designer</option>
-                                    <option>Web Developer</option>
-                                    <option>Tester</option>
-                                    <option>Php Developer</option>
-                                    <option>Ios Developer </option>
-                                </select>
-                                <span asp-validation-for="UserRole" class="text-danger"></span>
+                            <div class="img-extension mt-3">
+                                <div class="d-inline-block align-items-center">
+                                    <span>Only</span>
+                                    <a href="javascript:void();">.jpg</a>
+                                    <a href="javascript:void();">.png</a>
+                                    <a href="javascript:void();">.jpeg</a>
+                                    <span>allowed</span>
+                                </div>
                             </div>
-                           
-                        </form>
+                        </div>
+                        <div class="form-group">
+                            <label>User Role:</label>
+                            <select name="UserRole" class="selectpicker form-control" data-style="py-0" id="UserRole" asp-for="UserRole">
+                                <option>Select</option>
+                                <option>Web Designer</option>
+                                <option>Web Developer</option>
+                                <option>Tester</option>
+                                <option>Php Developer</option>
+                                <option>Ios Developer </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -61,22 +58,20 @@
                     </div>
                     <div class="card-body">
                         <div class="new-user-info">
-                            <form asp-action="AddUser">
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="fname">First Name:</label>
-                                        <input type="text" class="form-control" id="FirstName" placeholder="First Name" asp-for="FirstName">
+                                        <input type="text" class="form-control" name="FirstName" id="FirstName" placeholder="First Name" asp-for="FirstName">
                                         <span asp-validation-for="FirstName" class="text-danger"></span>
-
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="lname">Last Name:</label>
-                                        <input type="text" class="form-control" id="LastName" placeholder="Last Name" asp-for="LastName">
+                                        <input type="text" class="form-control" name="LastName" id="LastName" placeholder="Last Name" asp-for="LastName">
                                         <span asp-validation-for="LastName" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="add1">Street Address 1:</label>
-                                        <input type="text" class="form-control" id="StreetAddress1" placeholder="Street Address 1" asp-for="StreetAddress1">
+                                        <input type="text" class="form-control" name="StreetAddress1" id="StreetAddress1" placeholder="Street Address 1" asp-for="StreetAddress1">
                                         <span asp-validation-for="StreetAddress1" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -84,25 +79,23 @@
                                         <input type="text" class="form-control" id="StreetAddress2" placeholder="Street Address 2" asp-for="StreetAddress2">
                                         <span asp-validation-for="StreetAddress2" class="text-danger"></span>
                                     </div>
-                                   
+
                                     <div class="form-group col-sm-12">
                                         <label>Type:</label>
-                                        <select name="type" class="selectpicker form-control" id="Type" data-style="py-0" asp-for="Type">
+                                        <select name="Type" class="selectpicker form-control" id="Type" data-style="py-0" asp-for="Type">
                                             <option>Select Country</option>
                                             <option>Admin</option>
                                             <option>User</option>
                                             <option>Team Leader</option>
-                                            
                                         </select>
                                         <span asp-validation-for="Type" class="text-danger"></span>
-
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="mobno">Mobile Number:</label>
                                         <input type="text" class="form-control" id="MobileNumber" placeholder="Mobile Number" asp-for="MobileNumber">
                                         <span asp-validation-for="MobileNumber" class="text-danger"></span>
                                     </div>
-                                   
+
                                     <div class="form-group col-md-6">
                                         <label for="email">Email:</label>
                                         <input type="email" class="form-control" id="Email" placeholder="Email" asp-for="Email">
@@ -122,11 +115,6 @@
                                 <hr>
                                 <h5 class="mb-3">Security</h5>
                                 <div class="row">
-                                    <div class="form-group col-md-12">
-                                        <label for="uname">User Name:</label>
-                                        <input type="text" class="form-control" id="UserName" placeholder="User Name" asp-for="UserName">
-                                        <span asp-validation-for="UserName" class="text-danger"></span>
-                                    </div>
                                     <div class="form-group col-md-6">
                                         <label for="pass">Password:</label>
                                         <input type="password" class="form-control" id="Password" placeholder="Password" asp-for="Password">
@@ -134,24 +122,23 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="rpass">Repeat Password:</label>
-                                        <input type="password" class="form-control" id="rpass" placeholder="Repeat Password ">
+                                        <input type="password" class="form-control" id="rpass" placeholder="Repeat Password">
                                     </div>
                                 </div>
-                               
+
                                 <button type="submit" class="btn btn-primary">Add New User</button>
                             </form>
                             @if (TempData["msg"] != null)
-                             {
-                         <script>
-                              alert('@TempData["msg"].ToString();');
-                              window.location.href = "@Url.Action("AddUser","Admin")";
-                         </script>
-                         }
+                            {
+                                <script>
+                                    alert('@TempData["msg"].ToString();');
+                                    window.location.href = "@Url.Action("AddUser","Admin")";
+                                </script>
+                            }
                         </div>
                     </div>
                 </div>
-            </div>  
+            </div>
         </div>
     </div>
 </div>
-
