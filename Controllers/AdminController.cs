@@ -6,6 +6,7 @@ namespace TaskCollabration.Controllers
     public class AdminController : Controller
     {
         AdminModel adminModel = new AdminModel();
+
         public IActionResult Dashboard()
         {
             return View();
@@ -37,22 +38,48 @@ namespace TaskCollabration.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddUser(AdminModel admin)
+        public IActionResult AddUser(AdminModel admin, IFormFile imageFile)
         {
-            bool result;
-            if (ModelState.IsValid)
+            // Handle file upload
+            if (imageFile != null && imageFile.Length > 0)
             {
-                adminModel = new AdminModel();
-                result = adminModel.insert(admin);
-                if (result)
+                // Use original filename without any random prefix
+                string fileName = imageFile.FileName;
+
+                // Set path to wwwroot/Images folder
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images");
+
+                // Create directory if it doesn't exist
+                if (!Directory.Exists(uploadsFolder))
                 {
-                    TempData["msg"] = "Added Successfully";
+                    Directory.CreateDirectory(uploadsFolder);
                 }
-                else
+
+                string filePath = Path.Combine(uploadsFolder, fileName);
+
+                // Save the file
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    TempData["msg"] = "Failed To Add Data";
+                    imageFile.CopyTo(fileStream);
                 }
+
+                // Set the image path in your model
+                admin.Image = "" + fileName;
             }
+
+            // Initialize model and insert data
+            adminModel = new AdminModel();
+            bool result = adminModel.insert(admin);
+
+            if (result)
+            {
+                TempData["msg"] = "Added Successfully";
+            }
+            else
+            {
+                TempData["msg"] = "Failed To Add Data";
+            }
+
             return View();
         }
         public IActionResult ListUser()

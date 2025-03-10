@@ -10,6 +10,7 @@ namespace TaskCollabration.Models
     {
       SqlConnection con = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Task;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
+        [Key]
         public int Id { get; set; }
        [Required(ErrorMessage = "Please Enter a FirstName")]
 
@@ -46,6 +47,8 @@ namespace TaskCollabration.Models
         [Required(ErrorMessage = "Please Enter a Image")]
 
         public string Image { get; set; }
+
+
         
         //Retrieve all Records From a table
         public List<AdminModel> getData()
@@ -80,6 +83,8 @@ namespace TaskCollabration.Models
 
         public bool insert(AdminModel model)
         {
+
+            
             SqlCommand cmd = new SqlCommand("insert into Users values(@firstname, @lastname, @streetaddress1, @streetaddress2, @type, @mobilenumber, @email, @pincode, @city, @password, @userrole, @image)", con);
 
             cmd.Parameters.AddWithValue("@firstname", model.FirstName);
@@ -94,7 +99,6 @@ namespace TaskCollabration.Models
             cmd.Parameters.AddWithValue("@password", model.Password);
             cmd.Parameters.AddWithValue("@userrole", model.UserRole);
             cmd.Parameters.AddWithValue("@image", model.Image);
-
 
 
             con.Open();
