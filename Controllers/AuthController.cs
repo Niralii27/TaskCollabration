@@ -1,9 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using TaskCollabration.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.Data.SqlClient;
 
 namespace TaskCollabration.Controllers
 {
     public class AuthController : Controller
     {
+        AuthModel authModel = new AuthModel();
+
+        private readonly string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Task;Integrated Security=True;";
+
+
+
+
         public IActionResult Login()
         {
             return View();
@@ -14,27 +24,38 @@ namespace TaskCollabration.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(AuthModel model)
+        public IActionResult Login(AuthModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = await _context.Users
-                    .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+                return View(model);
+            }
 
-                if (user != null)
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                string query = "SELECT Type FROM Users WHERE Email = @Email AND Password = @Password";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Email", model.Email);
+                cmd.Parameters.AddWithValue("@Password", model.Password); // 🔹 Hash passwords in real applications
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
                 {
-                    HttpContext.Session.SetString("UserRole", user.Role);
+                    string type = reader["Type"].ToString();
 
-                    switch (user.Role)
+                    HttpContext.Session.SetString("Type", type);
+
+                    switch (type)
                     {
                         case "Admin":
                             return RedirectToAction("Dashboard", "Admin");
                         case "Team Leader":
-                            return RedirectToAction("Dashboard", "TeamLeader");
+                            return RedirectToAction("THome", "TeamLeader");
                         case "User":
-                            return RedirectToAction("Dashboard", "User");
+                            return RedirectToAction("Home", "User");
                         default:
-                            return RedirectToAction("Login", "Account");
+                            return RedirectToAction("Login", "Auth");
                     }
                 }
                 else
@@ -45,6 +66,7 @@ namespace TaskCollabration.Controllers
 
             return View(model);
         }
+
 
     }
 }
