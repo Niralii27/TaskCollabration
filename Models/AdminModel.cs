@@ -166,7 +166,20 @@ namespace TaskCollabration.Models
             return false;
 
         }
-       
+        // delete a user from a database table
+
+        public bool delete(AdminModel admin)
+        {
+            SqlCommand cmd = new SqlCommand("delete Users where Id = @id", con);
+            cmd.Parameters.AddWithValue("@id", admin.Id);
+            con.Open() ;
+            int i = cmd.ExecuteNonQuery();
+            if(i>=1)
+            {
+                return true;
+            }
+            return false;
+        }
 
     }
 }

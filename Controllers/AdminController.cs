@@ -36,8 +36,8 @@ namespace TaskCollabration.Controllers
         {
             return View();
         }
-       
-       
+
+
 
         [HttpPost]
         public IActionResult AddUser(AdminModel admin, IFormFile imageFile)
@@ -88,7 +88,7 @@ namespace TaskCollabration.Controllers
         {
 
             adminModel = new AdminModel();
-            List<AdminModel> adminModels= adminModel.getData();
+            List<AdminModel> adminModels = adminModel.getData();
             return View(adminModels);
         }
 
@@ -99,8 +99,8 @@ namespace TaskCollabration.Controllers
             bool res;
             if (!ModelState.IsValid)
             {
-                adminModel= new AdminModel();
-                res =  adminModel.update(adminModel1);
+                adminModel = new AdminModel();
+                res = adminModel.update(adminModel1);
                 if (res)
                 {
                     TempData["msg"] = "Updated Successfully";
@@ -121,6 +121,34 @@ namespace TaskCollabration.Controllers
             return View(admin);
         }
 
+        [HttpPost]
+
+        public IActionResult DeleteUser(AdminModel model)
+        {
+            bool res;
+
+            adminModel = new AdminModel();
+            res = adminModel.delete(model);
+            if (res)
+            {
+                TempData["msg"] = "Deleted successfully";
+
+            }
+            else
+            {
+                TempData["msg"] = "Not Deleted. something went wrong..!!";
+
+            }
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult DeleteUser(string id)
+        {
+            AdminModel adminmodel = adminModel.getData(id);
+            return View(adminmodel);
+        }
         public IActionResult EditAdminProfile()
         {
             return View();

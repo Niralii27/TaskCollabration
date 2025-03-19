@@ -1,0 +1,119 @@
+﻿@model TaskCollabration.Models.AdminModel
+@{
+    ViewData["Title"] = "Delete user";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+<div class="content-page">
+    <div class="container-fluid">
+        <form asp-action="DeleteUser" enctype="multipart/form-data">
+
+        <div class="row">
+            <div class="col-xl-3 col-lg-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Delete User</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            
+                            
+                        </div>
+                        <div class="form-group">
+                            <label>User Role:</label>
+                            <select name="UserRole" class="selectpicker form-control" data-style="py-0" id="UserRole" asp-for="UserRole">
+                                <option>Select</option>
+                                <option>Web Designer</option>
+                                <option>Web Developer</option>
+                                <option>Tester</option>
+                                <option>Php Developer</option>
+                                <option>Ios Developer </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">New User Information</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="new-user-info">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="fname">First Name:</label>
+                                        <input type="text" class="form-control" name="FirstName" id="FirstName" placeholder="First Name" asp-for="FirstName">
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="lname">Last Name:</label>
+                                        <input type="text" class="form-control" name="LastName" id="LastName" placeholder="Last Name" asp-for="LastName">
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="add1">Street Address 1:</label>
+                                        <input type="text" class="form-control" name="StreetAddress1" id="StreetAddress1" placeholder="Street Address 1" asp-for="StreetAddress1">
+                                        <span asp-validation-for="StreetAddress1" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="add2">Street Address 2:</label>
+                                        <input type="text" class="form-control" id="StreetAddress2" placeholder="Street Address 2" asp-for="StreetAddress2">
+                                        <span asp-validation-for="StreetAddress2" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group col-sm-12">
+                                        <label>Type:</label>
+                                        <select name="Type" class="selectpicker form-control" id="Type" data-style="py-0" asp-for="Type">
+                                            <option>Select Country</option>
+                                            <option>Admin</option>
+                                            <option>User</option>
+                                            <option>Team Leader</option>
+                                        </select>
+                                        <span asp-validation-for="Type" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="mobno">Mobile Number:</label>
+                                        <input type="text" class="form-control" id="MobileNumber" placeholder="Mobile Number" asp-for="MobileNumber">
+                                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="email">Email:</label>
+                                        <input type="email" class="form-control" id="Email" placeholder="Email" asp-for="Email">
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="pno">Pin Code:</label>
+                                        <input type="text" class="form-control" id="Pincode" placeholder="Pin Code" asp-for="Pincode">
+                                        <span asp-validation-for="Pincode" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="city">Town/City:</label>
+                                        <input type="text" class="form-control" id="City" placeholder="Town/City" asp-for="City">
+                                        <span asp-validation-for="City" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <hr>
+                               
+
+                                <button type="submit" class="btn btn-primary">Delete User</button>
+                            </form>
+        @if (TempData["msg"] != null)
+        {
+                                    <script>
+                                        alert('@TempData["msg"].ToString();');
+                                        window.location.href = "@Url.Action("ListUser","Admin")";
+                                    </script>
+        }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
