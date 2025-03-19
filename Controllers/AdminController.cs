@@ -36,6 +36,8 @@ namespace TaskCollabration.Controllers
         {
             return View();
         }
+       
+       
 
         [HttpPost]
         public IActionResult AddUser(AdminModel admin, IFormFile imageFile)
@@ -84,11 +86,40 @@ namespace TaskCollabration.Controllers
         }
         public IActionResult ListUser()
         {
+
             adminModel = new AdminModel();
             List<AdminModel> adminModels= adminModel.getData();
             return View(adminModels);
         }
 
+        [HttpPost]
+
+        public IActionResult EditUser(AdminModel adminModel1)
+        {
+            bool res;
+            if (!ModelState.IsValid)
+            {
+                adminModel= new AdminModel();
+                res =  adminModel.update(adminModel1);
+                if (res)
+                {
+                    TempData["msg"] = "Updated Successfully";
+                }
+                else
+                {
+                    TempData["msg"] = "Failed to update";
+                }
+            }
+            return View();
+
+        }
+
+        [HttpGet]
+        public IActionResult EditUser(string id)
+        {
+            AdminModel admin = adminModel.getData(id);
+            return View(admin);
+        }
 
         public IActionResult EditAdminProfile()
         {

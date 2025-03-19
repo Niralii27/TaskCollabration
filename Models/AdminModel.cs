@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 
 using System.Data.SqlClient;
+using System.Reflection;
 
 
 namespace TaskCollabration.Models
@@ -78,7 +80,34 @@ namespace TaskCollabration.Models
             }
             return lstadm;
         }
-
+        //Retrieve single record from a table
+        public AdminModel getData(string Id)
+        {
+            AdminModel admin = new AdminModel();
+            SqlCommand cmd = new SqlCommand("select * from Users where id='" + Id +
+            "'", con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    admin.Id = Convert.ToInt32(dr["Id"].ToString());
+                    admin.FirstName = dr["FirstName"].ToString();
+                    admin.LastName = dr["LastName"].ToString();
+                    admin.StreetAddress1 = dr["StreetAddress1"].ToString();
+                    admin.StreetAddress2 = dr["StreetAddress2"].ToString();
+                    admin.Type = dr["Type"].ToString();
+                    admin.MobileNumber = dr["MobileNumber"].ToString();
+                    admin.Email = dr["Email"].ToString();
+                    admin.Pincode = dr["Pincode"].ToString();
+                    admin.City = dr["City"].ToString();
+                    admin.UserRole = dr["UserRole"].ToString();
+                }
+            }
+            con.Close();
+            return admin;
+        }
         //Insert A record in table
 
         public bool insert(AdminModel model)
@@ -109,6 +138,35 @@ namespace TaskCollabration.Models
             }
             return false;
         }
+
+        //update a record
+
+       public bool update(AdminModel admin)
+        {
+            SqlCommand cmd = new SqlCommand("update Users set Firstname = @firstname, LastName = @lastname, StreetAddress1 = @streetaddress1, StreetAddress2 = @streetaddress2, Type = @type, MobileNumber = @mobilenumber, Email = @email, Pincode = @pincode, City = @city, Userrole = @userrole where Id = @id", con);
+
+            cmd.Parameters.AddWithValue("@firstname", admin.FirstName);
+            cmd.Parameters.AddWithValue("@lastname", admin.LastName);
+            cmd.Parameters.AddWithValue("@streetaddress1", admin.StreetAddress1);
+            cmd.Parameters.AddWithValue("@streetaddress2", admin.StreetAddress2);
+            cmd.Parameters.AddWithValue("@type", admin.Type);
+            cmd.Parameters.AddWithValue("@mobilenumber", admin.MobileNumber);
+            cmd.Parameters.AddWithValue("@email", admin.Email);
+            cmd.Parameters.AddWithValue("@pincode", admin.Pincode);
+            cmd.Parameters.AddWithValue("@city", admin.City);
+            cmd.Parameters.AddWithValue("@userrole", admin.UserRole);
+            cmd.Parameters.AddWithValue("@id", admin.Id);
+
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            if(i>=1)
+            {
+                return true;
+            }
+            return false;
+
+        }
+       
 
     }
 }
