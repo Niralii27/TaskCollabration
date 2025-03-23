@@ -20,6 +20,34 @@
     width: 250px;
     height: 100vh;
     transition: all 0.3s;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+}
+.d-flex.flex-column.flex-lg-row.min-vh-100 {
+    column-gap: 0;
+    margin-left: -15px; /* Pull content leftward */
+    margin-right: -25px;
+}
+
+/* Make main content start immediately after sidebar with minimal padding */
+.main-content {
+    padding-left: 0 !important; /* Remove left padding completely */
+    margin-left: 0 !important;
+}
+
+/* Adjust the sidebar width if needed */
+.sidebar {
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+}
+
+@media (max-width: 992px) {
+    /* Adjust spacing for mobile view */
+    .main-content {
+        padding-top: 10px !important;
+        padding-left: 5px !important;
+    }
 }
 
 @media (max-width: 991px) {

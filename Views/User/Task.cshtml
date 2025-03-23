@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_Navbar.cshtml";
 }
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -338,11 +337,42 @@
                 // Add active class to clicked button
                 this.classList.add('active');
 
-                // Add your filter logic here
+                // Get the filter value from the clicked button
                 const filter = this.getAttribute('data-filter');
+
+                // Get all task cards
+                const taskCards = document.querySelectorAll('.task-card');
+
+                // Loop through each task card and check its status
+                taskCards.forEach(card => {
+                    // Get the parent column element to hide/show
+                    const cardColumn = card.closest('.col-12');
+
+                    // Find the status text inside the card
+                    const statusText = card.querySelector('.text-muted').textContent.trim();
+
+                    // Show/hide cards based on filter
+                    if (filter === 'all') {
+                        // Show all cards
+                        cardColumn.style.display = 'block';
+                    } else if (filter === 'pending' && statusText === 'Pending') {
+                        cardColumn.style.display = 'block';
+                    } else if (filter === 'in-progress' && statusText === 'In Progress') {
+                        cardColumn.style.display = 'block';
+                    } else if (filter === 'completed' && statusText === 'Completed') {
+                        cardColumn.style.display = 'block';
+                    } else {
+                        // Hide cards that don't match the filter
+                        cardColumn.style.display = 'none';
+                    }
+                });
+
                 console.log('Filtering by:', filter);
             });
         });
+
+        // Initialize - show all tasks when page loads
+        document.querySelector('.filter-button[data-filter="all"]').click();
     </script>
 </body>
 </html>
