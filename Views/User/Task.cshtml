@@ -269,62 +269,96 @@
     <!-- Add Task Modal -->
     <div class="modal fade" id="newTaskModal" tabindex="-1" aria-labelledby="newTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <!-- Centered and large modal -->
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="newTaskModalLabel">Create New Task</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form id="newTaskForm">
+                <form asp-action="Task" asp-controller="User" id="newTaskForm" method="post">
+                    <div class="modal-body">
                         <!-- Task Title -->
                         <div class="mb-3">
                             <label class="form-label">Task Title</label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" class="form-control" asp-for="Title">
+                            <span asp-validation-for="Title" class="text-danger"></span>
                         </div>
                         <!-- Description -->
                         <div class="mb-3">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea class="form-control" rows="3" asp-for="Description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
-                        <!-- Assignee -->
+                        <!-- Status -->
                         <div class="mb-3">
-                            <label class="form-label">Assignee</label>
-                            <select class="form-select">
-                                <option selected>Select team member</option>
+                            <label class="form-label">Status</label>
+                            <select class="form-select" asp-for="Status">
+                                <option value="Pending" selected>Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
                             </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
                         </div>
                         <!-- Due Date & Priority -->
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Due Date</label>
-                                    <input type="date" class="form-control">
+                                    <input type="date" class="form-control" asp-for="Date">
+                                    <span asp-validation-for="Date" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Priority</label>
-                                    <select class="form-select">
-                                        <option>Low</option>
-                                        <option>Medium</option>
-                                        <option>High</option>
+                                    <select class="form-select" asp-for="Priority">
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
                                     </select>
+                                    <span asp-validation-for="Priority" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="createTask()">Create Task</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Task</button>
+                    </div>
+                </form>
+
+                @if (TempData["msg"] != null)
+                {
+                    <script>
+                        alert('@TempData["msg"].ToString()');
+                        window.location.href = "@Url.Action("Task","User")";
+                    </script>
+                }
             </div>
         </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Add client validation
+            $("#newTaskForm").validate({
+                submitHandler: function (form) {
+                    // If validation passes, submit the form
+                    form.submit();
+                }
+            });
 
+            // Prevent modal from closing on submit if validation fails
+            $('#newTaskForm').on('submit', function (event) {
+                if (!$(this).valid()) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        });
+    </script>
     <script>
         // Filter buttons functionality
         document.querySelectorAll('.filter-button').forEach(button => {
