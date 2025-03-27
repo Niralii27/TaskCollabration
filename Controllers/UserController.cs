@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 using TaskCollabration.Models;
 
 namespace TaskCollabration.Controllers
@@ -13,8 +15,18 @@ namespace TaskCollabration.Controllers
 
         public IActionResult Task()
         {
-            UserModel usermodel = new UserModel(); // Ensure it's properly instantiated
-            List<UserModel> users = usermodel.getdata(); // Fetch user tasks
+            int? userId = HttpContext.Session.GetInt32("UserID"); // Session से ID प्राप्त करें
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Auth"); // अगर सेशन में ID नहीं है, तो लॉगिन पर भेजें
+            }
+
+            ViewBag.UserID = userId;
+
+            UserModel usermodel = new UserModel(); 
+
+            List<UserModel> users = usermodel.getdata(userId.Value); // Fetch user tasks
 
             var viewModel = new UserModel
             {
@@ -27,6 +39,15 @@ namespace TaskCollabration.Controllers
         [HttpPost]
         public IActionResult Task(UserModel user1)
         {
+            int? userId = HttpContext.Session.GetInt32("UserID"); 
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Auth"); 
+            }
+
+            user1.UserID = userId.Value;
+
             bool res;
             if(ModelState.IsValid)
             {

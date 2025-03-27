@@ -1,0 +1,278 @@
+﻿@model TaskCollabration.Models.TeamLeaderModel
+@{
+    ViewData["Title"] = "Team Project";
+    Layout = "~/Views/Shared/_TNavbar.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Hub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <!-- Project Header -->
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <div class="d-flex align-items-center">
+                    <h1 class="mb-0 me-3">E-Commerce Platform Redesign</h1>
+                    <span class="status-badge bg-success text-white">Active</span>
+                </div>
+                <div class="mt-2 d-flex align-items-center">
+                    <div class="avatar-stack me-3">
+                        <img src="/api/placeholder/35/35" alt="Team member" class="avatar">
+                        <img src="/api/placeholder/35/35" alt="Team member" class="avatar">
+                        <img src="/api/placeholder/35/35" alt="Team member" class="avatar">
+                        <span class="avatar d-flex align-items-center justify-content-center bg-light">+3</span>
+                    </div>
+                    <span class="text-muted">Due Mar 15, 2025</span>
+                </div>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-outline-primary me-2" onclick="toggleEditMode()">
+                    <i class="bi bi-pencil"></i> Edit
+                </button>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newTaskModal">
+                    <i class="bi bi-plus"></i> Add Task
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Overview Card -->
+                <div class="custom-card card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">Project Overview</h5>
+                            <button class="btn btn-sm btn-outline-secondary" id="editDescription">Edit</button>
+                        </div>
+                        <p id="projectDescription" class="mb-4">
+                            Complete redesign of our e-commerce platform focusing on improved user experience,
+                            mobile responsiveness, and conversion optimization. Including new checkout flow and
+                            product recommendation engine.
+                        </p>
+                        <div class="progress mb-2">
+                            <div class="progress-bar" role="progressbar" style="width: 65%" aria-valuenow="65"
+                                 aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">Progress</small>
+                            <small class="text-muted">65%</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="custom-card card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Project Timeline</h5>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <h6>Requirements Analysis</h6>
+                                    <span class="status-badge bg-success text-white">Completed</span>
+                                </div>
+                                <p class="text-muted">Stakeholder interviews and requirement documentation completed</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <h6>Design Phase</h6>
+                                    <span class="status-badge bg-primary text-white">In Progress</span>
+                                </div>
+                                <p class="text-muted">UI/UX design and prototyping</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <h6>Development</h6>
+                                    <span class="status-badge bg-secondary text-white">Upcoming</span>
+                                </div>
+                                <p class="text-muted">Frontend and backend implementation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tasks -->
+                <div class="custom-card card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="card-title mb-0">Active Tasks</h5>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                        id="taskFilterDropdown" data-bs-toggle="dropdown">
+                                    Filter
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">All Tasks</a></li>
+                                    <li><a class="dropdown-item" href="#">My Tasks</a></li>
+                                    <li><a class="dropdown-item" href="#">Completed</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tasks-container">
+                            <!-- Task items will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Files -->
+                <div class="custom-card card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="card-title mb-0">Project Files</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="uploadFile()">
+                                Upload File
+                            </button>
+                        </div>
+                        <div class="files-grid" id="filesContainer">
+                            <!-- Files will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Team Members -->
+                <div class="custom-card card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="card-title mb-0">Team Members</h5>
+                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                    data-bs-target="#addMemberModal">
+                                Add Member
+                            </button>
+                        </div>
+                        <div id="teamMembers">
+                            <!-- Team members will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="custom-card card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Recent Activity</h5>
+                        <div id="activityFeed">
+                            <!-- Activity items will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comments -->
+                <div class="custom-card card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Discussion</h5>
+                        <div id="comments" class="mb-4">
+                            <!-- Comments will be dynamically added here -->
+                        </div>
+                        <div class="comment-box p-3">
+                            <textarea class="form-control border-0 bg-transparent" rows="2"
+                                      placeholder="Write a comment..."></textarea>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <div>
+                                    <button class="btn btn-sm btn-link text-muted">
+                                        <i class="bi bi-paperclip"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-link text-muted">
+                                        <i class="bi bi-emoji-smile"></i>
+                                    </button>
+                                </div>
+                                <button class="btn btn-sm btn-primary">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div class="modal fade" id="newTaskModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newTaskForm">
+                        <div class="mb-3">
+                            <label class="form-label">Task Title</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Assignee</label>
+                            <select class="form-select">
+                                <option selected>Select team member</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Due Date</label>
+                                    <input type="date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Priority</label>
+                                    <select class="form-select">
+                                        <option>Low</option>
+                                        <option>Medium</option>
+                                        <option>High</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="createTask()">Create Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample data
+        const tasks = [
+            {
+                id: 1,
+                title: 'Design User Flow Diagrams',
+                description: 'Create comprehensive user flow diagrams for new checkout process',
+                assignee: 'Sarah Chen',
+                dueDate: '2025-02-28',
+                priority: 'High',
+                status: 'In Progress',
+                progress: 60
+            },
+            {
+                id: 2,
+                title: 'Mobile Navigation Implementation',
+                description: 'Implement responsive navigation menu for mobile devices',
+                assignee: 'Mike Johnson',
+                dueDate: '2025-03-05',
+                priority: 'Medium',
+                status: 'To Do',
+                progress: 0
+            }
+        ];
+
+    </script>
+</body>
+</html>

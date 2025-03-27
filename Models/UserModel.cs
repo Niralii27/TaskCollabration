@@ -1,11 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
+
 
 namespace TaskCollabration.Models
 {
     public class UserModel
     {
+
         SqlConnection con = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Task;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
         [Key]
@@ -26,32 +29,43 @@ namespace TaskCollabration.Models
 
         public DateTime Date { get; set; }
 
+        public int UserID { get; set; }  // ✅ यह प्रॉपर्टी Add करें
 
         public List<UserModel> UsersList { get; set; } = new List<UserModel>(); // Initialize by default
 
 
         //Retrieve all Records From a Table
 
-        public List<UserModel> getdata()
+        public List<UserModel> getdata(int userId)
         {
             List<UserModel> lstuser = new List<UserModel>();
-            SqlDataAdapter da = new SqlDataAdapter("select * from PersonalTask", con);
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM PersonalTask WHERE UserId = @UserID", con);
+            cmd.Parameters.AddWithValue("@UserID", userId); // ✅ अब Parameter Set होगा
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataSet ds = new DataSet();
+
+            con.Open(); 
             da.Fill(ds);
-            foreach(DataRow dr in ds.Tables[0].Rows)
+            con.Close(); 
+
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 lstuser.Add(new UserModel
                 {
-                    Id = Convert.ToInt32(dr["ID"].ToString()),
+                    Id = Convert.ToInt32(dr["ID"]),
                     Title = dr["Title"].ToString(),
                     Description = dr["Description"].ToString(),
                     Priority = dr["Priority"].ToString(),
                     Status = dr["Status"].ToString(),
-                    Date = Convert.ToDateTime(dr["Date"].ToString())
-                }) ;
+                    Date = Convert.ToDateTime(dr["Date"])
+                });
             }
+
             return lstuser;
         }
+
 
         //Retrieve Single Record From A PersonalTask Table
 
@@ -81,8 +95,11 @@ namespace TaskCollabration.Models
 
         public bool insert(UserModel model)
         {
-            SqlCommand cmd = new SqlCommand("Insert into PersonalTask values (@title, @description, @status, @priority, @date)", con);
+            
 
+            SqlCommand cmd = new SqlCommand("Insert into PersonalTask values (@UserId, @title, @description, @status, @priority, @date)", con);
+
+            cmd.Parameters.AddWithValue("@UserID", model.UserID);  // ✅ अब `UserID` Model से आएगा
             cmd.Parameters.AddWithValue("@title", model.Title);
             cmd.Parameters.AddWithValue("@description", model.Description);
             cmd.Parameters.AddWithValue("status", model.Status);

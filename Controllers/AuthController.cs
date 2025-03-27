@@ -11,9 +11,6 @@ namespace TaskCollabration.Controllers
 
         private readonly string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Task;Integrated Security=True;";
 
-
-
-
         public IActionResult Login()
         {
             return View();
@@ -34,7 +31,7 @@ namespace TaskCollabration.Controllers
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
-                string query = "SELECT Type FROM Users WHERE Email = @Email AND Password = @Password";
+                string query = "SELECT * FROM Users WHERE Email = @Email AND Password = @Password";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@Email", model.Email);
                 cmd.Parameters.AddWithValue("@Password", model.Password); // 🔹 Hash passwords in real applications
@@ -42,7 +39,13 @@ namespace TaskCollabration.Controllers
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
+                    int userId = Convert.ToInt32(reader["Id"]);
+
                     string type = reader["Type"].ToString();
+
+                    HttpContext.Session.SetInt32("UserID", userId);
+                    HttpContext.Session.SetString("Type", type);
+                    HttpContext.Session.SetString("Email", model.Email);
 
                     HttpContext.Session.SetString("Type", type);
 

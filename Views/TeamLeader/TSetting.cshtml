@@ -1,0 +1,226 @@
+﻿@model TaskCollabration.Models.TeamLeaderModel
+@{
+    ViewData["Title"] = "Setting";
+    Layout = "~/Views/Shared/_TNavbar.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Task Manager</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <style>
+        .nav-pills1 {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.5rem;
+            border-radius: 16px;
+            display: inline-flex;
+            gap: 0.5rem;
+        }
+
+            .nav-pills1 .nav-link {
+                color: #475569;
+                padding: 0.75rem 1.5rem;
+                border-radius: 12px;
+                transition: all 0.3s;
+                font-weight: 500;
+            }
+
+                .nav-pills1 .nav-link:hover {
+                    background: rgba(255, 255, 255, 0.8);
+                }
+
+                .nav-pills1 .nav-link.active {
+                    background: linear-gradient(45deg, #4f46e5, #06b6d4);
+                    color: white;
+                    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+                }
+    </style>
+</head>
+<body>
+    <div class="container py-5 settings-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Account Settings</h2>
+            <button class="btn btn-gradient">
+                <i class="fas fa-save me-2"></i>Save Changes
+            </button>
+        </div>
+
+        <ul class="nav nav-pills1 mb-4" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="pill" href="#profile">
+                    <i class="fas fa-user me-2"></i>Profile
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#notifications">
+                    <i class="fas fa-bell me-2"></i>Notifications
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#security">
+                    <i class="fas fa-shield-alt me-2"></i>Security
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#integrations">
+                    <i class="fas fa-plug me-2"></i>Integrations
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- Profile Tab -->
+            <div class="tab-pane fade show active" id="profile">
+                <div class="glass-card p-4">
+                    <div class="row">
+                        <div class="col-md-3 text-center mb-4 mb-md-0">
+                            <div class="profile-upload mx-auto">
+                                <img src="/api/placeholder/140/140" alt="Profile" class="img-fluid">
+                                <div class="overlay d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-camera fa-2x text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="floating-label">
+                                        <label>First Name</label>
+                                        <input type="text" class="form-control" value="John">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="floating-label">
+                                        <label>Last Name</label>
+                                        <input type="text" class="form-control" value="Doe">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="floating-label">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" value="john@example.com">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="floating-label">
+                                        <label>Role</label>
+                                        <select class="form-select">
+                                            <option>Project Manager</option>
+                                            <option>Developer</option>
+                                            <option>Designer</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="floating-label">
+                                        <label>Time Zone</label>
+                                        <select class="form-select">
+                                            <option>UTC-8 (Pacific Time)</option>
+                                            <option>UTC-5 (Eastern Time)</option>
+                                            <option>UTC+0 (London)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications Tab -->
+            <div class="tab-pane fade" id="notifications">
+                <div class="glass-card p-4">
+                    <div class="notification-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">Push Notifications</h6>
+                            <p class="text-muted mb-0">Get instant updates about your tasks</p>
+                        </div>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                    <div class="notification-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">Email Digest</h6>
+                            <p class="text-muted mb-0">Weekly summary of activities</p>
+                        </div>
+                        <div class="toggle-switch"></div>
+                    </div>
+                    <div class="notification-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">Desktop Alerts</h6>
+                            <p class="text-muted mb-0">Get notifications on your desktop</p>
+                        </div>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Tab -->
+            <div class="tab-pane fade" id="security">
+                <div class="glass-card p-4">
+                    <h5 class="section-title">Password Update</h5>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="floating-label">
+                                <label>Current Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="floating-label">
+                                <label>New Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notification-item d-flex justify-content-between align-items-center mt-4">
+                        <div>
+                            <h6 class="mb-1">Two-Factor Authentication</h6>
+                            <p class="text-muted mb-0">Add an extra layer of security</p>
+                        </div>
+                        <div class="toggle-switch"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integrations Tab -->
+            <div class="tab-pane fade" id="integrations">
+                <div class="glass-card p-4">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="integration-card">
+                                <img src="/api/placeholder/48/48" alt="Slack" class="mb-3">
+                                <h6>Slack</h6>
+                                <p class="text-muted mb-3">Connect with your workspace</p>
+                                <button class="btn btn-gradient w-100">Connect</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="integration-card">
+                                <img src="/api/placeholder/48/48" alt="GitHub" class="mb-3">
+                                <h6>GitHub</h6>
+                                <p class="text-muted mb-3">Link your repositories</p>
+                                <button class="btn btn-gradient w-100">Connect</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="integration-card">
+                                <img src="/api/placeholder/48/48" alt="Google" class="mb-3">
+                                <h6>Google Drive</h6>
+                                <p class="text-muted mb-3">Access your files</p>
+                                <button class="btn btn-gradient w-100">Connect</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
