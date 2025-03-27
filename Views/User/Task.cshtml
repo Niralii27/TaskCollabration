@@ -107,95 +107,81 @@
             </div>
         </div>
 
-        <div class="row g-4">
-            <!-- Task Card 1 -->
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card task-card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+
+<div class="row g-4">
+            @foreach (var task in Model.UsersList)
+    {
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card task-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        @if (task.Priority == "High")
+                        {
                             <span class="badge priority-high px-3 py-2">High Priority</span>
-                            <div class="dropdown">
-                                <button class="btn btn-link" type="button" data-bs-toggle="dropdown">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editTaskModal" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <h5 class="card-title">Website Redesign</h5>
-                        <p class="card-text text-muted">Update the company website with new branding and responsive design</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div>
-                                <span class="task-status status-in-progress"></span>
-                                <span class="text-muted">In Progress</span>
-                            </div>
-                            <span class="text-muted"><i class="far fa-calendar me-1"></i>Due Tomorrow</span>
+                        }
+                        else if (task.Priority == "Medium")
+                        {
+                            <span class="badge priority-medium px-3 py-2">Medium Priority</span>
+                        }
+                        else if (task.Priority == "Low")
+                        {
+                            <span class="badge priority-low px-3 py-2">Low Priority</span>
+                        }
+                        <div class="dropdown">
+                            <button class="btn btn-link" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editTaskModal" href="#" data-id="@task.Id"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("DeleteTask", "User", new { id = task.Id })"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Task Card 2 -->
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card task-card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="badge priority-medium px-3 py-2">Medium Priority</span>
-                            <div class="dropdown">
-                                <button class="btn btn-link" type="button" data-bs-toggle="dropdown">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editTaskModal" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <h5 class="card-title">Content Creation</h5>
-                        <p class="card-text text-muted">Write blog posts for the upcoming product launch</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div>
+                    <h5 class="card-title">@task.Title</h5>
+                    <p class="card-text text-muted">@task.Description</p>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            @if (task.Status == "Pending")
+                            {
                                 <span class="task-status status-pending"></span>
                                 <span class="text-muted">Pending</span>
-                            </div>
-                            <span class="text-muted"><i class="far fa-calendar me-1"></i>Next Week</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Task Card 3 -->
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card task-card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="badge priority-low px-3 py-2">Low Priority</span>
-                            <div class="dropdown">
-                                <button class="btn btn-link" type="button" data-bs-toggle="dropdown">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editTaskModal" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <h5 class="card-title">Team Meeting</h5>
-                        <p class="card-text text-muted">Prepare presentation for weekly team sync</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div>
+                            }
+                            else if (task.Status == "In Progress")
+                            {
+                                <span class="task-status status-in-progress"></span>
+                                <span class="text-muted">In Progress</span>
+                            }
+                            else if (task.Status == "Completed")
+                            {
                                 <span class="task-status status-completed"></span>
                                 <span class="text-muted">Completed</span>
-                            </div>
-                            <span class="text-muted"><i class="far fa-calendar me-1"></i>Today</span>
+                            }
                         </div>
-                    </div>
+                                <span class="text-muted"><i class="far fa-calendar me-1"></i>@task.Date.ToString("dddd, dd MMM yyyy")</span>
+                            </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
+</div>
+
+@functions {
+    public string FormatDueDate(DateTime date)
+    {
+        var today = DateTime.Today;
+        var tomorrow = today.AddDays(1);
+        var nextWeekStart = today.AddDays(7 - (int)today.DayOfWeek);
+        
+        if (date.Date == today)
+            return "Today";
+        else if (date.Date == tomorrow)
+            return "Tomorrow";
+        else if (date.Date < nextWeekStart)
+            return date.ToString("dddd"); // Day name
+        else
+            return "Next Week";
+    }
+}
 
     <!-- Edit button model -->
 
@@ -360,53 +346,43 @@
         });
     </script>
     <script>
-        // Filter buttons functionality
-        document.querySelectorAll('.filter-button').forEach(button => {
-            button.addEventListener('click', function () {
-                // Remove active class from all buttons
-                document.querySelectorAll('.filter-button').forEach(btn => {
-                    btn.classList.remove('active');
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll('.filter-button').forEach(button => {
+                    button.addEventListener('click', function () {
+                        document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+
+                        const filter = this.getAttribute('data-filter'); // Get the filter (pending, in-progress, completed)
+                        const taskCards = document.querySelectorAll('.task-card'); // Select all task cards
+
+                        taskCards.forEach(card => {
+                            const cardColumn = card.closest('.col-12, .col-md-6, .col-lg-4'); // Ensure full column hides
+                            const statusElement = card.querySelector('.task-status + .text-muted'); // Target correct status
+
+                            if (!statusElement) return; // Skip if no status found
+
+                            const statusText = statusElement.innerText.trim().toLowerCase(); // Convert status text to lowercase
+
+                            // Show/Hide Cards based on Filter
+                            if (filter === 'all') {
+                                cardColumn.style.display = 'block';
+                            } else if (filter === 'pending' && statusText.includes('pending')) {
+                                cardColumn.style.display = 'block';
+                            } else if (filter === 'in-progress' && statusText.includes('in progress')) {
+                                cardColumn.style.display = 'block';
+                            } else if (filter === 'completed' && statusText.includes('completed')) {
+                                cardColumn.style.display = 'block';
+                            } else {
+                                cardColumn.style.display = 'none';
+                            }
+                        });
+                    });
                 });
 
-                // Add active class to clicked button
-                this.classList.add('active');
-
-                // Get the filter value from the clicked button
-                const filter = this.getAttribute('data-filter');
-
-                // Get all task cards
-                const taskCards = document.querySelectorAll('.task-card');
-
-                // Loop through each task card and check its status
-                taskCards.forEach(card => {
-                    // Get the parent column element to hide/show
-                    const cardColumn = card.closest('.col-12');
-
-                    // Find the status text inside the card
-                    const statusText = card.querySelector('.text-muted').textContent.trim();
-
-                    // Show/hide cards based on filter
-                    if (filter === 'all') {
-                        // Show all cards
-                        cardColumn.style.display = 'block';
-                    } else if (filter === 'pending' && statusText === 'Pending') {
-                        cardColumn.style.display = 'block';
-                    } else if (filter === 'in-progress' && statusText === 'In Progress') {
-                        cardColumn.style.display = 'block';
-                    } else if (filter === 'completed' && statusText === 'Completed') {
-                        cardColumn.style.display = 'block';
-                    } else {
-                        // Hide cards that don't match the filter
-                        cardColumn.style.display = 'none';
-                    }
-                });
-
-                console.log('Filtering by:', filter);
+                // Initialize: Show all tasks by default
+                document.querySelector('.filter-button[data-filter="all"]').click();
             });
-        });
 
-        // Initialize - show all tasks when page loads
-        document.querySelector('.filter-button[data-filter="all"]').click();
     </script>
 </body>
 </html>

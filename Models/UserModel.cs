@@ -26,6 +26,57 @@ namespace TaskCollabration.Models
 
         public DateTime Date { get; set; }
 
+
+        public List<UserModel> UsersList { get; set; } = new List<UserModel>(); // Initialize by default
+
+
+        //Retrieve all Records From a Table
+
+        public List<UserModel> getdata()
+        {
+            List<UserModel> lstuser = new List<UserModel>();
+            SqlDataAdapter da = new SqlDataAdapter("select * from PersonalTask", con);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            foreach(DataRow dr in ds.Tables[0].Rows)
+            {
+                lstuser.Add(new UserModel
+                {
+                    Id = Convert.ToInt32(dr["ID"].ToString()),
+                    Title = dr["Title"].ToString(),
+                    Description = dr["Description"].ToString(),
+                    Priority = dr["Priority"].ToString(),
+                    Status = dr["Status"].ToString(),
+                    Date = Convert.ToDateTime(dr["Date"].ToString())
+                }) ;
+            }
+            return lstuser;
+        }
+
+        //Retrieve Single Record From A PersonalTask Table
+
+        public UserModel getData(string Id)
+        {
+            UserModel usr = new UserModel();
+            SqlCommand cmd = new SqlCommand("select * from PersonalTask where id ='" + Id +
+             "'", con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            if(dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    usr.Id = Convert.ToInt32(dr["ID"].ToString());
+                    usr.Title = dr["Title"].ToString();
+                    usr.Description = dr["Description"].ToString();
+                    usr.Priority = dr["Priority"].ToString();
+                    usr.Status = dr["Status"].ToString();
+                }
+            }
+            con.Close();
+            return usr;
+        }
+
         //Insert A Record in a PersonalTask Table
 
         public bool insert(UserModel model)

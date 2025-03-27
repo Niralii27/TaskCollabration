@@ -13,8 +13,17 @@ namespace TaskCollabration.Controllers
 
         public IActionResult Task()
         {
-            return View();
+            UserModel usermodel = new UserModel(); // Ensure it's properly instantiated
+            List<UserModel> users = usermodel.getdata(); // Fetch user tasks
+
+            var viewModel = new UserModel
+            {
+                UsersList = users ?? new List<UserModel>() // Avoid null
+            };
+
+            return View(viewModel);
         }
+
         [HttpPost]
         public IActionResult Task(UserModel user1)
         {
@@ -26,6 +35,8 @@ namespace TaskCollabration.Controllers
                 if(res)
                 {
                     TempData["msg"] = "Task Added Successfully!!!!!";
+                    return RedirectToAction("Task"); // Redirect on success
+
                 }
                 else
                 {
