@@ -1,0 +1,38 @@
+CREATE TABLE employees (
+    employee_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(50),
+    salary NUMBER,
+    department_id NUMBER
+);
+
+CREATE TABLE departments (
+    department_id NUMBER PRIMARY KEY,
+    department_name VARCHAR2(50),
+    location_id NUMBER
+);
+
+CREATE TABLE locations (
+    location_id NUMBER PRIMARY KEY,
+    city VARCHAR2(50)
+);
+
+-- Inserting employees
+INSERT INTO employees VALUES (101, 'John', 6000, 10);
+INSERT INTO employees VALUES (102, 'Alice', 4500, 20);
+INSERT INTO employees VALUES (103, 'Bob', 7500, 30);
+INSERT INTO employees VALUES (104, 'B', 6500, 40);
+INSERT INTO employees VALUES (105, 'Arjun', 5000, 10);
+INSERT INTO employees VALUES (106, 'Karan', 4000, null);
+
+
+-- Inserting departments
+INSERT INTO departments VALUES (10, 'HR', 100);
+INSERT INTO departments VALUES (20, 'Sales', 1700);
+INSERT INTO departments VALUES (30, 'IT', 1700);
+INSERT INTO departments VALUES (40, 'Sales', 1800);
+INSERT INTO departments VALUES (50, 'Marketing', 1500);
+
+-- Inserting locations
+INSERT INTO locations VALUES (100, 'New York');
+INSERT INTO locations VALUES (1700, 'Seattle');
+INSERT INTO locations VALUES (9700, 'Chicago');

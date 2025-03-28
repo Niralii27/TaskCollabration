@@ -103,10 +103,30 @@
                     <button class="btn filter-button" data-filter="pending">Pending</button>
                     <button class="btn filter-button" data-filter="in-progress">In Progress</button>
                     <button class="btn filter-button" data-filter="completed">Completed</button>
+
+                    <button class="btn btn-primary" id="openTaskModal">Open Task Modal</button>
+
+<!-- Modal Container -->
+<div id="modalContainer"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#openTaskModal").click(function () {
+            $.get("/TeamLeader/LoadTaskModal", function (data) {
+                $("#modalContainer").html(data);
+                $("#addTaskModal").modal("show");
+            });
+        });
+    });
+</script>
+
+
                 </div>
             </div>
         </div>
 
+        
 
         <div class="row g-4">
             @foreach (var task in Model.UsersList)
@@ -260,7 +280,7 @@
                         <h5 class="modal-title" id="newTaskModalLabel">Create New Task</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form asp-action="TTask" asp-controller="TeamLeader" id="newTaskForm" method="post">
+                    <form asp-action="TTask" asp-controller="TeamLeader" id="newTaskForm" method="post" enctype="multipart/form-data">
                         <div class="modal-body">
                             <!-- Task Title -->
                             <div class="mb-3">
@@ -299,9 +319,10 @@
                                     <div class="file-upload">
                                         <i class="fas fa-cloud-upload-alt fa-2x text-primary"></i>
                                         <p class="mb-0 text-muted">Click to upload or drag & drop</p>
-                                        <input type="file" class="form-control mt-2" id="fileUpload">
+                                        <input type="file" name="formfile" class="form-control mt-2" id="FilePath" asp-for="FilePath">
                                     </div>
                                 </div>
+                                <!-- Priority -->
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Priority</label>

@@ -29,7 +29,10 @@ namespace TaskCollabration.Models
 
         public DateTime Date { get; set; }
 
-        public int UserID { get; set; }  // ✅ यह प्रॉपर्टी Add करें
+        public String FilePath { get; set; }
+        public int UserID { get; set; }  
+
+
 
         public List<UserModel> UsersList { get; set; } = new List<UserModel>(); // Initialize by default
 
@@ -41,7 +44,7 @@ namespace TaskCollabration.Models
             List<UserModel> lstuser = new List<UserModel>();
 
             SqlCommand cmd = new SqlCommand("SELECT * FROM PersonalTask WHERE UserId = @UserID", con);
-            cmd.Parameters.AddWithValue("@UserID", userId); // ✅ अब Parameter Set होगा
+            cmd.Parameters.AddWithValue("@UserID", userId); 
 
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataSet ds = new DataSet();
@@ -59,7 +62,7 @@ namespace TaskCollabration.Models
                     Description = dr["Description"].ToString(),
                     Priority = dr["Priority"].ToString(),
                     Status = dr["Status"].ToString(),
-                    Date = Convert.ToDateTime(dr["Date"])
+                    Date = Convert.ToDateTime(dr["Date"]),
                 });
             }
 
@@ -97,7 +100,7 @@ namespace TaskCollabration.Models
         {
             
 
-            SqlCommand cmd = new SqlCommand("Insert into PersonalTask values (@UserId, @title, @description, @status, @priority, @date)", con);
+            SqlCommand cmd = new SqlCommand("Insert into PersonalTask values (@UserId, @title, @description, @status, @priority, @date, @filepath)", con);
 
             cmd.Parameters.AddWithValue("@UserID", model.UserID);  // ✅ अब `UserID` Model से आएगा
             cmd.Parameters.AddWithValue("@title", model.Title);
@@ -105,6 +108,7 @@ namespace TaskCollabration.Models
             cmd.Parameters.AddWithValue("status", model.Status);
             cmd.Parameters.AddWithValue("priority", model.Priority);
             cmd.Parameters.AddWithValue("date", model.Date);
+            cmd.Parameters.AddWithValue("filepath", model.FilePath);
 
             con.Open();
             int i = cmd.ExecuteNonQuery();
