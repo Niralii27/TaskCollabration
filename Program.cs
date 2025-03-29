@@ -29,6 +29,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=User}/{action=Task}/{id?}");
+    pattern: "{controller=TeamLeader}/{action=AddUserTask}/{id?}");
 
 app.Run();

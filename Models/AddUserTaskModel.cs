@@ -29,28 +29,34 @@ namespace TaskCollabration.Models
         public DateTime Date { get; set; }
         [Required(ErrorMessage = "Please Select a User")]
         public string UserName { get; set; }
-        public int UserID { get; set; }
-        public string FilePath { get; set; }
+        public int UserId { get; set; }
+        public string? FilePath { get; set; } 
+
         public string FirstName { get; set; }
+        public List<string> SelectedUsers { get; set; } // Ensure this is a List
+
+        public List<AddUserTaskModel> UsersList { get; set; } = new List<AddUserTaskModel>(); // Initialize by default
+
 
         //Insert A Record in a PersonalTask Table
 
-        public bool insert(AddUserTaskModel model)
+        public bool insert(AddUserTaskModel model1)
         {
-            SqlCommand cmd = new SqlCommand("Insert into PersonalTask values (@UserID, @title, @description, @status, @priority, @date, @filepath, @username)", con);
+            SqlCommand cmd = new SqlCommand("insert into UsersTask values(@title, @description, @status, @priority, @date, @filePath, @firstname, @userid)", con);
 
-            cmd.Parameters.AddWithValue("@UserID", model.UserID);
-            cmd.Parameters.AddWithValue("@title", model.Title);
-            cmd.Parameters.AddWithValue("@description", model.Description);
-            cmd.Parameters.AddWithValue("status", model.Status);
-            cmd.Parameters.AddWithValue("priority", model.Priority);
-            cmd.Parameters.AddWithValue("date", model.Date);
-            cmd.Parameters.AddWithValue("filepath", model.FilePath);
-            cmd.Parameters.AddWithValue("username", model.UserName);
+            cmd.Parameters.AddWithValue("@title", model1.Title);
+            cmd.Parameters.AddWithValue("@description", model1.Description);
+            cmd.Parameters.AddWithValue("@status", model1.Status);
+            cmd.Parameters.AddWithValue("@priority", model1.Priority);
+            cmd.Parameters.AddWithValue("@date", model1.Date);
+            cmd.Parameters.AddWithValue("@filePath", model1.FilePath);
+            cmd.Parameters.AddWithValue("@firstname", model1.FirstName);
+            cmd.Parameters.AddWithValue("@userid", model1.UserId);
+
 
             con.Open();
             int i = cmd.ExecuteNonQuery();
-            if (i >= 1)
+            if(i>=1)
             {
                 return true;
             }
@@ -59,7 +65,7 @@ namespace TaskCollabration.Models
 
         //Select Data from a Users Table
 
-       public List<AddUserTaskModel> getData()
+        public List<AddUserTaskModel> getData()
         {
             List<AddUserTaskModel> lstadm = new List<AddUserTaskModel>();
             SqlDataAdapter da = new SqlDataAdapter("select * from Users", con);
@@ -78,3 +84,4 @@ namespace TaskCollabration.Models
 
     }
 }
+

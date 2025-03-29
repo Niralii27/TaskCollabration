@@ -62,7 +62,7 @@ namespace TaskCollabration.Controllers
                     }
 
                     // Store the relative path in the database
-                    user1.FilePath = Path.Combine("uploads", fileName);
+                    user1.FilePath = Path.Combine(fileName);
                 }
 
                 // Continue with your existing insertion logic
