@@ -81,8 +81,8 @@
                 <!-- Users (Multi-select) -->
                 <div class="mb-3">
                     <label for="taskUsers" class="form-label" style="font-weight: bold; font-size: 16px;">Assign Users</label>
-                        <select class="form-select" name="SelectedUsers" id="taskUsers" multiple>
-                            style="height: auto; min-height: 120px; padding: 8px; font-size: 16px; background-color: #f8f9fa; color: #333; border: 1px solid #ced4da; border-radius: 5px;">
+                    <select class="form-select" asp-for="UserId" name="UserId" multiple>
+                        style="height: auto; min-height: 120px; padding: 8px; font-size: 16px; background-color: #f8f9fa; color: #333; border: 1px solid #ced4da; border-radius: 5px;">
 
                         @{
                             int index = 0; // Index tracker for alternate colors

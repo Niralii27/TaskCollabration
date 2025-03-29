@@ -29,8 +29,9 @@ namespace TaskCollabration.Models
         public DateTime Date { get; set; }
         [Required(ErrorMessage = "Please Select a User")]
         public string UserName { get; set; }
-        public int UserId { get; set; }
-        public string? FilePath { get; set; } 
+        public List<string> UserId { get; set; } // Change from string to List<string>
+
+        public string? FilePath { get; set; }
 
         public string FirstName { get; set; }
         public List<string> SelectedUsers { get; set; } // Ensure this is a List
@@ -42,26 +43,35 @@ namespace TaskCollabration.Models
 
         public bool insert(AddUserTaskModel model1)
         {
-            SqlCommand cmd = new SqlCommand("insert into UsersTask values(@title, @description, @status, @priority, @date, @filePath, @firstname, @userid)", con);
+            bool isInserted = false;
 
-            cmd.Parameters.AddWithValue("@title", model1.Title);
-            cmd.Parameters.AddWithValue("@description", model1.Description);
-            cmd.Parameters.AddWithValue("@status", model1.Status);
-            cmd.Parameters.AddWithValue("@priority", model1.Priority);
-            cmd.Parameters.AddWithValue("@date", model1.Date);
-            cmd.Parameters.AddWithValue("@filePath", model1.FilePath);
-            cmd.Parameters.AddWithValue("@firstname", model1.FirstName);
-            cmd.Parameters.AddWithValue("@userid", model1.UserId);
-
-
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-            if(i>=1)
+            if (model1.UserId != null && model1.UserId.Count > 0) // Check if list is not empty
             {
-                return true;
+                con.Open();
+                foreach (var id in model1.UserId)
+                {
+                    SqlCommand cmd = new SqlCommand("INSERT INTO UsersTask VALUES (@title, @description, @status, @priority, @date, @filePath, @firstname)", con);
+
+                    cmd.Parameters.AddWithValue("@title", model1.Title);
+                    cmd.Parameters.AddWithValue("@description", model1.Description);
+                    cmd.Parameters.AddWithValue("@status", model1.Status);
+                    cmd.Parameters.AddWithValue("@priority", model1.Priority);
+                    cmd.Parameters.AddWithValue("@date", model1.Date);
+                    cmd.Parameters.AddWithValue("@filePath", model1.FilePath);
+                    cmd.Parameters.AddWithValue("@firstname", id.Trim());
+
+                    int i = cmd.ExecuteNonQuery();
+                    if (i >= 1)
+                    {
+                        isInserted = true;
+                    }
+                }
+                con.Close();
             }
-            return false;
+
+            return isInserted;
         }
+
 
         //Select Data from a Users Table
 
