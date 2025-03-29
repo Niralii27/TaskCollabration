@@ -86,7 +86,6 @@ namespace TaskCollabration.Controllers
         }
         public IActionResult ListUser()
         {
-
             adminModel = new AdminModel();
             List<AdminModel> adminModels = adminModel.getData();
             return View(adminModels);

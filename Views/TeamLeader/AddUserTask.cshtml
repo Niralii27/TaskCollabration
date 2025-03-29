@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Task";
+    Layout = "~/Views/Shared/_Navbar.cshtml";
+
+}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="/TeamLeader/SaveTask">
+                <!-- Task Title -->
+                <div class="mb-3">
+                    <label for="taskTitle" class="form-label">Task Title</label>
+                    <input type="text" class="form-control" name="TaskTitle" id="taskTitle" placeholder="Enter task title" required>
+                </div>
+
+                <!-- Task Description -->
+                <div class="mb-3">
+                    <label for="taskDescription" class="form-label">Description</label>
+                    <textarea class="form-control" name="TaskDescription" id="taskDescription" rows="3" placeholder="Enter task description"></textarea>
+                </div>
+
+                <div class="row">
+                    <!-- Task Status -->
+                    <div class="col-md-6 mb-3">
+                        <label for="taskStatus" class="form-label">Status</label>
+                        <select class="form-select" name="TaskStatus" id="taskStatus">
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+
+                    <!-- Due Date -->
+                    <div class="col-md-6 mb-3">
+                        <label for="taskDueDate" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" name="TaskDueDate" id="taskDueDate">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- File Upload -->
+                    <div class="col-md-6 mb-3">
+                        <label for="taskFile" class="form-label">Upload File</label>
+                        <input type="file" class="form-control" name="TaskFile" id="taskFile">
+                    </div>
+
+                    <!-- Priority -->
+                    <div class="col-md-6 mb-3">
+                        <label for="taskPriority" class="form-label">Priority</label>
+                        <select class="form-select" name="TaskPriority" id="taskPriority">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Users (Multi-select) -->
+                <div class="mb-3">
+                    <label for="taskUsers" class="form-label" style="font-weight: bold; font-size: 16px;">Assign Users</label>
+                    <select class="form-select" name="SelectedUsers" id="taskUsers" multiple
+                            style="height: auto; min-height: 120px; padding: 8px; font-size: 16px; background-color: #f8f9fa; color: #333; border: 1px solid #ced4da; border-radius: 5px;">
+
+                        @{
+                            int index = 0; // Index tracker for alternate colors
+                        }
+
+                        @foreach (var item in Model)
+                        {
+                            // Alternative row color logic (Even -> White, Odd -> Light Grey)
+                            string bgColor = (index % 2 == 0) ? "white" : "#f0f0f0";
+
+                            <option value="@item.Id"
+                                style="padding: 10px; font-size: 16px; background-color: @bgColor; color: #333; border-bottom: 1px solid #ddd;">
+                                👤 @item.FirstName
+                            </option>
+
+                            index++; // Increment index
+                        }
+
+                    </select>
+                    <small class="text-muted" style="font-size: 14px;">Hold Ctrl to select multiple users</small>
+                </div>
+
+
+                <!-- Modal Footer (Buttons) -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

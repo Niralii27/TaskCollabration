@@ -104,22 +104,10 @@
                     <button class="btn filter-button" data-filter="in-progress">In Progress</button>
                     <button class="btn filter-button" data-filter="completed">Completed</button>
 
-                    <button class="btn btn-primary" id="openTaskModal">Open Task Modal</button>
+                    <button class="btn btn-primary">
+                        <a asp-action="AddUserTask" asp-controller="TeamLeader" target="_blank" class="text-white text-decoration-none">Open Task Modal</a>
+                    </button>
 
-<!-- Modal Container -->
-<div id="modalContainer"></div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#openTaskModal").click(function () {
-            $.get("/TeamLeader/LoadTaskModal", function (data) {
-                $("#modalContainer").html(data);
-                $("#addTaskModal").modal("show");
-            });
-        });
-    });
-</script>
 
 
                 </div>

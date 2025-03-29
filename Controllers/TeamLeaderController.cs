@@ -7,7 +7,7 @@ namespace TaskCollabration.Controllers
     public class TeamLeaderController : Controller
     {
         TeamLeaderModel teamLeadermodel = new TeamLeaderModel();
-        AddUserTaskModel addUserTaskModel = new AddUserTaskModel();
+        AddUserTaskModel addUserTaskModel= new AddUserTaskModel();
         public IActionResult THome()
         {
             return View();
@@ -103,17 +103,16 @@ namespace TaskCollabration.Controllers
             }
 
         }
-        public IActionResult LoadTaskModal()
-        {
-            return PartialView("~/Views/TeamLeader/_AddTaskModal.cshtml");
-        }
 
-        public IActionResult _AddTaskModal()
+
+        public IActionResult AddUserTask()
         {
             addUserTaskModel = new AddUserTaskModel();
-            List<AddUserTaskModel> adminModels = addUserTaskModel.getData();
-            return View(adminModels);
+            List<AddUserTaskModel> users = addUserTaskModel.getData();
+
+            return View(users);
         }
+
 
     }
 }

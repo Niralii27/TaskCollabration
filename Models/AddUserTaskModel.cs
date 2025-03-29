@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
+
 
 namespace TaskCollabration.Models
 {
@@ -29,7 +31,6 @@ namespace TaskCollabration.Models
         public string UserName { get; set; }
         public int UserID { get; set; }
         public string FilePath { get; set; }
-
         public string FirstName { get; set; }
 
         //Insert A Record in a PersonalTask Table
@@ -61,7 +62,7 @@ namespace TaskCollabration.Models
        public List<AddUserTaskModel> getData()
         {
             List<AddUserTaskModel> lstadm = new List<AddUserTaskModel>();
-            SqlDataAdapter da = new SqlDataAdapter("select * from Users",con);
+            SqlDataAdapter da = new SqlDataAdapter("select * from Users", con);
             DataSet ds = new DataSet();
             da.Fill(ds);
             foreach(DataRow dr in ds.Tables[0].Rows)
@@ -69,12 +70,11 @@ namespace TaskCollabration.Models
                 lstadm.Add(new AddUserTaskModel
                 {
                     Id = Convert.ToInt32(dr["Id"].ToString()),
-                    FirstName = dr["FirstName"].ToString()
+                    FirstName = dr["FirstName"].ToString(),
                 });
             }
             return lstadm;
-
         }
-     
+
     }
 }
