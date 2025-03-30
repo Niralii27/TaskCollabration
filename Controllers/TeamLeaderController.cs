@@ -138,7 +138,7 @@ namespace TaskCollabration.Controllers
                     }
 
                     // Save the file path to your model
-                    teamLeader.FilePath = "/uploads/" + fileName;
+                    teamLeader.FilePath = fileName;
                 }
 
                 teamLeadermodel = new TeamLeaderModel();
@@ -225,6 +225,7 @@ namespace TaskCollabration.Controllers
                     return View(user1);
                 }
             }
+        //Delete TeamLeader PersonalTask
 
         [HttpPost]
 
@@ -253,8 +254,91 @@ namespace TaskCollabration.Controllers
 
         public IActionResult UsersTask()
         {
+            addUserTaskModel = new AddUserTaskModel();
+
+            List<AddUserTaskModel> team = addUserTaskModel.getdata();
+
+            return View(team);
+        }
+
+        // Update Users Task From TeamLeader
+        [HttpPost]
+        public IActionResult EditUsersTask(AddUserTaskModel addUserTask, IFormFile formFile)
+        {
+            bool res;
+            if (!ModelState.IsValid)
+            {
+                // Handle file upload if file is provided
+                if (formFile != null && formFile.Length > 0)
+                {
+                    // Create uploads directory if it doesn't exist
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    // Use original filename
+                    string fileName = Path.GetFileName(formFile.FileName);
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+
+                    // Save the file
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        formFile.CopyTo(fileStream);
+                    }
+
+                    // Save the file path to your model
+                    addUserTask.FilePath = fileName;
+                }
+
+                addUserTaskModel = new AddUserTaskModel();
+                res = addUserTask.update1(addUserTask);
+                if (res)
+                {
+                    TempData["msg"] = "Updated Successfully";
+                    return RedirectToAction("UsersTask");
+                }
+                else
+                {
+                    TempData["msg"] = "Failed to UpdateData";
+                }
+            }
             return View();
         }
+        [HttpGet]
+        public IActionResult EditUsersTask(string id)
+        {
+            AddUserTaskModel addUserTaskmodel = addUserTaskModel.getData(id);
+            return View(addUserTaskmodel);
+        }
+
+        //Delete UsersTask From TeamLeader
+        [HttpPost]
+
+        public IActionResult DeleteUsersTask(AddUserTaskModel addUser)
+        {
+            bool res;
+            addUserTaskModel = new AddUserTaskModel();
+            res = addUserTaskModel.delete(addUser);
+            if (res)
+            {
+                TempData["msg"] = "Deleted Successfully";
+            }
+            else
+            {
+                TempData["msg"] = "Not Deleted , Something went wrong!!!!!";
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult DeleteUsersTask(string id)
+        {
+            AddUserTaskModel addUserTaskmodel = addUserTaskModel.getData(id);
+            return View(addUserTaskmodel);
+        }
+
     }
 
 }

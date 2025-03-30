@@ -115,12 +115,14 @@ namespace TaskCollabration.Models
         //Update a Task Record
         public bool update(TeamLeaderModel model)
         {
-            SqlCommand cmd = new SqlCommand("update PersonalTask set Title = @title, Description = @description, Status =  @status, Priority = @priority where Id = @id", con);
+            SqlCommand cmd = new SqlCommand("update PersonalTask set Title = @title, Description = @description, Status =  @status, Priority = @priority, Date = @date, FilePath = @filepath where Id = @id", con);
 
             cmd.Parameters.AddWithValue("@title", model.Title);
             cmd.Parameters.AddWithValue("@description", model.Description);
             cmd.Parameters.AddWithValue("@status", model.Status);
             cmd.Parameters.AddWithValue("@priority", model.Priority);
+            cmd.Parameters.AddWithValue("@date", model.Date);
+            cmd.Parameters.AddWithValue("@filepath", model.FilePath);
             cmd.Parameters.AddWithValue("@id", model.Id);
 
 

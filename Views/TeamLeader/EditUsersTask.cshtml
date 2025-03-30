@@ -1,4 +1,4 @@
-﻿@model TaskCollabration.Models.TeamLeaderModel
+﻿@model TaskCollabration.Models.AddUserTaskModel
 @{
     ViewData["Title"] = "Task";
     Layout = "~/Views/Shared/_TNavbar.cshtml";
@@ -7,21 +7,22 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="editTaskModalLabel"><i class="fas fa-tasks"></i> Delete Task</h5>
+            <h5 class="modal-title" id="editTaskModalLabel"><i class="fas fa-tasks"></i> Edit Task</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form asp-action="DeletePersonalTask" method="post" enctype="multipart/form-data">
+            <form asp-action="EditUsersTask" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
 
                 <!-- Project Name -->
                 <div class="mb-3">
-                    <label for="projectName" class="form-label">Project Name</label>
+                    <label for="projectName" asp-for="Title" class="form-label">Project Name</label>
                     <input type="text" class="form-control" id="projectName" name="Title" asp-for="Title">
                 </div>
 
                 <!-- Project Description -->
                 <div class="mb-3">
-                    <label for="projectDesc" class="form-label">Description</label>
+                    <label for="projectDesc" asp-for="Description" class="form-label">Description</label>
                     <textarea class="form-control" asp-for="Description" name="Description" id="projectDesc" rows="3">Update the company website with new branding and responsive design.</textarea>
                 </div>
 
@@ -45,7 +46,7 @@
                  </div>-->
                 <!-- Status -->
                 <div class="mb-3">
-                    <label class="form-label">Status</label>
+                    <label class="form-label" asp-for="Status">Status</label>
                     <select class="form-select" name="Status" asp-for="Status">
                         <option value="Pending" selected>Pending</option>
                         <option value="In Progress">In Progress</option>
@@ -56,14 +57,14 @@
                 <!--Due Date-->
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label class="form-label">Due Date</label>
+                        <label class="form-label" asp-for="Date">Due Date</label>
                         <input type="date" class="form-control" name="Date" asp-for="Date">
                         <span asp-validation-for="Date" class="text-danger"></span>
                     </div>
                 </div>
                 <!-- File Upload -->
                 <div class="mb-3">
-                    <label class="form-label">Upload File</label>
+                    <label class="form-label" asp-for="FilePath">Upload File</label>
                     <div class="file-upload">
                         <i class="fas fa-cloud-upload-alt fa-2x text-primary"></i>
                         <p class="mb-0 text-muted">Click to upload or drag & drop</p>
@@ -73,7 +74,7 @@
                 <!--Priority-->
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label class="form-label">Priority</label>
+                        <label class="form-label" asp-for="Priority">Priority</label>
                         <select class="form-select" name="Priority" asp-for="Priority">
                             <option value="Low">Low</option>
                             <option value="Medium">Medium</option>
@@ -85,14 +86,14 @@
                 <!-- Buttons -->
                 <div class="d-flex justify-content-end">
                     <button type="button" asp-action="TTask" asp-controller="TeamLeader" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" value="Update" class="btn btn-primary"><i class="fas fa-save"></i> Delete</button>
+                    <button type="submit" value="Update" class="btn btn-primary"><i class="fas fa-save"></i> Update</button>
                 </div>
             </form>
             @if (TempData["msg"] != null)
             {
                 <script>
                     alert('@TempData["msg"].ToString();');
-                    window.location.href = "@Url.Action("TTask","TeamLeader")";
+                    window.location.href = "@Url.Action("EditUsersTask","TeamLeader")";
                 </script>
             }
         </div>

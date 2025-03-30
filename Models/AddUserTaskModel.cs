@@ -92,6 +92,94 @@ namespace TaskCollabration.Models
             return lstadm;
         }
 
+        //Retrieve all Records From a Table
+
+        public List<AddUserTaskModel> getdata()
+        {
+            List<AddUserTaskModel> lstuser = new List<AddUserTaskModel>();
+            SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM UsersTask", con);
+            DataSet ds = new DataSet();
+
+            con.Open();
+            da.Fill(ds);
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                lstuser.Add(new AddUserTaskModel
+                {
+                    Id = Convert.ToInt32(dr["id"].ToString()),
+                    Title = dr["Title"].ToString(),
+                    Description = dr["Description"].ToString(),
+                    Priority = dr["Priority"].ToString(),
+                    Status = dr["Status"].ToString(),
+                    Date = Convert.ToDateTime(dr["Date"].ToString()),
+                    FilePath = dr["FilePath"].ToString()
+                });
+            }
+            return lstuser;
+        }
+
+        //Retrieve Single Record From A UsersTask Table
+
+        public AddUserTaskModel getData(string Id)
+        {
+            AddUserTaskModel team = new AddUserTaskModel();
+            SqlCommand cmd = new SqlCommand("select * from UsersTask where id ='" + Id +
+             "'", con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    team.Id = Convert.ToInt32(dr["ID"].ToString());
+                    team.Title = dr["Title"].ToString();
+                    team.Description = dr["Description"].ToString();
+                    team.Priority = dr["Priority"].ToString();
+                    team.Date = Convert.ToDateTime(dr["Date"].ToString());
+                    team.Status = dr["Status"].ToString();
+                    team.FilePath = dr["FilePath"].ToString();
+
+                }
+            }
+            con.Close();
+            return team;
+        }
+
+        //Update a Task Record
+        public bool update1(AddUserTaskModel model)
+        {
+            SqlCommand cmd = new SqlCommand("update UsersTask set Title = @title, Description = @description, Status =  @status, Priority = @priority, Date = @date, FilePath = @filepath where Id = @id", con);
+
+            cmd.Parameters.AddWithValue("@title", model.Title);
+            cmd.Parameters.AddWithValue("@description", model.Description);
+            cmd.Parameters.AddWithValue("@status", model.Status);
+            cmd.Parameters.AddWithValue("@priority", model.Priority);
+            cmd.Parameters.AddWithValue("@date", model.Date);
+            cmd.Parameters.AddWithValue("@filepath", model.FilePath);
+            cmd.Parameters.AddWithValue("@id", model.Id);
+
+
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            if (i >= 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //Delete Personal Task
+        public bool delete(AddUserTaskModel model)
+        {
+            SqlCommand cmd = new SqlCommand("delete UsersTask where Id = @id", con);
+            cmd.Parameters.AddWithValue("@id", model.Id);
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            if (i >= 1)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
-

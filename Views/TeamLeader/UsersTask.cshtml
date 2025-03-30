@@ -1,5 +1,277 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Task";
+    Layout = "~/Views/Shared/_TNavbar.cshtml";
 }
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+
+    <style>
+        /* Modern modal styling */
+        .modal-content {
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            background: #007bff;
+            color: white;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+            .modal-header .btn-close {
+                filter: invert(1);
+            }
+
+        /* Input fields */
+        .form-control {
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            transition: 0.3s ease-in-out;
+        }
+
+            .form-control:focus {
+                box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+                border-color: #0056b3;
+            }
+
+        /* Task checklist */
+        .task-checklist {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 2px solid #007bff;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .form-check-input {
+            border: 2px solid #007bff;
+            cursor: pointer;
+        }
+
+            .form-check-input:checked {
+                background-color: #007bff;
+                border-color: #007bff;
+            }
+
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed #007bff;
+            border-radius: 8px;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .file-upload:hover {
+                background: #e9f2ff;
+            }
+
+        /* Buttons */
+        .btn-primary {
+            background: #007bff;
+            border: none;
+            transition: 0.3s;
+        }
+
+            .btn-primary:hover {
+                background: #0056b3;
+                transform: scale(1.05);
+            }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <div class="container my-5">
+        <div class="row mb-4">
+            <div class="col">
+                <h2 class="mb-4">Users Tasks</h2>
+                <div class="d-flex task-filters mb-4">
+                    <button class="btn filter-button active" data-filter="all">All Tasks</button>
+                    <button class="btn filter-button" data-filter="pending">Pending</button>
+                    <button class="btn filter-button" data-filter="in-progress">In Progress</button>
+                    <button class="btn filter-button" data-filter="completed">Completed</button>
+
+                    <button class="btn btn-primary">
+                        <a asp-action="AddUserTask" asp-controller="TeamLeader" class="text-white text-decoration-none">Open Task Modal</a>
+                    </button>
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row g-4">
+            @foreach (AddUserTaskModel task in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card task-card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                @if (task.Priority == "High")
+                                {
+                                    <span class="badge priority-high px-3 py-2">High Priority</span>
+                                }
+                                else if (task.Priority == "Medium")
+                                {
+                                    <span class="badge priority-medium px-3 py-2">Medium Priority</span>
+                                }
+                                else if (task.Priority == "Low")
+                                {
+                                    <span class="badge priority-low px-3 py-2">Low Priority</span>
+                                }
+                                <div class="dropdown">
+                                    <button class="btn btn-link" type="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-action="EditUsersTask" asp-route-id="@task.Id"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                        <li><a class="dropdown-item" asp-action="DeleteUsersTask" asp-route-id="@task.Id"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <h5 class="card-title">@task.Title</h5>
+                            <p class="card-text text-muted">@task.Description</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    @if (task.Status == "Pending")
+                                    {
+                                        <span class="task-status status-pending"></span>
+                                        <span class="text-muted">Pending</span>
+                                    }
+                                    else if (task.Status == "In Progress")
+                                    {
+                                        <span class="task-status status-in-progress"></span>
+                                        <span class="text-muted">In Progress</span>
+                                    }
+                                    else if (task.Status == "Completed")
+                                    {
+                                        <span class="task-status status-completed"></span>
+                                        <span class="text-muted">Completed</span>
+                                    }
+                                </div>
+                                <span class="text-muted"><i class="far fa-calendar me-1"></i>@task.Date.ToString("dddd, dd MMM yyyy")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @functions {
+            public string FormatDueDate(DateTime date)
+            {
+                var today = DateTime.Today;
+                var tomorrow = today.AddDays(1);
+                var nextWeekStart = today.AddDays(7 - (int)today.DayOfWeek);
+
+                if (date.Date == today)
+                    return "Today";
+                else if (date.Date == tomorrow)
+                    return "Tomorrow";
+                else if (date.Date < nextWeekStart)
+                    return date.ToString("dddd"); // Day name
+                else
+                    return "Next Week";
+            }
+        }
+
+        <!-- Edit button model -->
+
+
+
+
+        <a class="floating-add-btn" asp-action="AddUserTask" asp-controller="TeamLeader">
+            <i class="fas fa-plus fa-lg"></i>
+        </a>
+
+       
+
+                    @if (TempData["msg"] != null)
+                    {
+                        <script>
+                            alert('@TempData["msg"].ToString()');
+                            window.location.href = "@Url.Action("UsersTask","TeamLeader")";
+                        </script>
+                    }
+           
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Add client validation
+                $("#newTaskForm").validate({
+                    submitHandler: function (form) {
+                        // If validation passes, submit the form
+                        form.submit();
+                    }
+                });
+
+                // Prevent modal from closing on submit if validation fails
+                $('#newTaskForm').on('submit', function (event) {
+                    if (!$(this).valid()) {
+                        event.preventDefault();
+                        return false;
+                    }
+                });
+            });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll('.filter-button').forEach(button => {
+                    button.addEventListener('click', function () {
+                        document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+
+                        const filter = this.getAttribute('data-filter'); // Get the filter (pending, in-progress, completed)
+                        const taskCards = document.querySelectorAll('.task-card'); // Select all task cards
+
+                        taskCards.forEach(card => {
+                            const cardColumn = card.closest('.col-12, .col-md-6, .col-lg-4'); // Ensure full column hides
+                            const statusElement = card.querySelector('.task-status + .text-muted'); // Target correct status
+
+                            if (!statusElement) return; // Skip if no status found
+
+                            const statusText = statusElement.innerText.trim().toLowerCase(); // Convert status text to lowercase
+
+                            // Show/Hide Cards based on Filter
+                            if (filter === 'all') {
+                                cardColumn.style.display = 'block';
+                            } else if (filter === 'pending' && statusText.includes('pending')) {
+                                cardColumn.style.display = 'block';
+                            } else if (filter === 'in-progress' && statusText.includes('in progress')) {
+                                cardColumn.style.display = 'block';
+                            } else if (filter === 'completed' && statusText.includes('completed')) {
+                                cardColumn.style.display = 'block';
+                            } else {
+                                cardColumn.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+
+                // Initialize: Show all tasks by default
+                document.querySelector('.filter-button[data-filter="all"]').click();
+            });
+
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
