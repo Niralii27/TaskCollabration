@@ -105,6 +105,62 @@ namespace TaskCollabration.Controllers
 
         }
 
+        public IActionResult EditPersonalTask()
+        {
+            return View();
+        }
+
+        //Update a PersonalTask
+        [HttpPost]
+        public IActionResult EditPersonalTask(TeamLeaderModel teamLeader, IFormFile formFile)
+        {
+            bool res;
+            if (!ModelState.IsValid)
+            {
+                // Handle file upload if file is provided
+                if (formFile != null && formFile.Length > 0)
+                {
+                    // Create uploads directory if it doesn't exist
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    // Use original filename
+                    string fileName = Path.GetFileName(formFile.FileName);
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+
+                    // Save the file
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        formFile.CopyTo(fileStream);
+                    }
+
+                    // Save the file path to your model
+                    teamLeader.FilePath = "/uploads/" + fileName;
+                }
+
+                teamLeadermodel = new TeamLeaderModel();
+                res = teamLeadermodel.update(teamLeader);
+                if (res)
+                {
+                    TempData["msg"] = "Updated Successfully";
+                    return RedirectToAction("TTask");
+                }
+                else
+                {
+                    TempData["msg"] = "Failed to UpdateData";
+                }
+            }
+            return View();
+        }
+        [HttpGet]
+        public IActionResult EditPersonalTask(string id)
+        {
+            TeamLeaderModel teamLeaderModel = teamLeadermodel.getData(id);
+            return View(teamLeaderModel);
+        }
 
         public IActionResult AddUserTask()
         {
@@ -170,7 +226,35 @@ namespace TaskCollabration.Controllers
                 }
             }
 
+        [HttpPost]
 
+        public IActionResult DeletePersonalTask(TeamLeaderModel leaderModel)
+        {
+            bool res;
+            teamLeadermodel = new TeamLeaderModel();
+            res = teamLeadermodel.delete(leaderModel);
+            if(res)
+            {
+                TempData["msg"] = "Deleted Successfully";
+            }
+            else
+            {
+                TempData["msg"] = "Not Deleted , Something went wrong!!!!!";
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult DeletePersonalTask(string id)
+        {
+            TeamLeaderModel teamLeaderModel = teamLeadermodel.getData(id);
+            return View(teamLeaderModel);
+        }
+
+        public IActionResult UsersTask()
+        {
+            return View();
+        }
     }
 
 }

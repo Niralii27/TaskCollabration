@@ -7,6 +7,7 @@ namespace TaskCollabration.Controllers
     public class UserController : Controller
     {
         UserModel usermodel = new UserModel();
+        OtherTaskModel otherTask1= new OtherTaskModel();
         public IActionResult Home()
         {
             return View();
@@ -101,6 +102,23 @@ namespace TaskCollabration.Controllers
         public IActionResult Setting()
         {
             return View();
+        }
+
+        public IActionResult OtherTask()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            ViewBag.UserID = userId;
+            OtherTaskModel otherTask1 = new OtherTaskModel();
+            List<OtherTaskModel> users = otherTask1.getdata(userId.Value);
+            var viewModel = new OtherTaskModel
+            {
+                UsersList = users ?? new List<OtherTaskModel>()
+            };
+            return View(viewModel);
         }
 
     }

@@ -79,6 +79,7 @@ namespace TaskCollabration.Models
                     team.Title = dr["Title"].ToString();
                     team.Description = dr["Description"].ToString();
                     team.Priority = dr["Priority"].ToString();
+                    team.Date = Convert.ToDateTime(dr["Date"].ToString());
                     team.Status = dr["Status"].ToString();
                     team.FilePath = dr["FilePath"].ToString();
 
@@ -102,6 +103,41 @@ namespace TaskCollabration.Models
             cmd.Parameters.AddWithValue("date", model.Date);
             cmd.Parameters.AddWithValue("filepath", model.FilePath);
 
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            if (i >= 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //Update a Task Record
+        public bool update(TeamLeaderModel model)
+        {
+            SqlCommand cmd = new SqlCommand("update PersonalTask set Title = @title, Description = @description, Status =  @status, Priority = @priority where Id = @id", con);
+
+            cmd.Parameters.AddWithValue("@title", model.Title);
+            cmd.Parameters.AddWithValue("@description", model.Description);
+            cmd.Parameters.AddWithValue("@status", model.Status);
+            cmd.Parameters.AddWithValue("@priority", model.Priority);
+            cmd.Parameters.AddWithValue("@id", model.Id);
+
+
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            if (i >= 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //Delete Personal Task
+        public bool delete(TeamLeaderModel model)
+        {
+            SqlCommand cmd = new SqlCommand("delete PersonalTask where Id = @id", con);
+            cmd.Parameters.AddWithValue("@id", model.Id);
             con.Open();
             int i = cmd.ExecuteNonQuery();
             if (i >= 1)
