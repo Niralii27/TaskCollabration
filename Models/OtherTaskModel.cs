@@ -90,5 +90,27 @@ namespace TaskCollabration.Models
             con.Close();
             return usr;
         }
+
+        //Update a Task Record
+        public bool update1(OtherTaskModel model)
+        {
+            SqlCommand cmd = new SqlCommand("update UsersTask set Status =  @status where Id = @id", con);
+
+            
+            cmd.Parameters.AddWithValue("@status", model.Status);
+           
+            cmd.Parameters.AddWithValue("@id", model.Id);
+
+
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            if (i >= 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        
     }
 }

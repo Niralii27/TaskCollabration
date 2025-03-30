@@ -29,7 +29,7 @@ namespace TaskCollabration.Models
 
         public DateTime Date { get; set; }
 
-        public String FilePath { get; set; }
+        public string FilePath { get; set; }
         public int UserID { get; set; }  
 
 
@@ -63,6 +63,7 @@ namespace TaskCollabration.Models
                     Priority = dr["Priority"].ToString(),
                     Status = dr["Status"].ToString(),
                     Date = Convert.ToDateTime(dr["Date"]),
+                    FilePath = dr["FilePath"].ToString(),
                 });
             }
 
@@ -88,6 +89,9 @@ namespace TaskCollabration.Models
                     usr.Description = dr["Description"].ToString();
                     usr.Priority = dr["Priority"].ToString();
                     usr.Status = dr["Status"].ToString();
+                    usr.Date = Convert.ToDateTime(dr["Date"].ToString());
+                    usr.FilePath = dr["FilePath"].ToString();
+
                 }
             }
             con.Close();
@@ -113,6 +117,43 @@ namespace TaskCollabration.Models
             con.Open();
             int i = cmd.ExecuteNonQuery();
             if(i >= 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //Update a Task Record
+        public bool update(UserModel model)
+        {
+            SqlCommand cmd = new SqlCommand("update PersonalTask set Title = @title, Description = @description, Status =  @status, Priority = @priority, Date = @date, FilePath = @filepath where Id = @id", con);
+
+            cmd.Parameters.AddWithValue("@title", model.Title);
+            cmd.Parameters.AddWithValue("@description", model.Description);
+            cmd.Parameters.AddWithValue("@status", model.Status);
+            cmd.Parameters.AddWithValue("@priority", model.Priority);
+            cmd.Parameters.AddWithValue("@date", model.Date);
+            cmd.Parameters.AddWithValue("@filepath", model.FilePath);
+            cmd.Parameters.AddWithValue("@id", model.Id);
+
+
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            if (i >= 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //Delete Personal Task
+        public bool delete(UserModel model)
+        {
+            SqlCommand cmd = new SqlCommand("delete PersonalTask where Id = @id", con);
+            cmd.Parameters.AddWithValue("@id", model.Id);
+            con.Open();
+            int i = cmd.ExecuteNonQuery();
+            if (i >= 1)
             {
                 return true;
             }

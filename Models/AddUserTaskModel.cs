@@ -168,7 +168,7 @@ namespace TaskCollabration.Models
             return false;
         }
 
-        //Delete Personal Task
+        //Delete User's Task
         public bool delete(AddUserTaskModel model)
         {
             SqlCommand cmd = new SqlCommand("delete UsersTask where Id = @id", con);

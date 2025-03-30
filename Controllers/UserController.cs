@@ -121,5 +121,114 @@ namespace TaskCollabration.Controllers
             return View(viewModel);
         }
 
+        //Update a PersonalTask
+
+        [HttpPost]
+        public IActionResult EditTask(UserModel teamLeader, IFormFile formFile)
+        {
+            bool res;
+            if (!ModelState.IsValid)
+            {
+                // Handle file upload if file is provided
+                if (formFile != null && formFile.Length > 0)
+                {
+                    // Create uploads directory if it doesn't exist
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    // Use original filename
+                    string fileName = Path.GetFileName(formFile.FileName);
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+
+                    // Save the file
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        formFile.CopyTo(fileStream);
+                    }
+
+                    // Save the file path to your model
+                    teamLeader.FilePath = fileName;
+                }
+
+                usermodel = new UserModel();
+                res = usermodel.update(teamLeader);
+                if (res)
+                {
+                    TempData["msg"] = "Updated Successfully";
+                    return RedirectToAction("Task");
+                }
+                else
+                {
+                    TempData["msg"] = "Failed to UpdateData";
+                }
+            }
+            return View();
+        }
+        [HttpGet]
+        public IActionResult EditTask(string id)
+        {
+            UserModel user = usermodel.getData(id);
+            return View(user);
+        }
+
+        //Delete TeamLeader PersonalTask
+
+        [HttpPost]
+
+        public IActionResult DeleteTask(UserModel leaderModel)
+        {
+            bool res;
+            usermodel = new UserModel();
+            res = usermodel.delete(leaderModel);
+            if (res)
+            {
+                TempData["msg"] = "Deleted Successfully";
+            }
+            else
+            {
+                TempData["msg"] = "Not Deleted , Something went wrong!!!!!";
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult DeleteTask(string id)
+        {
+            UserModel user = usermodel.getData(id);
+            return View(user);
+        }
+
+        //Update a Other Task
+
+        [HttpPost]
+        public IActionResult EditOtherTask(OtherTaskModel teamLeader)
+        {
+            bool res;
+            
+
+                otherTask1 = new OtherTaskModel();
+                res = otherTask1.update1(teamLeader);
+                if (res)
+                {
+                    TempData["msg"] = "Updated Successfully";
+                    return RedirectToAction("OtherTask");
+                }
+                else
+                {
+                    TempData["msg"] = "Failed to UpdateData";
+                }
+            
+            return View();
+        }
+        [HttpGet]
+        public IActionResult EditOtherTask(string id)
+        {
+            OtherTaskModel user = otherTask1.getData(id);
+            return View(user);
+        }
+
     }
 }
