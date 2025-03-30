@@ -164,17 +164,21 @@ namespace TaskCollabration.Controllers
 
         public IActionResult AddUserTask()
         {
-            addUserTaskModel = new AddUserTaskModel();
+            var addUserTaskModel = new AddUserTaskModel();
+
             List<AddUserTaskModel> users = addUserTaskModel.getData();
+            List<AddUserTaskModel> users1 = addUserTaskModel.getData1();
+
             var viewModel = new AddUserTaskModel
             {
-                UsersList = users ?? new List<AddUserTaskModel>()
+                UsersList = users ?? new List<AddUserTaskModel>(),
+                UsersList1 = users1 ?? new List<AddUserTaskModel>() // Store users1 separately
             };
 
             return View(viewModel);
         }
 
-            [HttpPost]
+        [HttpPost]
             public IActionResult AddUserTask(AddUserTaskModel user1, IFormFile formFile, [FromServices] IWebHostEnvironment hostEnvironment)
             {
         

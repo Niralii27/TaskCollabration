@@ -107,6 +107,27 @@
                     <small class="text-muted" style="font-size: 14px;">Hold Ctrl to select multiple users</small>
                 </div>
 
+                <!-- Projects -->
+                <div class="mb-3">
+                    <label for="taskUsers" class="form-label" style="font-weight: bold; font-size: 16px;">Assign Projects</label>
+                    <select class="form-select" asp-for="ProjectId" name="ProjectId"
+                            style="height: auto; min-height: auto; padding: 8px; font-size: 16px; background-color: #f8f9fa; color: #333; border: 1px solid #ced4da; border-radius: 5px;">
+
+                        <option label="Available Projects" style="background-color: #f8f9fa; color: #333;">
+                            @foreach (var item1 in Model.UsersList1 ?? new List<AddUserTaskModel>())
+                            {
+                                <option value="@item1.Id">👤 @item1.ProjectName</option>
+                            }
+                        </option>
+
+                    </select>
+                    <span asp-validation-for="ProjectId" class="text-danger"></span>
+
+                    <small class="text-muted" style="font-size: 14px;">Hold Ctrl to select multiple users</small>
+                </div>
+
+
+
 
                 <!-- Modal Footer (Buttons) -->
                 <div class="modal-footer">

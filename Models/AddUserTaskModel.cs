@@ -34,9 +34,14 @@ namespace TaskCollabration.Models
         public string? FilePath { get; set; }
 
         public string FirstName { get; set; }
+
+        public string ProjectName { get; set; }
+
+        public string ProjectId { get; set; }
         public List<string> SelectedUsers { get; set; } // Ensure this is a List
 
         public List<AddUserTaskModel> UsersList { get; set; } = new List<AddUserTaskModel>(); // Initialize by default
+        public List<AddUserTaskModel> UsersList1 { get; set; } = new List<AddUserTaskModel>(); // Initialize by default
 
 
         //Insert A Record in a PersonalTask Table
@@ -50,7 +55,7 @@ namespace TaskCollabration.Models
                 con.Open();
                 foreach (var id in model1.UserId)
                 {
-                    SqlCommand cmd = new SqlCommand("INSERT INTO UsersTask VALUES (@title, @description, @status, @priority, @date, @filePath, @firstname)", con);
+                    SqlCommand cmd = new SqlCommand("INSERT INTO UsersTask VALUES (@title, @description, @status, @priority, @date, @filePath, @firstname, @projectId)", con);
 
                     cmd.Parameters.AddWithValue("@title", model1.Title);
                     cmd.Parameters.AddWithValue("@description", model1.Description);
@@ -59,6 +64,7 @@ namespace TaskCollabration.Models
                     cmd.Parameters.AddWithValue("@date", model1.Date);
                     cmd.Parameters.AddWithValue("@filePath", model1.FilePath);
                     cmd.Parameters.AddWithValue("@firstname", id.Trim());
+                    cmd.Parameters.AddWithValue("@projectId", model1.ProjectId);
 
                     int i = cmd.ExecuteNonQuery();
                     if (i >= 1)
@@ -92,6 +98,24 @@ namespace TaskCollabration.Models
             return lstadm;
         }
 
+        //Select Data From a Project Table
+        public List<AddUserTaskModel> getData1()
+        {
+            List<AddUserTaskModel> lstadm1 = new List<AddUserTaskModel>();
+            SqlDataAdapter da = new SqlDataAdapter("select * from Projects", con);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                lstadm1.Add(new AddUserTaskModel
+                {
+                    Id = Convert.ToInt32(dr["Id"].ToString()),
+                    ProjectName = dr["ProjectName"].ToString(),
+                });
+            }
+            return lstadm1;
+        }
+
         //Retrieve all Records From a Table
 
         public List<AddUserTaskModel> getdata()
@@ -112,7 +136,8 @@ namespace TaskCollabration.Models
                     Priority = dr["Priority"].ToString(),
                     Status = dr["Status"].ToString(),
                     Date = Convert.ToDateTime(dr["Date"].ToString()),
-                    FilePath = dr["FilePath"].ToString()
+                    FilePath = dr["FilePath"].ToString(),
+                    ProjectId = dr["ProjectId"].ToString(),
                 });
             }
             return lstuser;
@@ -138,6 +163,7 @@ namespace TaskCollabration.Models
                     team.Date = Convert.ToDateTime(dr["Date"].ToString());
                     team.Status = dr["Status"].ToString();
                     team.FilePath = dr["FilePath"].ToString();
+                    team.ProjectId = dr["ProjectId"].ToString();
 
                 }
             }
