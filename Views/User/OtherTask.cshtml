@@ -133,7 +133,12 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" asp-action="EditOtherTask" asp-route-id="@task.Id"><i class="fas fa-edit me-2"></i>Edit</a></li>
-                                        <li><a class="dropdown-item" asp-action="DeleteOtherTask" asp-route-id="@task.Id"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                                       <!-- <li><a class="dropdown-item" asp-action="DeleteOtherTask" asp-route-id="@task.Id"><i class="fas fa-trash me-2"></i>Delete</a></li> -->
+                                        <li>
+                                            <a class="dropdown-item" href="@Url.Content($"~/uploads/{task.FilePath}")" target="_blank">
+                                                <i class="fas fa-eye me-2"></i>Show
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

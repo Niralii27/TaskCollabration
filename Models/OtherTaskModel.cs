@@ -60,6 +60,7 @@ namespace TaskCollabration.Models
                     Priority = dr["Priority"].ToString(),
                     Status = dr["Status"].ToString(),
                     Date = Convert.ToDateTime(dr["Date"]),
+                    FilePath = dr["FilePath"].ToString(),
                 });
             }
 
@@ -85,6 +86,8 @@ namespace TaskCollabration.Models
                     usr.Description = dr["Description"].ToString();
                     usr.Priority = dr["Priority"].ToString();
                     usr.Status = dr["Status"].ToString();
+                    usr.Date = Convert.ToDateTime(dr["Date"].ToString());
+                    usr.FilePath = dr["FilePath"].ToString();
                 }
             }
             con.Close();
