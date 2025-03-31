@@ -11,6 +11,9 @@ namespace TaskCollabration.Controllers
         UserProjectModel userprojectModel = new UserProjectModel();
         FetchTaskUserModel fetchTaskUserModel = new FetchTaskUserModel();
         ViewModel viewmodel = new ViewModel();
+        TeamModel teamModel = new TeamModel();
+        SettingModel settingModel = new SettingModel();
+        ReportsModel reportsModel = new ReportsModel();
         public IActionResult Home()
         {
             return View();
@@ -131,18 +134,85 @@ namespace TaskCollabration.Controllers
         }
 
 
-
+        //Fetch data from a Team Table
         public IActionResult Team()
         {
-            return View();
+            teamModel = new TeamModel();
+            List<TeamModel> teamModels = teamModel.getData();
+            return View(teamModels);
         }
         public IActionResult Reports()
         {
-            return View();
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            ViewBag.UserID = userId;
+            ReportsModel reportsModel = new ReportsModel();
+            List<ReportsModel> reports = reportsModel.getdata();
+            var viewModel = new ReportsModel
+            {
+                ReportList = reports ?? new List<ReportsModel>()
+            };
+            return View(viewModel);
         }
+        [HttpGet]
+        [Route("User/Setting/{id}")]  // Specific route for ID-based retrieval
+        public IActionResult SettingById(string id)
+        {
+            SettingModel user = settingModel.getData(id);
+            return View(user);
+        }
+
+        [HttpGet]
+        [Route("User/Setting")]  // Default route without ID
         public IActionResult Setting()
         {
-            return View();
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            ViewBag.UserID = userId;
+            SettingModel settingModel = new SettingModel();
+            List<SettingModel> users = settingModel.getdata(userId.Value);
+
+            var viewModel = new SettingModel
+            {
+                SettingList = users ?? new List<SettingModel>()
+            };
+
+            return View(viewModel);
+        }
+
+
+        //Update a Setting Data
+
+        [HttpPost]
+        public IActionResult Setting(SettingModel model)
+        {
+            // Don't create a new empty model here
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            model.Id = userId.Value; // Set the user ID from session
+            bool res = model.update(model);
+
+            if (res)
+            {
+                TempData["msg"] = "Updated Successfully";
+                return RedirectToAction("Setting");
+            }
+            else
+            {
+                TempData["msg"] = "Failed to Update Data";
+            }
+            return View(model);
         }
 
         public IActionResult OtherTask()

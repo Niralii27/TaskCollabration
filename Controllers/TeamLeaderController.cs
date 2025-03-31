@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
+using System.Runtime.Intrinsics.X86;
 using TaskCollabration.Models;
 
 namespace TaskCollabration.Controllers
@@ -10,6 +11,7 @@ namespace TaskCollabration.Controllers
         TeamLeaderModel teamLeadermodel = new TeamLeaderModel();
         AddUserTaskModel addUserTaskModel = new AddUserTaskModel();
         ProjectModel projectmodel = new ProjectModel();
+        MessageModel messageModel = new MessageModel();
         public IActionResult THome()
         {
             return View();
@@ -21,7 +23,10 @@ namespace TaskCollabration.Controllers
             List<ProjectModel> projects = projectmodel.getData2();
             return View(projects);
         }
-
+         public IActionResult TProjectDetails()
+        {
+            return View();
+        }
       
 
         [HttpGet]
@@ -29,6 +34,24 @@ namespace TaskCollabration.Controllers
         {
             ProjectModel project = projectmodel.getData(id);
             return View(project);
+        }
+
+        [HttpPost]
+
+        public IActionResult TProjectDetails(MessageModel message)
+        {
+            bool result = message.insert(message);
+
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Task added successfully!";
+                return RedirectToAction("TProjectDetails");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to add task.";
+            }
+            return View();
         }
         public IActionResult TTask()
         {

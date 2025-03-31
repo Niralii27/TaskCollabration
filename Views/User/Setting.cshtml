@@ -1,4 +1,4 @@
-﻿@model TaskCollabration.Models.UserModel
+﻿@model TaskCollabration.Models.SettingModel
 @{
     ViewData["Title"] = "Setting";
     Layout = "~/Views/Shared/_Navbar.cshtml";
@@ -42,7 +42,9 @@
     </style>
 </head>
 <body>
-    <div class="container py-5 settings-container">
+    <form asp-action="Setting" asp-controller="User" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+        <div class="container py-5 settings-container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="section-title mb-0">Account Settings</h2>
             <button class="btn btn-gradient">
@@ -57,30 +59,34 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#security">
+                    <i class="fas fa-shield-alt me-2"></i>Address
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="pill" href="#notifications">
                     <i class="fas fa-bell me-2"></i>Notifications
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="pill" href="#security">
-                    <i class="fas fa-shield-alt me-2"></i>Security
-                </a>
-            </li>
+           
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="pill" href="#integrations">
                     <i class="fas fa-plug me-2"></i>Integrations
                 </a>
             </li>
         </ul>
-
+        @foreach (SettingModel setting in Model.SettingList)
+        {
         <div class="tab-content">
+            
+
             <!-- Profile Tab -->
             <div class="tab-pane fade show active" id="profile">
                 <div class="glass-card p-4">
                     <div class="row">
                         <div class="col-md-3 text-center mb-4 mb-md-0">
                             <div class="profile-upload mx-auto">
-                                <img src="/api/placeholder/140/140" alt="Profile" class="img-fluid">
+                                <img src="/Images/@setting.Image" alt="Profile" class="img-fluid">
                                 <div class="overlay d-flex align-items-center justify-content-center">
                                     <i class="fas fa-camera fa-2x text-white"></i>
                                 </div>
@@ -90,40 +96,33 @@
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <div class="floating-label">
-                                        <label>First Name</label>
-                                        <input type="text" class="form-control" value="John">
+                                        <label asp-for="FirstName">First Name</label>
+                                        <input type="text" class="form-control" name="FirstName" value="@setting.FirstName" asp-for="FirstName">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="floating-label">
-                                        <label>Last Name</label>
-                                        <input type="text" class="form-control" value="Doe">
+                                        <label asp-for="LastName">Last Name</label>
+                                        <input type="text" class="form-control" value="@setting.LastName" asp-for="LastName" name="LastName">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="floating-label">
-                                        <label>Email</label>
-                                        <input type="email" class="form-control" value="john@example.com">
+                                        <label asp-for="Email">Email</label>
+                                        <input type="email" class="form-control" value="@setting.Email" asp-for="Email" name="Email">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="floating-label">
                                         <label>Role</label>
-                                        <select class="form-select">
-                                            <option>Project Manager</option>
-                                            <option>Developer</option>
-                                            <option>Designer</option>
-                                        </select>
+                                        <input type="text" class="form-control" value="@setting.UserRole">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="floating-label">
-                                        <label>Time Zone</label>
-                                        <select class="form-select">
-                                            <option>UTC-8 (Pacific Time)</option>
-                                            <option>UTC-5 (Eastern Time)</option>
-                                            <option>UTC+0 (London)</option>
-                                        </select>
+                                        <label asp-for="MobileNumber">Mobile Number</label>
+                                        <input type="number" class="form-control" value="@setting.MobileNumber" asp-for="MobileNumber" name="MobileNumber">
+
                                     </div>
                                 </div>
                             </div>
@@ -162,28 +161,34 @@
             <!-- Security Tab -->
             <div class="tab-pane fade" id="security">
                 <div class="glass-card p-4">
-                    <h5 class="section-title">Password Update</h5>
+                    <h5 class="section-title">Address Update</h5>
                     <div class="row g-4">
                         <div class="col-md-6">
                             <div class="floating-label">
-                                <label>Current Password</label>
-                                <input type="password" class="form-control">
+                                <label asp-for="StreetAddress1">Street Address1</label>
+                                <input type="text" class="form-control" value="@setting.StreetAddress1" asp-for="StreetAddress1" name="StreetAddress1">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="floating-label">
-                                <label>New Password</label>
-                                <input type="password" class="form-control">
+                                <label asp-for="StreetAddress2">Street Address2</label>
+                                <input type="text" class="form-control" value="@setting.StreetAddress2" asp-for="StreetAddress2" name="StreetAddress2">
                             </div>
                         </div>
+                            <div class="col-md-6">
+                                <div class="floating-label">
+                                    <label asp-for="City">City</label>
+                                    <input type="text" class="form-control" value="@setting.City" asp-for="City" name="City">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="floating-label">
+                                    <label asp-for="Pincode">Pin Code</label>
+                                    <input type="text" class="form-control" value="@setting.Pincode" asp-for="Pincode" name="Pincode">
+                                </div>
+                            </div>
                     </div>
-                    <div class="notification-item d-flex justify-content-between align-items-center mt-4">
-                        <div>
-                            <h6 class="mb-1">Two-Factor Authentication</h6>
-                            <p class="text-muted mb-0">Add an extra layer of security</p>
-                        </div>
-                        <div class="toggle-switch"></div>
-                    </div>
+                   
                 </div>
             </div>
 
@@ -218,8 +223,17 @@
                     </div>
                 </div>
             </div>
+                @if (TempData["msg"] != null)
+                {
+                    <script>
+                        alert('@TempData["msg"].ToString();');
+                        window.location.href = "@Url.Action("Setting","User")";
+                    </script>
+                }
         </div>
+        }
     </div>
+    </form>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 </body>
