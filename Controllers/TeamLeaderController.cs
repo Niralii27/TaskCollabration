@@ -143,7 +143,7 @@ namespace TaskCollabration.Controllers
             if (res)
             {
                 TempData["msg"] = "Updated Successfully!!!!!";
-                return RedirectToAction("TProject1");
+                return RedirectToAction("TProjectDetails");
             }
             else
             {

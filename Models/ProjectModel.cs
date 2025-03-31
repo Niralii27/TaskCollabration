@@ -121,22 +121,61 @@ namespace TaskCollabration.Models
         //Update Project Members
         public bool update1(ProjectModel model)
         {
-            SqlCommand cmd = new SqlCommand("update Projects set Members = @members where Id = @id", con);
-
-           
-            cmd.Parameters.AddWithValue("@members", (object)model.Members ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@id", model.Id);
-
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-            if (i >= 1)
+            try
             {
-                return true;
+                // First get the existing members
+                string existingMembers = "";
+
+                using (SqlCommand getCmd = new SqlCommand("SELECT Members FROM Projects WHERE Id = @id", con))
+                {
+                    getCmd.Parameters.AddWithValue("@id", model.Id);
+                    con.Open();
+                    var result = getCmd.ExecuteScalar();
+                    con.Close();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        existingMembers = result.ToString();
+                    }
+                }
+
+                // Combine existing and new members
+                string updatedMembers;
+                if (string.IsNullOrEmpty(existingMembers))
+                {
+                    updatedMembers = model.Members;
+                }
+                else if (!string.IsNullOrEmpty(model.Members))
+                {
+                    updatedMembers = existingMembers + "," + model.Members;
+                }
+                else
+                {
+                    updatedMembers = existingMembers;
+                }
+
+                // Update the database
+                using (SqlCommand updateCmd = new SqlCommand("UPDATE Projects SET Members = @members WHERE Id = @id", con))
+                {
+                    updateCmd.Parameters.AddWithValue("@members", (object)updatedMembers ?? DBNull.Value);
+                    updateCmd.Parameters.AddWithValue("@id", model.Id);
+
+                    con.Open();
+                    int rowsAffected = updateCmd.ExecuteNonQuery();
+                    con.Close();
+
+                    return rowsAffected >= 1;
+                }
             }
-            return false;
-
+            catch (Exception)
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+                return false;
+            }
         }
-
         //Select Data from a Users Table
 
         public List<ProjectModel> getData1()

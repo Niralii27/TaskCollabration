@@ -1,0 +1,160 @@
+﻿@model TaskCollabration.Models.UserProjectModel
+@{
+    ViewData["Title"] = "Project";
+    Layout = "~/Views/Shared/_Navbar.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        .project-header {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-item {
+            transition: 0.3s;
+        }
+
+            .task-item:hover {
+                background-color: #f8f9fa;
+                transform: translateY(-2px);
+            }
+
+        .task-text {
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .discussion-box {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+
+        .message {
+            margin-bottom: 15px;
+        }
+
+        .message-user {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .message-text {
+            display: inline-block;
+            max-width: 80%;
+        }
+
+        .message-input {
+            border-radius: 20px;
+            padding: 10px;
+        }
+
+        .message-input {
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .bg-lightblue {
+            background-color: #e3f2fd; /* Light Blue */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container my-5">
+        <div class="project-header mb-4">
+            <h2>Project: @Model.ProjectName</h2>
+            <p>@Model.Description</p>
+            <span class="badge bg-success">@Model.Status</span>
+            <span class="badge bg-danger">@Model.Priority</span>
+<p class="mt-2">Deadline: @Model.DueDate.ToString("yyyy-MM-dd")</p>
+        </div>
+
+        <div class="row">
+            <!-- Task List -->
+            <div class="col-md-6">
+                <h4 class="mb-3">📌 All Tasks</h4>
+                <div class="task-list">
+                    <div class="task-item d-flex align-items-center p-3 border rounded mb-2">
+                        <span class="badge bg-primary me-3">25%</span>
+                        <span class="task-text flex-grow-1">Setup WordPress Environment</span>
+                        <i class="fa fa-spinner text-primary"></i>
+                    </div>
+                    <div class="task-item d-flex align-items-center p-3 border rounded mb-2">
+                        <span class="badge bg-warning me-3">50%</span>
+                        <span class="task-text flex-grow-1">Develop Core Theme Components</span>
+                        <i class="fa fa-tasks text-warning"></i>
+                    </div>
+                    <div class="task-item d-flex align-items-center p-3 border rounded mb-2 bg-light">
+                        <span class="badge bg-success me-3">Completed</span>
+                        <span class="task-text flex-grow-1 text-decoration-line-through text-muted">
+                            Research on WP Block Editor
+                        </span>
+                        <i class="fa fa-check-circle text-success"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discussion Area -->
+            <div class="col-md-6">
+                <h4 class="mb-3">💬 Discussion</h4>
+                <div class="discussion-box p-3 rounded shadow-sm bg-light">
+                    <div class="message">
+                        <div class="message-user">
+                            <strong>John</strong> <span class="text-muted small"> • 10:15 AM</span>
+                        </div>
+                        <div class="message-text bg-lightblue p-2 rounded shadow-sm">
+                            We need to finalize the theme structure.
+                        </div>
+                    </div>
+                    <div class="message">
+                        <div class="message-user">
+                            <strong>Sarah</strong> <span class="text-muted small"> • 10:17 AM</span>
+                        </div>
+                        <div class="message-text bg-lightblue p-2 rounded shadow-sm">
+                            Agreed! Also, let's check compatibility with latest WP.
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex mt-3">
+                    <input type="text" class="form-control message-input" placeholder="Type a message...">
+                    <button class="btn btn-primary ms-2">Send</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mt-4">
+            <!-- Recent Activity -->
+            <div class="col-md-6">
+                <h4>Recent Activity</h4>
+                <div class="activity-box bg-white p-3 rounded shadow-sm">
+                    <p><i class="fa fa-check text-success"></i> Task "Research on WP Block Editor" marked as completed.</p>
+                    <p><i class="fa fa-comment text-primary"></i> Sarah commented on the project.</p>
+                </div>
+            </div>
+        </div>
+
+        <a href="index.html" class="btn btn-secondary mt-4">Back to Projects</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -8,6 +8,7 @@ namespace TaskCollabration.Controllers
     {
         UserModel usermodel = new UserModel();
         OtherTaskModel otherTask1= new OtherTaskModel();
+        UserProjectModel userprojectModel = new UserProjectModel();
         public IActionResult Home()
         {
             return View();
@@ -87,9 +88,24 @@ namespace TaskCollabration.Controllers
             }
         }
 
+        //Fetch Project from The Projects Table
         public IActionResult Project()
         {
-            return View();
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            ViewBag.UserID = userId;
+            userprojectModel = new UserProjectModel();
+            List<UserProjectModel> projects = userprojectModel.getData2(userId.Value);
+            return View(projects);
+        }
+
+        public IActionResult ProjectDetails(string id)
+        {
+            UserProjectModel project = userprojectModel.getData(id);
+            return View(project);
         }
         public IActionResult Team()
         {
