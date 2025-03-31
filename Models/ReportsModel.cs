@@ -36,12 +36,13 @@ namespace TaskCollabration.Models
 
         //Retrieve all Records From a Task Table
 
-        public List<ReportsModel> getdata()
+        public List<ReportsModel> getdata(int userId)
         {
             List<ReportsModel> lstuser = new List<ReportsModel>();
-            SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM UsersTask", con);
+            // Modifica la consulta SQL para filtrar por ID de usuario
+            SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM UsersTask WHERE UserId = @userId", con);
+            da.SelectCommand.Parameters.AddWithValue("@userId", userId);
             DataSet ds = new DataSet();
-
             con.Open();
             da.Fill(ds);
             foreach (DataRow dr in ds.Tables[0].Rows)
@@ -60,7 +61,6 @@ namespace TaskCollabration.Models
             }
             return lstuser;
         }
-
 
     }
 }

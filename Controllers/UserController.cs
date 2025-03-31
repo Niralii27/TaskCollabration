@@ -148,14 +148,50 @@ namespace TaskCollabration.Controllers
             {
                 return RedirectToAction("Login", "Auth");
             }
-            ViewBag.UserID = userId;
+
+            // Pasar el ID de usuario al método getdata
             ReportsModel reportsModel = new ReportsModel();
-            List<ReportsModel> reports = reportsModel.getdata();
-            var viewModel = new ReportsModel
+            List<ReportsModel> tasks = reportsModel.getdata(userId.Value);
+
+            // Guardar el conteo en ViewBag
+            ViewBag.TotalTasks = tasks.Count;
+            ViewBag.CompletedTasks = tasks.Count(t => t.Status.Equals("Completed", StringComparison.OrdinalIgnoreCase));
+            ViewBag.PendingTasks = tasks.Count(t => t.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase));
+            ViewBag.InProgressTasks = tasks.Count(t => t.Status.Equals("In Progress", StringComparison.OrdinalIgnoreCase));
+            ViewBag.DelayedTasks = tasks.Count(t => t.Status.Equals("Delayed", StringComparison.OrdinalIgnoreCase));
+
+            // For the weekly chart - tasks completed per day this week
+            var today = DateTime.Today;
+            var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+
+            var weeklyData = new int[7];
+            var newTasksData = new int[7];
+
+            for (int i = 0; i < 7; i++)
             {
-                ReportList = reports ?? new List<ReportsModel>()
-            };
-            return View(viewModel);
+                var currentDay = startOfWeek.AddDays(i);
+                // Count completed tasks for this day
+                weeklyData[i] = tasks.Count(t => t.Status.Equals("Completed") &&
+                                                 t.Date.Date == currentDay);
+
+                // Count new tasks created on this day
+                newTasksData[i] = tasks.Count(t => t.Date.Date == currentDay);
+            }
+
+            ViewBag.WeeklyLabels = new string[] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+            ViewBag.WeeklyCompletedData = weeklyData;
+            ViewBag.WeeklyNewTasksData = newTasksData;
+
+            // For the distribution chart
+            ViewBag.DistributionData = new int[]
+  {
+    ViewBag.CompletedTasks,
+    ViewBag.InProgressTasks,
+    ViewBag.PendingTasks,
+    ViewBag.DelayedTasks
+  };
+
+            return View();
         }
         [HttpGet]
         [Route("User/Setting/{id}")]  // Specific route for ID-based retrieval
