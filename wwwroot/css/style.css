@@ -20,6 +20,8 @@
     width: 250px;
     height: 100vh;
     transition: all 0.3s;
+    position: sticky;
+    background: linear-gradient(to bottom, #ABA4C6, #BED1E3, #CCA9C6);
     top: 0;
     left: 0;
     z-index: 1040;

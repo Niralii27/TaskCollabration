@@ -1,0 +1,275 @@
+﻿@model TaskCollabration.Models.ProjectModel
+@{
+    ViewData["Title"] = "Team Project";
+    Layout = "~/Views/Shared/_TNavbar.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Management Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 900px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+            border-bottom: none;
+            padding: 25px 30px;
+        }
+
+        .card-title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            color: rgba(255,255,255,0.8);
+            font-weight: 300;
+        }
+
+        .card-body {
+            padding: 30px;
+            background-color: white;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #e1e5eb;
+            background-color: #f8fafc;
+            transition: all 0.3s;
+        }
+
+            .form-control:focus, .form-select:focus {
+                border-color: #3a7bd5;
+                box-shadow: 0 0 0 0.25rem rgba(58, 123, 213, 0.15);
+                background-color: white;
+            }
+
+        .input-group-text {
+            background-color: #f8fafc;
+            border: 1px solid #e1e5eb;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .input-group .form-control {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .select-multiple {
+            min-height: 120px;
+        }
+
+        .priority-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,116,217,0.1);
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(0,116,217,0.2);
+            }
+
+        .btn-outline-secondary {
+            border-color: #e1e5eb;
+            color: #6c757d;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+            .btn-outline-secondary:hover {
+                background-color: #f8fafc;
+                border-color: #d8dde5;
+            }
+
+        textarea {
+            min-height: 120px;
+        }
+
+        .alert-required {
+            font-size: 0.85rem;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+
+        .field-section {
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .field-icon {
+            font-size: 1.2rem;
+            color: #3a7bd5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"><i class="bi bi-clipboard-check me-2"></i>Project</h4>
+                <p class="card-subtitle mb-0">Edit project with all required details</p>
+            </div>
+            <div class="card-body">
+               
+
+                <form asp-action="EditProjectDetails" method="post">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="row g-4">
+                        <!-- Project Name -->
+                        <div class="col-12 field-section">
+                            <label for="projectName" asp-for="ProjectName" class="form-label">Project Name </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-folder field-icon"></i></span>
+                                <input type="text" class="form-control" id="projectName" placeholder="Enter project Name" name="ProjectName" asp-for="ProjectName">
+                            </div>
+                        </div>
+
+                        <!-- Project Description -->
+                        <div class="col-12 field-section">
+                            <label for="projectDescription" asp-for="Description" class="form-label">Description</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-card-text field-icon"></i></span>
+                                <textarea class="form-control" id="projectDescription" placeholder="Project Description" name="Description" asp-for="Description"></textarea>
+                            </div>
+                        </div>
+
+                      <!-- <div class="mb-3">
+                            <label for="taskUsers" class="form-label" style="font-weight: bold; font-size: 16px;">Assign Users</label>
+                            <select class="form-select" asp-for="FirstName" name="FirstName" multiple>
+                                style="height: auto; min-height: 120px; padding: 8px; font-size: 16px; background-color: #f8f9fa; color: #333; border: 1px solid #ced4da; border-radius: 5px;">
+
+                                @{
+                                    int index = 0; // Index tracker for alternate colors
+                                }
+
+                                @foreach (var item in Model.UsersList)
+                                {
+                                    // Alternative row color logic (Even -> White, Odd -> Light Grey)
+                                    string bgColor = (index % 2 == 0) ? "white" : "#f0f0f0";
+
+                                    <option value="@item.FirstName"
+                                        style="padding: 10px; font-size: 16px; background-color: @bgColor; color: #333; border-bottom: 1px solid #ddd;">
+                                        👤 @item.FirstName
+                                    </option>
+
+                                    index++; // Increment index
+                                }
+
+                            </select>
+
+                            <small class="text-muted" style="font-size: 14px;">Hold Ctrl to select multiple users</small>
+                        </div> -->
+
+                        <div class="col-md-6 field-section">
+                            <div class="row g-3">
+                                <!-- Status -->
+                                <div class="col-12">
+                                    <label for="projectStatus" class="form-label" asp-for="Status">Project Status</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-bar-chart field-icon"></i></span>
+                                        <select class="form-select" id="projectStatus" name="Status" asp-for="Status">
+                                            <option value="" selected disabled>Select current status</option>
+                                            <option value="planning">Planning</option>
+                                            <option value="active">Active</option>
+                                            <option value="onHold">On Hold</option>
+                                            <option value="completed">Completed</option>
+                                            <option value="cancelled">Cancelled</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Due Date -->
+                                <div class="col-12">
+                                    <label for="dueDate" class="form-label" asp-for="DueDate">Due Date <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-calendar-check field-icon"></i></span>
+                                        <input type="date" class="form-control" id="dueDate" name="DueDate" asp-for="DueDate">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Priority -->
+                        <div class="col-12 field-section">
+                            <label class="form-label d-block" asp-for="Priority">Priority Level</label>
+                            <div class="d-flex flex-wrap gap-3 mt-2">
+                                
+                                <input type="radio" class="btn-check" name="Priority" id="priority-high" value="high" asp-for="Priority">
+                                <label class="btn btn-outline-warning priority-btn" for="priority-high"><i class="bi bi-arrow-up me-2"></i>High</label>
+
+                                <input type="radio" class="btn-check" name="Priority" asp-for="Priority" id="priority-medium" value="medium">
+                                <label class="btn btn-outline-primary priority-btn" for="priority-medium"><i class="bi bi-dash me-2"></i>Medium</label>
+
+                                <input type="radio" class="btn-check" name="Priority" asp-for="Priority" id="priority-low" value="low">
+                                <label class="btn btn-outline-success priority-btn" for="priority-low"><i class="bi bi-arrow-down me-2"></i>Low</label>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="col-12 mt-4">
+                            <div class="d-flex justify-content-between">
+                               
+                                <button type="submit" value="Update"  class="btn btn-primary">
+                                    <i class="bi bi-check2-circle me-2"></i>Edit Project
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                @if (TempData["msg"] != null)
+                {
+                    <script>
+                        alert('@TempData["msg"].ToString();');
+                        window.location.href = "@Url.Action("EditProjectDetails","TeamLeader")";
+                    </script>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

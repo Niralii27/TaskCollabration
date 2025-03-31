@@ -9,16 +9,27 @@ namespace TaskCollabration.Controllers
     {
         TeamLeaderModel teamLeadermodel = new TeamLeaderModel();
         AddUserTaskModel addUserTaskModel = new AddUserTaskModel();
+        ProjectModel projectmodel = new ProjectModel();
         public IActionResult THome()
         {
             return View();
         }
 
-        public IActionResult TProject()
+        public IActionResult TProject1()
         {
-            return View();
+            projectmodel= new ProjectModel();
+            List<ProjectModel> projects = projectmodel.getData2();
+            return View(projects);
         }
 
+      
+
+        [HttpGet]
+        public IActionResult TProjectDetails(string id)
+        {
+            ProjectModel project = projectmodel.getData(id);
+            return View(project);
+        }
         public IActionResult TTask()
         {
             int? userId = HttpContext.Session.GetInt32("UserID");
@@ -104,10 +115,69 @@ namespace TaskCollabration.Controllers
             }
 
         }
+        //Fetch the Users Data in EditProjectDetails
 
-        public IActionResult EditPersonalTask()
+        public IActionResult AddMemberProject()
         {
+            ProjectModel projectmodel = new ProjectModel();
+
+            List<ProjectModel> team = projectmodel.getData1();
+
+            var viewModel = new ProjectModel
+            {
+                UsersList = team ?? new List<ProjectModel>()
+            };
+
+            return View(viewModel);
+        }
+
+        //Update A Members
+
+        [HttpPost]
+        public IActionResult AddMemberProject(ProjectModel projectModel)
+        {
+            bool res;
+
+            projectmodel = new ProjectModel();
+            res = projectModel.update1(projectModel);
+            if (res)
+            {
+                TempData["msg"] = "Updated Successfully!!!!!";
+                return RedirectToAction("TProject1");
+            }
+            else
+            {
+                TempData["msg"] = "Failed to UpdateData";
+            }
+
             return View();
+        }
+
+        //Update ProjectDetails
+        [HttpPost]
+        public IActionResult EditProjectDetails(ProjectModel projectModel)
+        {
+            bool res;
+            
+                projectmodel = new ProjectModel();
+                res = projectModel.update(projectModel);
+                if (res)
+                {
+                    TempData["msg"] = "Updated Successfully!!!!!";
+                    return RedirectToAction("TProject1");
+                }
+                else
+                {
+                    TempData["msg"] = "Failed to UpdateData";
+                }
+            
+            return View();
+        }
+        [HttpGet]
+        public IActionResult EditProjectDetails(string id)
+        {
+            ProjectModel projectModel = projectmodel.getData(id);
+            return View(projectModel);
         }
 
         //Update a PersonalTask

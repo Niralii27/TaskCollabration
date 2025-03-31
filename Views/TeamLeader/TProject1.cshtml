@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Project";
+    Layout = "~/Views/Shared/_TNavbar.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Task Cards</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+</head>
+<body>
+
+    <div class="container my-5">
+        <div class="row g-4">
+            <!-- Task Card  -->
+            @foreach (ProjectModel project in Model)
+            {
+                
+            
+            <div class="col-md-4">
+               <a asp-controller="TeamLeader" asp-action="TProjectDetails" asp-route-id="@project.Id" class="text-decoration-none text-dark">
+
+                <div class="task-card p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="progress-circle">
+                            <svg width="50" height="50">
+                                <circle class="bg" cx="25" cy="25" r="20"></circle>
+                                <circle class="progress" cx="25" cy="25" r="20" stroke="#4a90e2" stroke-dasharray="126" stroke-dashoffset="94"></circle>
+                            </svg>
+                            <div class="text-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px;">25%</div>
+                        </div>
+                        <span class="status status-inprocess">@project.Status</span>
+                    </div>
+                    <h5 class="mt-3">@project.ProjectName</h5>
+                    <p>@project.Category.</p>
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-group">
+                            <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="User">
+                            <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="User">
+                        </div>
+                        <span class="ms-auto priority priority-high">@project.Priority</span>
+                    </div>
+                </div>
+                </a>
+            </div>
+
+           }
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

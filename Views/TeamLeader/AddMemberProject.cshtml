@@ -1,0 +1,38 @@
+﻿@model TaskCollabration.Models.ProjectModel
+@{
+    ViewData["Title"] = "Task";
+    Layout = "~/Views/Shared/_Navbar.cshtml";
+
+}
+<form asp-action="AddMemberProject" enctype="multipart/form-data">
+
+<!-- Users (Multi-select) -->
+<div class="mb-3">
+    <label for="taskUsers" class="form-label" style="font-weight: bold; font-size: 16px;">Assign Users</label>
+    <select class="form-select" asp-for="Members" name="Members" multiple>
+        style="height: auto; min-height: 120px; padding: 8px; font-size: 16px; background-color: #f8f9fa; color: #333; border: 1px solid #ced4da; border-radius: 5px;">
+
+        @{
+            int index = 0; // Index tracker for alternate colors
+        }
+
+        @foreach (var item in Model.UsersList)
+        {
+            // Alternative row color logic (Even -> White, Odd -> Light Grey)
+            string bgColor = (index % 2 == 0) ? "white" : "#f0f0f0";
+
+            <option value="@item.Id"
+                style="padding: 10px; font-size: 16px; background-color: @bgColor; color: #333; border-bottom: 1px solid #ddd;">
+                👤 @item.FirstName
+            </option>
+
+            index++; // Increment index
+        }
+
+    </select>
+
+    <small class="text-muted" style="font-size: 14px;">Hold Ctrl to select multiple users</small>
+</div>
+    <button type="submit" class="btn btn-primary">Add Member</button>
+
+</form>
