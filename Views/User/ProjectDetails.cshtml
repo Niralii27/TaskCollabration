@@ -1,4 +1,4 @@
-﻿@model TaskCollabration.Models.UserProjectModel
+﻿@model TaskCollabration.Models.ViewModel
 @{
     ViewData["Title"] = "Project";
     Layout = "~/Views/Shared/_Navbar.cshtml";
@@ -80,24 +80,38 @@
 
     <div class="container my-5">
         <div class="project-header mb-4">
-            <h2>Project: @Model.ProjectName</h2>
-            <p>@Model.Description</p>
-            <span class="badge bg-success">@Model.Status</span>
-            <span class="badge bg-danger">@Model.Priority</span>
-<p class="mt-2">Deadline: @Model.DueDate.ToString("yyyy-MM-dd")</p>
+            <h2>Project: @Model.Projects.ProjectName</h2>
+            <p>@Model.Projects.Description</p>
+            <span class="badge bg-success">@Model.Projects.Status</span>
+            <span class="badge bg-danger">@Model.Projects.Priority</span>
+            <p class="mt-2">Deadline: @Model.Projects.DueDate.ToString("yyyy-MM-dd")</p>
         </div>
+
+        <h3>Tasks</h3>
+        <ul>
+            @foreach (var task in Model.Tasks)
+            {
+                <li>@task.Title - @task.Status</li>
+            }
+        </ul>
+
 
         <div class="row">
             <!-- Task List -->
-            <div class="col-md-6">
+          <!-- <div class="col-md-6">
                 <h4 class="mb-3">📌 All Tasks</h4>
                 <div class="task-list">
+                    @foreach (var task in Model.Tasks)
+                    {
                     <div class="task-item d-flex align-items-center p-3 border rounded mb-2">
-                        <span class="badge bg-primary me-3">25%</span>
-                        <span class="task-text flex-grow-1">Setup WordPress Environment</span>
+                        <span class="badge bg-primary me-3">@task.Status</span>
+                        <span class="task-text flex-grow-1">@task.Title</span>
                         <i class="fa fa-spinner text-primary"></i>
                     </div>
-                    <div class="task-item d-flex align-items-center p-3 border rounded mb-2">
+                    }
+                </div>
+              </div>-->
+            <!-- <div class="task-item d-flex align-items-center p-3 border rounded mb-2">
                         <span class="badge bg-warning me-3">50%</span>
                         <span class="task-text flex-grow-1">Develop Core Theme Components</span>
                         <i class="fa fa-tasks text-warning"></i>
@@ -108,9 +122,38 @@
                             Research on WP Block Editor
                         </span>
                         <i class="fa fa-check-circle text-success"></i>
-                    </div>
-                </div>
+                    </div> -->
+               
+
+            <div class="col-md-6">
+    <h4 class="mb-3">📌 All Tasks</h4>
+    <div class="task-list">
+        @foreach (var task in Model.Tasks)
+        {
+            string badgeClass = "bg-primary"; // Default: Pending
+            string iconClass = "fa-spinner text-primary"; // Default: Pending
+
+            if (task.Status == "In Progress") 
+            {
+                badgeClass = "bg-warning";
+                iconClass = "fa-tasks text-warning";
+            } 
+            else if (task.Status == "Completed") 
+            {
+                badgeClass = "bg-success";
+                iconClass = "fa-check-circle text-success";
+            }
+
+            <div class="task-item d-flex align-items-center p-3 border rounded mb-2 @(task.Status == "Completed" ? "bg-light" : "")">
+                <span class="badge @badgeClass me-3">@task.Status</span>
+                <span class="task-text flex-grow-1 @(task.Status == "Completed" ? "text-decoration-line-through text-muted" : "")">
+                    @task.Title
+                </span>
+                <i class="fa @iconClass"></i>
             </div>
+        }
+    </div>
+</div>
 
             <!-- Discussion Area -->
             <div class="col-md-6">

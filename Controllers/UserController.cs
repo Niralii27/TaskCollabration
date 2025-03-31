@@ -9,6 +9,8 @@ namespace TaskCollabration.Controllers
         UserModel usermodel = new UserModel();
         OtherTaskModel otherTask1= new OtherTaskModel();
         UserProjectModel userprojectModel = new UserProjectModel();
+        FetchTaskUserModel fetchTaskUserModel = new FetchTaskUserModel();
+        ViewModel viewmodel = new ViewModel();
         public IActionResult Home()
         {
             return View();
@@ -104,9 +106,32 @@ namespace TaskCollabration.Controllers
 
         public IActionResult ProjectDetails(string id)
         {
-            UserProjectModel project = userprojectModel.getData(id);
-            return View(project);
+            // User ID ko session se lena
+            int? userId = HttpContext.Session.GetInt32("UserID");
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Auth"); // Redirect to Login if session is empty
+            }
+
+            ViewBag.UserID = userId; // UserID ViewBag me set kar diya
+
+            if (!int.TryParse(id, out int projectId))
+            {
+                return BadRequest("Invalid Project ID"); // Handle invalid conversion
+            }
+
+            var viewModel = new ViewModel
+            {
+                Projects = userprojectModel.getData(id), // Project ID int me pass kiya
+                Tasks = fetchTaskUserModel.getdata1(userId.Value, projectId) // UserID & ProjectID dono pass kiye
+            };
+
+            return View(viewModel);
         }
+
+
+
         public IActionResult Team()
         {
             return View();

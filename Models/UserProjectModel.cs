@@ -40,8 +40,7 @@ namespace TaskCollabration.Models
         public int UserID { get; set; }
         
         public List<UserProjectModel> UsersList { get; set; } = new List<UserProjectModel>(); // Initialize by default
-        public List<UserProjectModel> UserTasks { get; set; } = new List<UserProjectModel>();
-        public List<UserProjectModel> UserProjects { get; set; } = new List<UserProjectModel>();
+      
 
 
         //Select Data From a Project Table
@@ -103,37 +102,6 @@ namespace TaskCollabration.Models
             return admin;
         }
 
-        //Fetch the Data from a UserTask Table 
-
-        public List<UserProjectModel> getdata(int userId)
-        {
-            List<UserProjectModel> lstuser = new List<UserProjectModel>();
-
-            SqlCommand cmd = new SqlCommand("SELECT * FROM UsersTask WHERE UserId = @UserID", con);
-            cmd.Parameters.AddWithValue("@UserID", userId);
-
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataSet ds = new DataSet();
-
-            con.Open();
-            da.Fill(ds);
-            con.Close();
-
-            foreach (DataRow dr in ds.Tables[0].Rows)
-            {
-                lstuser.Add(new UserProjectModel
-                {
-                    Id = Convert.ToInt32(dr["ID"]),
-                    Title = dr["Title"].ToString(),
-                    Description = dr["Description"].ToString(),
-                    Priority = dr["Priority"].ToString(),
-                    Status = dr["Status"].ToString(),
-                    Date = Convert.ToDateTime(dr["Date"]),
-                    FilePath = dr["FilePath"].ToString(),
-                });
-            }
-
-            return lstuser;
-        }
+      
     }
 }
