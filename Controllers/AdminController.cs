@@ -6,16 +6,14 @@ namespace TaskCollabration.Controllers
     public class AdminController : Controller
     {
         AdminModel adminModel = new AdminModel();
+        AdminTeamModel teamModel = new AdminTeamModel();
 
         public IActionResult Dashboard()
         {
             return View();
         }
 
-        public IActionResult Team()
-        {
-            return View();
-        }
+       
 
         public IActionResult Report()
         {
@@ -151,6 +149,109 @@ namespace TaskCollabration.Controllers
         public IActionResult EditAdminProfile()
         {
             return View();
+        }
+
+
+
+        //admin team
+        //for Team
+        public IActionResult Team()
+        {
+            List<AdminTeamModel> teams = teamModel.getData();
+            return View(teams);
+        }
+
+        public IActionResult AddTeam()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddTeam(AdminTeamModel team, IFormFile Attachments)
+        {
+            if (Attachments != null && Attachments.Length > 0)
+            {
+                var fileName = Path.GetFileName(Attachments.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    Attachments.CopyTo(stream);
+                }
+                team.Attachments = fileName; // Save filename to database
+            }
+
+            if (ModelState.IsValid)
+            {
+                bool result = teamModel.insert(team);
+                TempData["msg"] = result ? "Team task added successfully!" : "Failed to add team task.";
+                return RedirectToAction("Team", "Admin");
+            }
+            return View(team);
+        }
+
+        [HttpGet]
+        public IActionResult EditTeam(string id)
+        {
+            AdminTeamModel team = teamModel.getData(id);
+            return View(team);
+        }
+
+
+        [HttpPost]
+        public IActionResult EditTeam(AdminTeamModel team, IFormFile Attachments)
+        {
+            if (Attachments != null && Attachments.Length > 0)
+            {
+                var fileName = Path.GetFileName(Attachments.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    Attachments.CopyTo(stream);
+                }
+
+                team.Attachments = fileName; // Save the filename to the database
+            }
+
+            if (ModelState.IsValid)
+            {
+                bool result = teamModel.update(team);
+                if (result)
+                {
+                    TempData["msg"] = "Team task updated successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to update team task.";
+                }
+                return RedirectToAction("Team", "Admin");
+            }
+
+            TempData["ErrorMessage"] = "Validation error!";
+            return View(team);
+        }
+
+
+        [HttpGet]
+        public IActionResult DeleteTeam(string id)
+        {
+            AdminTeamModel team = teamModel.getData(id);
+            return View(team);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteTeam(AdminTeamModel team)
+        {
+            bool result = teamModel.delete(team);
+            if (result)
+            {
+                TempData["msg"] = "Team task deleted successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to delete team task.";
+            }
+            return RedirectToAction("Team", "Admin");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model TeamModel
+﻿@model AdminTeamModel
 @{
     ViewData["Title"] = "AddTeam";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -89,7 +89,6 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Profile Pic</label>
                                 <input asp-for="Attachments" type="file" class="form-control px-3" />
-                                <span asp-validation-for="Attachments" class="text-danger"></span>
                             </div>
 
                             <!-- Action Buttons -->

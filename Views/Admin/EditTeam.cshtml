@@ -1,4 +1,4 @@
-﻿@model TeamModel;
+﻿@model AdminTeamModel;
 
 @{
     ViewData["Title"] = "EditTeam";
@@ -10,16 +10,7 @@
 <div class="content-page">
     <div class="container-fluid">
 
-        <!-- Display Error Message -->
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                @TempData["ErrorMessage"]
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        }
+      
 
         <form asp-action="EditTeam" asp-controller="Admin" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
@@ -90,7 +81,6 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Profile Picture</label>
                                 <input asp-for="Attachments" type="file" class="form-control-file" multiple />
-                                <span asp-validation-for="Attachments" class="text-danger"></span>
                             </div>
 
                             <!-- Action Buttons -->

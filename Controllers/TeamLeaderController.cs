@@ -27,32 +27,74 @@ namespace TaskCollabration.Controllers
         {
             return View();
         }
-      
+
 
         [HttpGet]
-        public IActionResult TProjectDetails(string id)
+        public IActionResult TProjectDetails(int id)
         {
-            ProjectModel project = projectmodel.getData(id);
+            if (id <= 0)
+            {
+                TempData["msg"] = "Invalid Project ID.";
+                return RedirectToAction("SomeErrorPage");
+            }
+
+            // Get project data
+            ProjectModel project = projectmodel.getData(id.ToString());
+
+            // Get messages for this project
+            MessageModel messageModel = new MessageModel();
+            List<MessageModel> projectMessages = messageModel.GetProjectMessages(id);
+
+            // Pass the messages to the view
+            ViewBag.ProjectMessages = projectMessages;
+            ViewBag.ProjectId = id;
+
             return View(project);
         }
-
         [HttpPost]
-
-        public IActionResult TProjectDetails(MessageModel message)
+        public IActionResult AddProjectMessage([Bind("Message,UserId,ProjectId")] MessageModel message, int ProjectId)
         {
-            bool result = message.insert(message);
+            try
+            {
+                // Log received data
+                System.Diagnostics.Debug.WriteLine($"Form data: Message='{Request.Form["Message"]}', ProjectId={ProjectId}");
 
-            if (result)
-            {
-                TempData["SuccessMessage"] = "Task added successfully!";
-                return RedirectToAction("TProjectDetails");
+                // Session se UserID fetch karna
+                int? userId = HttpContext.Session.GetInt32("UserID");
+                // Agar UserID session mein nahi hai, to Login page pe redirect karo
+                if (userId == null)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                // Manually set message from form
+                message.Message = Request.Form["Message"].ToString();
+                message.UserId = userId.Value;
+                message.ProjectId = ProjectId;
+
+                System.Diagnostics.Debug.WriteLine($"After binding: Message='{message.Message}', ProjectId={message.ProjectId}, UserId={message.UserId}");
+
+                // Check if message is empty
+                if (string.IsNullOrEmpty(message.Message))
+                {
+                    TempData["msg"] = "Message cannot be empty.";
+                    return RedirectToAction("TProjectDetails", new { id = message.ProjectId });
+                }
+
+                message.DateTime = DateTime.Now; // Set current date time
+                bool result = message.insert(message); // Insert message into database
+                TempData["msg"] = result ? "Message added successfully!" : "Failed to add message.";
+                return RedirectToAction("TProjectDetails", new { id = message.ProjectId });
             }
-            else
+            catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Failed to add task.";
+                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+                TempData["msg"] = "An error occurred: " + ex.Message;
+                return RedirectToAction("TProjectDetails", new { id = ProjectId });
             }
-            return View();
         }
+
+
         public IActionResult TTask()
         {
             int? userId = HttpContext.Session.GetInt32("UserID");
