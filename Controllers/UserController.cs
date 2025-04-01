@@ -151,11 +151,11 @@ namespace TaskCollabration.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            // Pasar el ID de usuario al método getdata
+            //  getdata
             ReportsModel reportsModel = new ReportsModel();
             List<ReportsModel> tasks = reportsModel.getdata(userId.Value);
 
-            // Guardar el conteo en ViewBag
+            // ViewBag
             ViewBag.TotalTasks = tasks.Count;
             ViewBag.CompletedTasks = tasks.Count(t => t.Status.Equals("Completed", StringComparison.OrdinalIgnoreCase));
             ViewBag.PendingTasks = tasks.Count(t => t.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase));

@@ -1,4 +1,4 @@
-﻿@model TaskCollabration.Models.TeamLeaderModel
+﻿@model TaskCollabration.Models.ReportsModel
 @{
     ViewData["Title"] = "Reports";
     Layout = "~/Views/Shared/_TNavbar.cshtml";
@@ -63,11 +63,9 @@
             </div>
             <div class="d-flex gap-3">
                 <select class="form-select">
-                    <option>All Projects</option>
-                    <option>Website Redesign</option>
-                    <option>Mobile App</option>
+                    <option>All Tasks</option>
+                   
                 </select>
-                <button class="btn btn-primary px-4"><i class="fas fa-plus me-2"></i>New Report</button>
             </div>
         </div>
 
@@ -79,9 +77,9 @@
                         <div class="stat-icon bg-primary bg-opacity-10 text-primary">
                             <i class="fas fa-tasks"></i>
                         </div>
-                        <span class="badge bg-success bg-opacity-10 text-success px-3">+12%</span>
+                        <span class="badge bg-success bg-opacity-10 text-success px-3">100%</span>
                     </div>
-                    <h4 class="mb-1">356</h4>
+                    <h4 class="mb-1">@ViewBag.TotalTasks</h4>
                     <p class="text-muted mb-0">Total Tasks</p>
                 </div>
             </div>
@@ -91,9 +89,11 @@
                         <div class="stat-icon bg-success bg-opacity-10 text-success">
                             <i class="fas fa-check-circle"></i>
                         </div>
-                        <span class="badge bg-success bg-opacity-10 text-success px-3">+8%</span>
+                        <span class="badge bg-success bg-opacity-10 text-success px-3">
+                            @(ViewBag.TotalTasks > 0 ? Math.Round((double)ViewBag.CompletedTasks / ViewBag.TotalTasks * 100, 0) + "%" : "0%")
+                        </span>
                     </div>
-                    <h4 class="mb-1">85%</h4>
+                    <h4 class="mb-1">@ViewBag.CompletedTasks</h4>
                     <p class="text-muted mb-0">Completion Rate</p>
                 </div>
             </div>
@@ -103,9 +103,11 @@
                         <div class="stat-icon bg-warning bg-opacity-10 text-warning">
                             <i class="fas fa-clock"></i>
                         </div>
-                        <span class="badge bg-danger bg-opacity-10 text-danger px-3">-5%</span>
+                        <span class="badge bg-danger bg-opacity-10 text-danger px-3">
+                            @(ViewBag.TotalTasks > 0 ? Math.Round((double)ViewBag.InProgressTasks / ViewBag.TotalTasks * 100, 0) + "%" : "0%")
+                        </span>
                     </div>
-                    <h4 class="mb-1">42</h4>
+                    <h4 class="mb-1">@ViewBag.InProgressTasks</h4>
                     <p class="text-muted mb-0">In Progress</p>
                 </div>
             </div>
@@ -115,10 +117,12 @@
                         <div class="stat-icon bg-info bg-opacity-10 text-info">
                             <i class="fas fa-users"></i>
                         </div>
-                        <span class="badge bg-success bg-opacity-10 text-success px-3">+15%</span>
+                        <span class="badge bg-success bg-opacity-10 text-success px-3">
+                            @(ViewBag.TotalTasks > 0 ? Math.Round((double)ViewBag.PendingTasks / ViewBag.TotalTasks * 100, 0) + "%" : "0%")
+                        </span>
                     </div>
-                    <h4 class="mb-1">18</h4>
-                    <p class="text-muted mb-0">Team Members</p>
+                    <h4 class="mb-1">@ViewBag.PendingTasks</h4>
+                    <p class="text-muted mb-0">Pending</p>
                 </div>
             </div>
         </div>
@@ -141,16 +145,16 @@
                         new Chart(ctx, {
                             type: 'line',
                             data: {
-                                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                labels: @Html.Raw(Json.Serialize(ViewBag.WeeklyLabels)),
                                 datasets: [{
                                     label: 'Completed Tasks',
-                                    data: [15, 22, 28, 25, 35, 32, 40],
+                                    data: @Html.Raw(Json.Serialize(ViewBag.WeeklyCompletedData)),
                                     borderColor: '#3b82f6',
                                     tension: 0.4
                                 },
                                 {
                                     label: 'New Tasks',
-                                    data: [10, 18, 20, 25, 28, 25, 30],
+                                    data: @Html.Raw(Json.Serialize(ViewBag.WeeklyNewTasksData)),
                                     borderColor: '#10b981',
                                     tension: 0.4
                                 }]
@@ -178,7 +182,7 @@
                             data: {
                                 labels: ['Completed', 'In Progress', 'Pending', 'Delayed'],
                                 datasets: [{
-                                    data: [45, 25, 20, 10],
+                                    data: @Html.Raw(Json.Serialize(ViewBag.DistributionData)),
                                     backgroundColor: [
                                         '#10b981',
                                         '#3b82f6',
@@ -202,75 +206,6 @@
         </div>
 
         <!-- Recent Activity -->
-        <div class="dashboard-card p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="mb-0">Recent Activity</h5>
-                <div class="d-flex gap-2">
-                    <input type="text" class="form-control" placeholder="Search activities...">
-                    <button class="btn btn-outline-primary"><i class="fas fa-filter"></i></button>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead>
-                        <tr>
-                            <th>Task</th>
-                            <th>Assigned To</th>
-                            <th>Status</th>
-                            <th>Progress</th>
-                            <th>Due Date</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <span class="fas fa-circle text-primary me-2" style="font-size: 8px;"></span>
-                                    Dashboard Design
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="/api/placeholder/32/32" class="rounded-circle me-2" alt="Avatar">
-                                    Sarah Chen
-                                </div>
-                            </td>
-                            <td><span class="badge bg-success bg-opacity-10 text-success px-3">Completed</span></td>
-                            <td>
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" style="width: 100%"></div>
-                                </div>
-                            </td>
-                            <td>Feb 15, 2025</td>
-                            <td><button class="btn btn-link text-muted p-0"><i class="fas fa-ellipsis-v"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <span class="fas fa-circle text-warning me-2" style="font-size: 8px;"></span>
-                                    API Integration
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="/api/placeholder/32/32" class="rounded-circle me-2" alt="Avatar">
-                                    Alex Morgan
-                                </div>
-                            </td>
-                            <td><span class="badge bg-warning bg-opacity-10 text-warning px-3">In Progress</span></td>
-                            <td>
-                                <div class="progress">
-                                    <div class="progress-bar bg-warning" style="width: 65%"></div>
-                                </div>
-                            </td>
-                            <td>Feb 20, 2025</td>
-                            <td><button class="btn btn-link text-muted p-0"><i class="fas fa-ellipsis-v"></i></button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </body>
 </html>
