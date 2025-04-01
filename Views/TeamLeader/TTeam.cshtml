@@ -1,7 +1,6 @@
-﻿@model TaskCollabration.Models.TeamLeaderModel
-@{
+﻿@{
     ViewData["Title"] = "Team";
-    Layout = "~/Views/Shared/_TNavbar.cshtml";
+    Layout = "~/Views/Shared/_Navbar.cshtml";
 }
 
 <!DOCTYPE html>
@@ -66,76 +65,34 @@
                 <button class="btn btn-outline-primary" data-filter="management">Management</button>
             </div>
         </div>
-
+        <br />
         <!-- Team Members Grid -->
         <div class="row g-4">
-            <!-- Team Member 1 -->
-            <div class="col-lg-3 col-md-6" data-category="management">
-                <div class="team-member card text-center h-100">
-                    <div class="card-body">
-                        <img src="/api/placeholder/150/150" alt="Team Member" class="member-img mb-4">
-                        <h5 class="card-title mb-1">Sarah Johnson</h5>
-                        <p class="text-muted">Project Manager</p>
-                        <p class="small">Leading our project initiatives with 8+ years of experience</p>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-linkedin"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a href="#"><i class="fas fa-envelope"></i></a>
+            @foreach (TeamModel team in Model)
+            {
+                <!-- Team Member 1 -->
+                <div class="col-lg-3 col-md-6" data-category="@team.Category.ToLower()">
+                    <div class="team-member card text-center h-100">
+                        <div class="card-body">
+                            <img src="/Images/@team.Attachments" alt="Team Member" class="member-img mb-4">
+                            <h5 class="card-title mb-1">@team.TaskName</h5>
+                            <p class="text-muted">@team.Category</p>
+                            <p class="small">@team.Checklist</p>
+                            <p class="text-muted">@team.Description</p>
+                            <div class="social-links">
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fas fa-envelope"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Team Member 2 -->
-            <div class="col-lg-3 col-md-6" data-category="development">
-                <div class="team-member card text-center h-100">
-                    <div class="card-body">
-                        <img src="/api/placeholder/150/150" alt="Team Member" class="member-img mb-4">
-                        <h5 class="card-title mb-1">Michael Chen</h5>
-                        <p class="text-muted">Lead Developer</p>
-                        <p class="small">Full-stack developer specializing in React and Node.js</p>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-github"></i></a>
-                            <a href="#"><i class="fab fa-linkedin"></i></a>
-                            <a href="#"><i class="fas fa-envelope"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Team Member 3 -->
-            <div class="col-lg-3 col-md-6" data-category="design">
-                <div class="team-member card text-center h-100">
-                    <div class="card-body">
-                        <img src="/api/placeholder/150/150" alt="Team Member" class="member-img mb-4">
-                        <h5 class="card-title mb-1">Emma Rodriguez</h5>
-                        <p class="text-muted">UI/UX Designer</p>
-                        <p class="small">Creating beautiful and intuitive user experiences</p>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-dribbble"></i></a>
-                            <a href="#"><i class="fab fa-linkedin"></i></a>
-                            <a href="#"><i class="fab fa-behance"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            }
 
             <!-- Team Member 4 -->
-            <div class="col-lg-3 col-md-6" data-category="development">
-                <div class="team-member card text-center h-100">
-                    <div class="card-body">
-                        <img src="/api/placeholder/150/150" alt="Team Member" class="member-img mb-4">
-                        <h5 class="card-title mb-1">Alex Patel</h5>
-                        <p class="text-muted">Backend Developer</p>
-                        <p class="small">Database expert with focus on system architecture</p>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-github"></i></a>
-                            <a href="#"><i class="fab fa-linkedin"></i></a>
-                            <a href="#"><i class="fas fa-envelope"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

@@ -12,6 +12,9 @@ namespace TaskCollabration.Controllers
         AddUserTaskModel addUserTaskModel = new AddUserTaskModel();
         ProjectModel projectmodel = new ProjectModel();
         MessageModel messageModel = new MessageModel();
+        TeamModel teamModel = new TeamModel();
+        TeamLeaderProfileModel teamLeaderProfileModel= new TeamLeaderProfileModel();
+
         public IActionResult THome()
         {
             return View();
@@ -120,7 +123,9 @@ namespace TaskCollabration.Controllers
 
         public IActionResult TTeam()
         {
-            return View();
+            teamModel = new TeamModel();
+            List<TeamModel> teamModels = teamModel.getData();
+            return View(teamModels);
         }
         [HttpPost]
         public IActionResult TTask(TeamLeaderModel user1, IFormFile formFile, [FromServices] IWebHostEnvironment hostEnvironment)
@@ -478,9 +483,62 @@ namespace TaskCollabration.Controllers
             return View(addUserTaskmodel);
         }
 
+      
+        [HttpGet]
+        [Route("User/TSetting/{id}")]  // Specific route for ID-based retrieval
+        public IActionResult SettingById(string id)
+        {
+            TeamLeaderProfileModel user = teamLeaderProfileModel.getData(id);
+            return View(user);
+        }
+
+        [HttpGet]
+        [Route("TeamLeader/TSetting")]  // Default route without ID
         public IActionResult TSetting()
         {
-            return View();
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            ViewBag.UserID = userId;
+            TeamLeaderProfileModel teamLeaderProfileModel = new TeamLeaderProfileModel();
+            List<TeamLeaderProfileModel> users = teamLeaderProfileModel.getdata(userId.Value);
+
+            var viewModel = new TeamLeaderProfileModel
+            {
+                SettingList1 = users ?? new List<TeamLeaderProfileModel>()
+            };
+
+            return View(viewModel);
+        }
+
+        //Update a Setting Data
+
+        [HttpPost]
+        public IActionResult TSetting(TeamLeaderProfileModel model)
+        {
+            // Don't create a new empty model here
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            model.Id = userId.Value; // Set the user ID from session
+            bool res = model.update(model);
+
+            if (res)
+            {
+                TempData["msg"] = "Updated Successfully";
+                return RedirectToAction("TSetting");
+            }
+            else
+            {
+                TempData["msg"] = "Failed to Update Data";
+            }
+            return View(model);
         }
 
         public IActionResult TReport()

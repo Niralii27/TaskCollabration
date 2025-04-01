@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
+using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 
 
 namespace TaskCollabration.Models
@@ -98,22 +99,28 @@ namespace TaskCollabration.Models
         //Insert
         public bool insert(AdminTeamModel model)
         {
-            SqlCommand cmd = new SqlCommand("INSERT INTO Teams (TaskName, AssignTo, DueDate, Category, Description, Checklist, Attachments) VALUES (@taskname, @assignto, @duedate, @category, @description, @checklist, @attachments)", con);
-            cmd.Parameters.AddWithValue("@taskname", model.TaskName);
-            cmd.Parameters.AddWithValue("@assignto", model.AssignTo);
-            cmd.Parameters.AddWithValue("@duedate", model.DueDate);
-            cmd.Parameters.AddWithValue("@category", model.Category);
-            cmd.Parameters.AddWithValue("@description", model.Description);
-            //cmd.Parameters.AddWithValue("@checklist", model.Checklist);
-            //cmd.Parameters.AddWithValue("@attachments", model.Attachments);
-            cmd.Parameters.AddWithValue("@checklist", model.Checklist ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@attachments", model.Attachments ?? (object)DBNull.Value);
+            try
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO Teams (TaskName, AssignTo, DueDate, Category, Description, Checklist, Attachments) VALUES (@taskname, @assignto, @duedate, @category, @description, @checklist, @attachments)", con);
+                cmd.Parameters.AddWithValue("@taskname", model.TaskName);
+                cmd.Parameters.AddWithValue("@assignto", model.AssignTo);
+                cmd.Parameters.AddWithValue("@duedate", model.DueDate);
+                cmd.Parameters.AddWithValue("@category", model.Category);
+                cmd.Parameters.AddWithValue("@description", model.Description);
+                cmd.Parameters.AddWithValue("@checklist", model.Checklist ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@attachments", model.Attachments ?? (object)DBNull.Value);
 
-
-            con.Open();
-            int i = cmd.ExecuteNonQuery();
-            con.Close();
-            return i >= 1;
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                con.Close();
+                return i >= 1;
+            }
+            catch (Exception ex)
+            {
+                // Log error message for debugging purposes
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         //Update
