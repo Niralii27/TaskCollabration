@@ -60,11 +60,13 @@ namespace TaskCollabration.Models
                     // This query joins ProjectDiscussion with Users
                     // It matches UserId from ProjectDiscussion with id from Users
                     // And fetches FirstName from Users table
-                    string query = @"SELECT pd.*, u.FirstName 
-                            FROM ProjectDiscussion pd 
-                            INNER JOIN Users u ON pd.UserId = u.id 
-                            WHERE pd.ProjectId = @projectId 
-                            ORDER BY pd.DateTime DESC";
+                    string query = @"
+    SELECT pd.*, u.FirstName 
+    FROM ProjectDiscussion pd 
+    INNER JOIN Users u ON pd.UserId = u.id 
+    WHERE pd.ProjectId = @projectId 
+    ORDER BY pd.DateTime DESC";
+
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {

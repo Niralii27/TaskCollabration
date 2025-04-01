@@ -111,28 +111,30 @@ namespace TaskCollabration.Controllers
         {
             // User ID ko session se lena
             int? userId = HttpContext.Session.GetInt32("UserID");
-
             if (userId == null)
             {
                 return RedirectToAction("Login", "Auth"); // Redirect to Login if session is empty
             }
-
-            ViewBag.UserID = userId; // UserID ViewBag me set kar diya
 
             if (!int.TryParse(id, out int projectId))
             {
                 return BadRequest("Invalid Project ID"); // Handle invalid conversion
             }
 
+            MessageModel messageModel = new MessageModel();
+            List<MessageModel> projectMessages = messageModel.GetProjectMessages(projectId); // Use projectId (int) here
+            ViewBag.UserID = userId;
+            ViewBag.ProjectId = id;
+            ViewBag.ProjectMessages = projectMessages;
+
             var viewModel = new ViewModel
             {
-                Projects = userprojectModel.getData(id), // Project ID int me pass kiya
-                Tasks = fetchTaskUserModel.getdata1(userId.Value, projectId) // UserID & ProjectID dono pass kiye
+                Projects = userprojectModel.getData(id), // Keep using id (string) here
+                Tasks = fetchTaskUserModel.getdata1(userId.Value, projectId)
             };
 
             return View(viewModel);
         }
-
 
         //Fetch data from a Team Table
         public IActionResult Team()

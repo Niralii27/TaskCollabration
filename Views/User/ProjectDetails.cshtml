@@ -159,27 +159,80 @@
             <div class="col-md-6">
                 <h4 class="mb-3">💬 Discussion</h4>
                 <div class="discussion-box p-3 rounded shadow-sm bg-light">
+                    
                     <div class="message">
+                        @if (ViewBag.ProjectMessages != null && ViewBag.ProjectMessages.Count > 0)
+                        {
+                            foreach (var message in ViewBag.ProjectMessages)
+                            {
                         <div class="message-user">
-                            <strong>John</strong> <span class="text-muted small"> • 10:15 AM</span>
+                                    <strong>@message.UserName</strong> <span class="text-muted small"> • @FormatDateTime(message.DateTime)</span>
                         </div>
                         <div class="message-text bg-lightblue p-2 rounded shadow-sm">
-                            We need to finalize the theme structure.
+                                    @message.Message
                         </div>
+                                }
+                                }
+                                else
+                                {
+                                <p class="text-muted">No comments yet. Be the first to start the discussion!</p>
+                                }
                     </div>
+                            @functions {
+                                public string FormatDateTime(DateTime dateTime)
+                                {
+                                    TimeSpan timeSince = DateTime.Now.Subtract(dateTime);
+
+                                    if (timeSince.TotalMinutes < 1)
+                                        return "just now";
+                                    if (timeSince.TotalMinutes < 60)
+                                        return $"{(int)timeSince.TotalMinutes} minutes ago";
+                                    if (timeSince.TotalHours < 24)
+                                        return $"{(int)timeSince.TotalHours} hours ago";
+                                    if (timeSince.TotalDays < 7)
+                                        return $"{(int)timeSince.TotalDays} days ago";
+
+                                    return dateTime.ToString("MMM dd, yyyy");
+                                }
+                        }
+                   
                     <div class="message">
-                        <div class="message-user">
-                            <strong>Sarah</strong> <span class="text-muted small"> • 10:17 AM</span>
-                        </div>
-                        <div class="message-text bg-lightblue p-2 rounded shadow-sm">
-                            Agreed! Also, let's check compatibility with latest WP.
-                        </div>
+                        
                     </div>
                 </div>
-                <div class="d-flex mt-3">
-                    <input type="text" class="form-control message-input" placeholder="Type a message...">
-                    <button class="btn btn-primary ms-2">Send</button>
-                </div>
+                <br />
+                <form action="/TeamLeader/AddProjectMessage" method="post">
+                    <input type="hidden" name="ProjectId" value="@ViewBag.ProjectId" />
+                    @{
+                        var userId = Context.Session.GetInt32("UserId") ?? 0;
+                    }
+                    <input type="hidden" name="UserId" value="@userId" />
+                    <div class="comment-box p-3 border rounded shadow-sm bg-white">
+                        <!-- Add required attribute and ensure name matches exactly -->
+                        <textarea class="form-control border-0 bg-transparent"
+                                  rows="2"
+                                  name="Message"
+                                  id="messageText"
+                                  placeholder="Write a comment..."
+                                  required></textarea>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <div>
+                                <button type="button" class="btn btn-sm btn-link text-muted">
+                                    <i class="bi bi-paperclip"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-link text-muted">
+                                    <i class="bi bi-emoji-smile"></i>
+                                </button>
+                            </div>
+                            <!-- Add onclick to verify message content before submission -->
+                            <button type="submit" class="btn btn-sm btn-primary rounded-pill px-3"
+                                    onclick="return validateMessage()">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
             </div>
 
         </div>
