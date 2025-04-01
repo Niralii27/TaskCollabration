@@ -436,6 +436,16 @@ namespace TaskCollabration.Controllers
             return View(addUserTaskmodel);
         }
 
+        public IActionResult TSetting()
+        {
+            return View();
+        }
+
+        public IActionResult TReport()
+        {
+            return View();
+        }
+
     }
 
 }

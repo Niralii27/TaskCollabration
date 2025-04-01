@@ -1,0 +1,113 @@
+﻿@model TeamModel;
+
+@{
+    ViewData["Title"] = "EditTeam";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="content-page">
+    <div class="container-fluid">
+
+        <!-- Display Error Message -->
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+
+        <form asp-action="EditTeam" asp-controller="Admin" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="card shadow-lg border-0 rounded-4">
+
+                        <!-- Card Header -->
+                        <div class="card-header text-center bg-primary text-white rounded-top">
+                            <h4 class="mb-0">Edit Team </h4>
+                        </div>
+
+                        <!-- Form Body -->
+                        <div class="card-body p-4">
+
+                            <!-- Employee  Name -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Employee Name</label>
+                                <input asp-for="TaskName" class="form-control rounded-pill px-3" placeholder="Enter Employee Name" />
+                                <span asp-validation-for="TaskName" class="text-danger"></span>
+                            </div>
+
+                            <!-- Phone  Number -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Phone Number</label>
+                                <input asp-for="AssignTo" class="form-control rounded-pill px-3" placeholder="Enter Phone number" />
+                                <span asp-validation-for="AssignTo" class="text-danger"></span>
+                            </div>
+
+                            <!-- Bitrh Date -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Birth Date</label>
+                                <input asp-for="DueDate" type="date" class="form-control rounded-pill px-3" />
+                                <span asp-validation-for="DueDate" class="text-danger"></span>
+                            </div>
+
+                            <!-- Category Dropdown -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Category</label>
+                                <select asp-for="Category" class="form-control rounded-pill px-3">
+                                    <option value="" disabled>-- Select Category --</option>
+                                    <option value="Bug Fix">Bug Fix</option>
+                                    <option value="Feature">Feature</option>
+                                    <option value="Enhancement">Enhancement</option>
+                                    <option value="Documentation">Documentation</option>
+                                </select>
+                                <span asp-validation-for="Category" class="text-danger"></span>
+                            </div>
+
+                           
+
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Email</label>
+                                <input asp-for="Checklist" class="form-control rounded-pill px-3" placeholder="Enter Vaid email" />
+                                <span asp-validation-for="Checklist" class="text-danger"></span>
+                            </div>
+
+                             <!-- Bio -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Bio</label>
+                                <textarea asp-for="Description" class="form-control px-3" rows="4" placeholder="Enter Bio"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+                            <!-- Profile pic -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Profile Picture</label>
+                                <input asp-for="Attachments" type="file" class="form-control-file" multiple />
+                                <span asp-validation-for="Attachments" class="text-danger"></span>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex justify-content-center mt-3">
+                                <button type="submit" class="btn btn-success rounded-pill px-4 mr-2">Update Team</button>
+                                <a href="@Url.Action("Team", "Admin")" class="btn btn-secondary rounded-pill px-4">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Success Message -->
+        @* @if (TempData["msg"] != null) *@
+        @* { *@
+        @*     <div class="alert alert-success mt-3 text-center">@TempData["msg"]</div> *@
+        @* } *@
+    </div>
+</div>

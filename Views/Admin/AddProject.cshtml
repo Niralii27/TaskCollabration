@@ -1,0 +1,113 @@
+﻿@model ProjectModel;
+@{
+    ViewData["Title"] = "AddProject";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>AddProject</h1>
+
+
+
+<div class="content-page">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
+                    <h5>Your Team Member</h5>
+
+                    <!-- Back Button -->
+                    <div>
+                        <a href="@Url.Action("Project", "Admin")" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Back to Projects
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="content-page">
+                <div class="container-fluid">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
+                                <h5>Your Team Member</h5>
+
+                                <!-- Back Button -->
+                                <div>
+                                    <a href="@Url.Action("Project", "Admin")" class="btn btn-primary">
+                                        <i class="fas fa-arrow-left"></i> Back to Projects
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-10">
+
+                            <div class="card shadow-lg border-0 rounded-4">
+
+                                <!-- Card Header -->
+                                <div class="card-header text-center bg-primary text-white rounded-top">
+                                    <h4 class="mb-0">Add New Project</h4>
+                                </div>
+
+                                <!-- Scrollable Form Body -->
+                                <div class="card-body p-4" style="max-height: 500px; overflow-y: auto;">
+                                    <form method="post" asp-action="AddProject">
+                                        <!-- Project Name -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Project Name</label>
+                                            <input asp-for="ProjectName" class="form-control rounded-pill px-3" placeholder="Enter project name" />
+                                            <span asp-validation-for="ProjectName" class="text-danger"></span>
+                                        </div>
+
+                                        <!-- Category Dropdown -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Category</label>
+                                            <select asp-for="Category" class="form-control rounded-pill px-3">
+                                                <option value="" disabled selected>-- Select Category --</option>
+                                                <option value="Android">Android</option>
+                                                <option value="iOS">iOS</option>
+                                                <option value="UI/UX Design">UI/UX Design</option>
+                                                <option value="Development">Development</option>
+                                            </select>
+                                            <span asp-validation-for="Category" class="text-danger"></span>
+                                        </div>
+
+                                        <!-- Due Date -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Due Date</label>
+                                            <input asp-for="DueDate" type="date" class="form-control rounded-pill px-3" />
+                                            <span asp-validation-for="DueDate" class="text-danger"></span>
+                                        </div>
+
+                                        <!-- Members -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Team Members</label>
+                                            <input asp-for="Members" class="form-control rounded-pill px-3" placeholder="Enter names separated by commas" />
+                                            <span asp-validation-for="Members" class="text-danger"></span>
+                                        </div>
+
+                                        <!-- Action Buttons -->
+                                        <div class="d-flex justify-content-center mt-3">
+                                            <button type="submit" class="btn btn-success rounded-pill px-4 mr-2">Save Project</button>
+                                            <a href="@Url.Action("Project", "Admin")" class="btn btn-secondary rounded-pill px-4">Cancel</a>
+                                        </div>
+                                    </form>
+
+
+                                    <!-- Success Message -->
+                                    @if (TempData["msg"] != null)
+                                    {
+                                        <div class="alert alert-success mt-3 text-center">@TempData["msg"]</div>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
