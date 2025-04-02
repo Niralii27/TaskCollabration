@@ -15,19 +15,14 @@
             <!-- Top Header -->
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
                 <div class="mb-3 mb-lg-0">
-                    <h4 class="mb-1">Welcome back, TeamLeader!</h4>
+                    <h4 class="mb-1">Welcome back, @Context.Session.GetString("FirstName")!</h4>
                     <p class="text-muted mb-0">Here's your task overview</p>
                 </div>
                 <div class="d-flex align-items-center">
-                    <div class="position-relative me-3">
-                        <i class="fas fa-bell fs-5"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            3
-                        </span>
-                    </div>
+                  
                     <div class="dropdown">
                         <button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown">
-                            <img src="/api/placeholder/40/40" class="rounded-circle" alt="Profile">
+                            <img src="/Images/@Context.Session.GetString("Image")" class="rounded-circle" alt="Profile">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#">Profile</a></li>

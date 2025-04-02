@@ -14,9 +14,26 @@ namespace TaskCollabration.Controllers
         TeamModel teamModel = new TeamModel();
         SettingModel settingModel = new SettingModel();
         ReportsModel reportsModel = new ReportsModel();
+        TDashboardModel dashboardModel = new TDashboardModel();
+
         public IActionResult Home()
         {
-            return View();
+            TDashboardModel dashboardModel = new TDashboardModel();
+
+            // For testing, using a hardcoded user ID (replace with actual logic)
+            int userId = 1; // Replace with actual user ID from authentication
+
+            // Get data from both tables
+            var tasks = dashboardModel.getdata(userId);
+
+            // Prepare statistics for the dashboard
+            ViewBag.TotalTasks = tasks.Count;
+            ViewBag.InProgressTasks = tasks.Count(t => t.Status == "InProgress");
+            ViewBag.DueTodayTasks = tasks.Count(t => t.Date.Date == DateTime.Today);
+            ViewBag.CompletedTasks = tasks.Count(t => t.Status == "Completed");
+
+            // Pass the tasks to the view
+            return View(tasks);
         }
         public IActionResult Task()
         {

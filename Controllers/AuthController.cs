@@ -40,12 +40,18 @@ namespace TaskCollabration.Controllers
                 if (reader.Read())
                 {
                     int userId = Convert.ToInt32(reader["Id"]);
+                    string FirstName = (reader["FirstName"].ToString());
+                    string Image = (reader["Image"].ToString());
 
                     string type = reader["Type"].ToString();
+
 
                     HttpContext.Session.SetInt32("UserID", userId);
                     HttpContext.Session.SetString("Type", type);
                     HttpContext.Session.SetString("Email", model.Email);
+                    HttpContext.Session.SetString("FirstName", FirstName);
+                    HttpContext.Session.SetString("Image", Image);
+
 
                     HttpContext.Session.SetString("Type", type);
 

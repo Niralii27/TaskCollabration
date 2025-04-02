@@ -1,4 +1,4 @@
-﻿@model TaskCollabration.Models.UserModel
+﻿@model List<TaskCollabration.Models.TDashboardModel>
 @{
     ViewData["Title"] = "User_Home";
     Layout = "~/Views/Shared/_Navbar.cshtml";
@@ -15,19 +15,14 @@
             <!-- Top Header -->
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
                 <div class="mb-3 mb-lg-0">
-                    <h4 class="mb-1">Welcome back, John!</h4>
+                    <h4 class="mb-1">Welcome back, @Context.Session.GetString("FirstName")!</h4>
                     <p class="text-muted mb-0">Here's your task overview</p>
                 </div>
                 <div class="d-flex align-items-center">
-                    <div class="position-relative me-3">
-                        <i class="fas fa-bell fs-5"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            3
-                        </span>
-                    </div>
+                   
                     <div class="dropdown">
                         <button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown">
-                            <img src="/api/placeholder/40/40" class="rounded-circle" alt="Profile">
+                            <img src="~/Images/@Context.Session.GetString("Image")" class="rounded-circle" alt="Profile">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -46,7 +41,7 @@
                         <div class="card-body">
                             <h6 class="text-muted">Total Tasks</h6>
                             <div class="d-flex align-items-center">
-                                <h3 class="mb-0">24</h3>
+                                <h3 class="mb-0">@ViewBag.TotalTasks</h3>
                                 <div class="ms-auto">
                                     <i class="fas fa-tasks text-primary fs-4"></i>
                                 </div>
@@ -62,7 +57,7 @@
                         <div class="card-body">
                             <h6 class="text-muted">In Progress</h6>
                             <div class="d-flex align-items-center">
-                                <h3 class="mb-0">8</h3>
+                                <h3 class="mb-0">@ViewBag.InProgressTasks</h3>
                                 <div class="ms-auto">
                                     <i class="fas fa-spinner text-warning fs-4"></i>
                                 </div>
@@ -78,7 +73,7 @@
                         <div class="card-body">
                             <h6 class="text-muted">Due Today</h6>
                             <div class="d-flex align-items-center">
-                                <h3 class="mb-0">5</h3>
+                                <h3 class="mb-0">@ViewBag.DueTodayTasks</h3>
                                 <div class="ms-auto">
                                     <i class="fas fa-clock text-danger fs-4"></i>
                                 </div>
@@ -94,7 +89,7 @@
                         <div class="card-body">
                             <h6 class="text-muted">Completed</h6>
                             <div class="d-flex align-items-center">
-                                <h3 class="mb-0">16</h3>
+                                <h3 class="mb-0">@ViewBag.CompletedTasks</h3>
                                 <div class="ms-auto">
                                     <i class="fas fa-check-circle text-success fs-4"></i>
                                 </div>
@@ -116,16 +111,22 @@
                             <h5 class="card-title mb-0">Today's Tasks</h5>
                         </div>
                         <div class="card-body">
+                             @foreach (var task in Model.Where(t => t.Date.Date == DateTime.Today))
+                    {
                             <div class="task-card priority-high card mb-3">
                                 <div class="card-body">
                                     <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                        <h6 class="mb-2 mb-md-0">Client Meeting Presentation</h6>
-                                        <span class="status-badge bg-warning text-dark">In Progress</span>
+                                            <h6 class="mb-2 mb-md-0">@task.Title</h6>
+                                            <span class="status-badge bg-warning text-dark @(task.Status == "InProgress" ? "bg-warning" :
+                                                  task.Status == "Completed" ? "bg-success" : "bg-primary")">
+                                                @task.Status
+                                            </span>
                                     </div>
                                     <div class="d-flex align-items-center mt-2">
                                         <small class="text-muted me-3"><i class="far fa-clock me-1"></i>Due in 3 hours</small>
                                         <small class="text-muted"><i class="far fa-user me-1"></i>John Doe</small>
                                     </div>
+                                       
                                 </div>
                             </div>
                             <div class="task-card priority-medium card mb-3">
@@ -140,6 +141,11 @@
                                     </div>
                                 </div>
                             </div>
+                            }
+                            @if (!Model.Any(t => t.Date.Date == DateTime.Today))
+                            {
+                                <p class="text-muted">No tasks due today.</p>
+                            }
                         </div>
                     </div>
                 </div>
@@ -151,6 +157,8 @@
                             <h5 class="card-title mb-0">Upcoming Tasks</h5>
                         </div>
                         <div class="card-body">
+                               @foreach (var task in Model.Where(t => t.Date.Date > DateTime.Today).Take(5))
+                            {
                             <div class="task-card priority-low card mb-3">
                                 <div class="card-body">
                                     <div class="d-flex flex-wrap justify-content-between align-items-center">
@@ -166,15 +174,20 @@
                             <div class="task-card priority-medium card mb-3">
                                 <div class="card-body">
                                     <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                        <h6 class="mb-2 mb-md-0">Project Deliverables Review</h6>
-                                        <span class="status-badge bg-secondary text-white">In 2 days</span>
+                                            <h6 class="mb-2 mb-md-0">@task.Title</h6>
+                                            <span class="status-badge bg-secondary text-white">Due in @((task.Date.Date - DateTime.Today).Days) days</span>
                                     </div>
                                     <div class="d-flex align-items-center mt-2">
-                                        <small class="text-muted me-3"><i class="far fa-calendar me-1"></i>Feb 5, 2025</small>
+                                            <small class="text-muted me-3"><i class="far fa-calendar me-1"></i>Priority: @task.Priority</small>
                                         <small class="text-muted"><i class="far fa-user me-1"></i>Project Team</small>
                                     </div>
                                 </div>
                             </div>
+                            }
+                            @if (!Model.Any(t => t.Date.Date > DateTime.Today))
+                            {
+                                <p class="text-muted">No upcoming tasks.</p>
+                            }
                         </div>
                     </div>
                 </div>
@@ -187,6 +200,8 @@
                         </div>
                         <div class="card-body">
                             <div class="timeline">
+                                  @foreach (var task in Model.OrderByDescending(t => t.Date).Take(5))
+                        {
                                 <div class="d-flex mb-3">
                                     <div class="me-3">
                                         <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
@@ -194,10 +209,11 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <h6 class="mb-1">Marketing Campaign Report completed</h6>
-                                        <small class="text-muted">2 hours ago</small>
+                                            <h6 class="mb-1">@task.Title (@task.Status)</h6>
+                                            <small class="text-muted">@task.Date.ToString("MMM dd, yyyy")</small>
                                     </div>
                                 </div>
+                                }
                             </div>
                         </div>
                     </div>

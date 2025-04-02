@@ -15,5 +15,7 @@ namespace TaskCollabration.Models
         public string Password { get; set; }
         public bool RememberMe { get; set; }
 
+        public string? FirstName { get; set; }
+        public string? Image { get; set; }
     }
 }
