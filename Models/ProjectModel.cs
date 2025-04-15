@@ -66,6 +66,7 @@ namespace TaskCollabration.Models
             return lstadm1;
         }
 
+
         //Retrieve single record from a table
         public ProjectModel getData(string Id)
         {

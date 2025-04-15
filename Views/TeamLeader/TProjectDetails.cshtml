@@ -11,31 +11,45 @@
     <title>Project Hub</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <style>
+        .project-header {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-item {
+            transition: 0.3s;
+        }
+
+            .task-item:hover {
+                background-color: #f8f9fa;
+                transform: translateY(-2px);
+            }
+
+        .task-text {
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container my-5">
         <!-- Project Header -->
-        <div class="row align-items-center mb-4">
-            <div class="col">
-                <div class="d-flex align-items-center">
-                    <h1 class="mb-0 me-3">@Model.ProjectName</h1>
-                    <span class="status-badge bg-success text-white">@Model.Status</span>
-                </div>
-                <div class="mt-2 d-flex align-items-center">
-                   <p>@Model.Category</p>
-                    <span class="text-muted">Due @Model.DueDate.ToString("MMM dd, yyyy")</span>
-                </div>
-            </div>
-            <div class="col-auto">
-                <a asp-controller="TeamLeader" asp-action="EditProjectDetails" asp-route-id="@Model.Id" class="btn btn-outline-primary me-2">
-                    <i class="bi bi-pencil"></i> Edit
-                </a>
-
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newTaskModal">
-                    <i class="bi bi-plus"></i> Add Task
-                </button>
-            </div>
+        <div class="project-header mb-4">
+            <h2>Project: @Model.ProjectName</h2>
+            <p>@Model.Description</p>
+            <span class="badge bg-success">@Model.Status</span>
+            <span class="badge bg-danger">@Model.Priority</span>
+            <p class="mt-2">Deadline: @Model.DueDate.ToString("yyyy-MM-dd")</p>
         </div>
+    </div>
+
 
         <div class="row">
             <!-- Main Content -->
@@ -61,37 +75,6 @@
                 </div>
 
                 <!-- Timeline -->
-                <div class="custom-card card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title mb-4">Project Timeline</h5>
-                        <div class="timeline">
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="d-flex justify-content-between mb-1">
-                                    <h6>Requirements Analysis</h6>
-                                    <span class="status-badge bg-success text-white">Completed</span>
-                                </div>
-                                <p class="text-muted">Stakeholder interviews and requirement documentation completed</p>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="d-flex justify-content-between mb-1">
-                                    <h6>Design Phase</h6>
-                                    <span class="status-badge bg-primary text-white">In Progress</span>
-                                </div>
-                                <p class="text-muted">UI/UX design and prototyping</p>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="d-flex justify-content-between mb-1">
-                                    <h6>Development</h6>
-                                    <span class="status-badge bg-secondary text-white">Upcoming</span>
-                                </div>
-                                <p class="text-muted">Frontend and backend implementation</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Tasks -->
                 <div class="custom-card card mb-4">
@@ -118,17 +101,7 @@
 
                 <!-- Files -->
                 <div class="custom-card card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="card-title mb-0">Project Files</h5>
-                            <button class="btn btn-sm btn-outline-primary" onclick="uploadFile()">
-                                Upload File
-                            </button>
-                        </div>
-                        <div class="files-grid" id="filesContainer">
-                            <!-- Files will be dynamically added here -->
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
 
@@ -150,14 +123,7 @@
                 </div>
 
                 <!-- Recent Activity -->
-                <div class="custom-card card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title mb-4">Recent Activity</h5>
-                        <div id="activityFeed">
-                            <!-- Activity items will be dynamically added here -->
-                        </div>
-                    </div>
-                </div>
+               
 
                 <!-- Comments -->
                 <div class="custom-card card shadow">

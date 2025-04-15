@@ -61,6 +61,7 @@ namespace TaskCollabration.Controllers
             // Get project data
             ProjectModel project = projectmodel.getData(id.ToString());
 
+
             // Get messages for this project
             MessageModel messageModel = new MessageModel();
             List<MessageModel> projectMessages = messageModel.GetProjectMessages(id);

@@ -76,6 +76,10 @@ namespace TaskCollabration.Controllers
             return View(model);
         }
 
-
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Auth");
+        }
     }
 }
