@@ -1,0 +1,123 @@
+﻿@model TaskCollabration.Models.AdminTaskModel; 
+
+@{
+    ViewData["Title"] = "AddTask";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>AddTask</h1>
+
+
+
+
+<div class="content-page">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
+                    <h5>Your Team Member</h5>
+
+                    <!-- Back Button -->
+                    <div>
+                        <a href="@Url.Action("Task", "Admin")" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Back to Task
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+
+                <div class="card shadow-lg border-0 rounded-4">
+
+                    <!-- Card Header -->
+                    <div class="card-header text-center bg-primary text-white rounded-top">
+                        <h4 class="mb-0">Add New Task</h4>
+                    </div>
+
+                    <!-- Scrollable Form Body -->
+                    <div class="card-body p-4" style="max-height: 500px; overflow-y: auto;">
+                        <form method="post" asp-action="AddTask" enctype="multipart/form-data">
+                            <!-- User ID -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">User ID</label>
+                                <input asp-for="UserId" type="number" class="form-control rounded-pill px-3" placeholder="Enter user ID" required />
+                                <span asp-validation-for="UserId" class="text-danger"></span>
+                            </div>
+
+                            <!-- Task Title -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Title</label>
+                                <input asp-for="Title" class="form-control rounded-pill px-3" placeholder="Enter task title" required />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Description</label>
+                                <textarea asp-for="Description" class="form-control rounded-pill px-3" placeholder="Enter task description"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+                            <!-- Status Dropdown -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Status</label>
+                                <select asp-for="Status" class="form-control rounded-pill px-3">
+                                    <option value="" disabled selected>-- Select Status --</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+
+                            <!-- Priority Dropdown -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Priority</label>
+                                <select asp-for="Priority" class="form-control rounded-pill px-3">
+                                    <option value="" disabled selected>-- Select Priority --</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                                <span asp-validation-for="Priority" class="text-danger"></span>
+                            </div>
+
+                            <!-- Due Date -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Date</label>
+                                <input asp-for="Date" type="date" class="form-control rounded-pill px-3" />
+                                <span asp-validation-for="Date" class="text-danger"></span>
+                            </div>
+
+                            <!-- File Upload -->
+                            <div class="form-group">
+                                <label class="font-weight-bold">Upload File</label>
+                                <input type="file" asp-for="FilePath" class="form-control-file" />
+                                <span asp-validation-for="FilePath" class="text-danger"></span>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex justify-content-center mt-3">
+                                <button type="submit" class="btn btn-success rounded-pill px-4 mr-2">Save Task</button>
+                                <a href="@Url.Action("TaskList", "Admin")" class="btn btn-secondary rounded-pill px-4">Cancel</a>
+                            </div>
+                        </form>
+
+
+
+                        <!-- Success Message -->
+                        @if (TempData["msg"] != null)
+                        {
+                            <div class="alert alert-success mt-3 text-center">@TempData["msg"]</div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

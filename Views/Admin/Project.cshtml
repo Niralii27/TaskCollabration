@@ -1,4 +1,4 @@
-﻿@model List<TaskCollabration.Models.ProjectModel>
+﻿@model List<TaskCollabration.Models.AdminProjectModel>
 
 @{
     ViewData["Title"] = "Project";
@@ -30,7 +30,25 @@
         <div id="grid" class="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
             <div class="row">
 
-               
+                @* @if (TempData["msg"] != null) *@
+                @* { *@
+                @*     <div class="alert alert-success alert-dismissible fade show" role="alert"> *@
+                @*         @TempData["msg"] *@
+                @*         <button type="button" class="close" data-dismiss="alert" aria-label="Close"> *@
+                @*             <span aria-hidden="true">&times;</span> *@
+                @*         </button> *@
+                @*     </div> *@
+                @* } *@
+
+                @* @if (TempData["ErrorMessage"] != null) *@
+                @* { *@
+                @*     <div class="alert alert-danger alert-dismissible fade show" role="alert"> *@
+                @*         @TempData["ErrorMessage"] *@
+                @*         <button type="button" class="close" data-dismiss="alert" aria-label="Close"> *@
+                @*             <span aria-hidden="true">&times;</span> *@
+                @*         </button> *@
+                @*     </div> *@
+                @* } *@
 
                 @if (TempData["msg"] != null)
                 {
@@ -63,7 +81,14 @@
                                         <span>No Members Assigned</span>
                                     }
                                 </p>
-                          
+                                @* <div class="d-flex align-items-center justify-content-between pt-3 border-top"> *@
+                                @*     <a class="btn btn-sm bg-primary" asp-action="EditProject" asp-route-id="@project.Id"> *@
+                                @*         <i class="ri-pencil-line"></i> Edit *@
+                                @*     </a> *@
+                                @*     <a class="btn btn-sm bg-danger" asp-action="DeleteProject" asp-route-id="@project.Id" onclick="return confirm('Are you sure you want to delete this project?');"> *@
+                                @*         <i class="ri-delete-bin-line"></i> Delete *@
+                                @*     </a> *@
+                                @* </div> *@
                                 <div class="pt-3">
                                     <a asp-action="EditProject" asp-route-id="@project.Id" class="btn btn-outline-primary btn-lg rounded-pill px-4">
                                         <i class="ri-edit-box-line"></i> Edit

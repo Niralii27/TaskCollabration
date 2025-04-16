@@ -7,10 +7,21 @@ namespace TaskCollabration.Controllers
     {
         AdminModel adminModel = new AdminModel();
         AdminTeamModel teamModel = new AdminTeamModel();
+        AdminProjectModel projectModel = new AdminProjectModel();
+        AdminTaskModel taskModel = new AdminTaskModel();
+
 
         public IActionResult Dashboard()
         {
-            return View();
+            AdminProjectModel projectModel = new AdminProjectModel();
+
+            // Fetch all projects safely
+            List<AdminProjectModel> projects = projectModel.getData() ?? new List<AdminProjectModel>();
+
+            // Take only the last 3 projects (assuming they are ordered by ID or Date)
+            projects = projects.OrderByDescending(p => p.Id).Take(3).ToList();
+
+            return View(projects);
         }
 
 
@@ -22,13 +33,175 @@ namespace TaskCollabration.Controllers
 
         public IActionResult Project()
         {
-            return View();
+            List<AdminProjectModel> projects = projectModel.getData();
+            return View(projects);
         }
 
-        public IActionResult Task()
+        public IActionResult AddProject()
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult AddProject(AdminProjectModel project)
+        {
+            if (ModelState.IsValid)
+            {
+                bool result = projectModel.insert(project);
+                if (result)
+                {
+                    TempData["msg"] = "Project added successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to add project.";
+                }
+                return RedirectToAction("Project", "Admin"); // Redirect to Project Page
+            }
+
+            return View(project);
+        }
+
+        [HttpGet]
+        public IActionResult EditProject(string id)
+        {
+            AdminProjectModel project = projectModel.getData(id);
+            return View(project);
+        }
+
+        [HttpPost]
+        public IActionResult EditProject(AdminProjectModel project)
+        {
+            if (ModelState.IsValid)
+            {
+                bool result = projectModel.update(project);
+                if (result)
+                {
+                    TempData["msg"] = "Project updated successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to update project.";
+                }
+                return RedirectToAction("Project", "Admin"); // Redirect to Project Page
+            }
+
+            TempData["ErrorMessage"] = "Validation error!";
+            return View(project);
+        }
+
+        [HttpGet]
+        public IActionResult DeleteProject(string id)
+        {
+            AdminProjectModel project = projectModel.getData(id);
+            return View(project);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteProject(AdminProjectModel project)
+        {
+            bool result = projectModel.delete(project);
+            if (result)
+            {
+                TempData["msg"] = "Project deleted successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to delete project.";
+            }
+
+            return RedirectToAction("Project", "Admin"); // Redirect to Project Page
+        }
+
+
+        // List all tasks
+        public IActionResult Task()
+        {
+            List<AdminTaskModel> tasks = taskModel.GetData();
+            return View(tasks);
+        }
+
+        // Add Task (GET)
+        public IActionResult AddTask()
+        {
+            return View();
+        }
+
+        // Add Task (POST)
+        [HttpPost]
+        public IActionResult AddTask(AdminTaskModel task)
+        {
+            if (ModelState.IsValid)
+            {
+                bool result = taskModel.Insert(task);
+                if (result)
+                {
+                    TempData["msg"] = "Task added successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to add task.";
+                }
+                return RedirectToAction("Task");
+            }
+
+            return View(task);
+        }
+
+        // Edit Task (GET)
+        [HttpGet]
+        public IActionResult EditTask(int id)
+        {
+            AdminTaskModel task = taskModel.GetData(id);
+            return View(task);
+        }
+
+        // Edit Task (POST)
+        [HttpPost]
+        public IActionResult EditTask(AdminTaskModel task)
+        {
+            if (ModelState.IsValid)
+            {
+                bool result = taskModel.Update(task);
+                if (result)
+                {
+                    TempData["msg"] = "Task updated successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to update task.";
+                }
+                return RedirectToAction("Task");
+            }
+            TempData["ErrorMessage"] = "Validation error!";
+            return View(task);
+        }
+
+        // Delete Task (GET)
+        [HttpGet]
+        public IActionResult DeleteTask(int id)
+        {
+            AdminTaskModel task = taskModel.GetData(id);
+            return View(task);
+        }
+
+        // Delete Task (POST)
+        [HttpPost]
+        public IActionResult DeleteTask(AdminTaskModel task)
+        {
+            bool result = taskModel.Delete(task.Id);
+            if (result)
+            {
+                TempData["msg"] = "Task deleted successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to delete task.";
+            }
+            return RedirectToAction("Task");
+        }
+
+
 
         public IActionResult AddUser()
         {
